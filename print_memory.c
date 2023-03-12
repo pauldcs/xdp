@@ -1,16 +1,17 @@
 #include <ctype.h>
 #include <unistd.h>
+#include <stdint.h>
 
 static void	print_addr(const uintptr_t p)
 {
-	uint64_t	ptr;
+	uintptr_t	ptr;
 	char		buffer[16];
 	int			i;
 
 	i = 16;
 	if (p)
 	{
-		ptr = (uint64_t)p;
+		ptr = p;
 		while (ptr && i)
 		{
 			buffer[--i] = "0123456789abcdef"[ptr & 0xf];
@@ -27,12 +28,12 @@ static void	print_addr(const uintptr_t p)
 
 static void	print_data(const void *addr, size_t size)
 {
-	unsigned char	*ptr;
-	unsigned char	buffer[49];
-	size_t			i;
+	uint8_t	*ptr;
+	uint8_t	buffer[49];
+	size_t  i;
 
 	i = 0;
-	ptr = (unsigned char *)addr;
+	ptr = (uint8_t *)addr;
 	while (size-- && i < 49)
 	{
 		if (*ptr)
@@ -58,12 +59,12 @@ static void	print_data(const void *addr, size_t size)
 
 static void	print_ascii(const void *s, size_t size)
 {
-	char			*tmp;
-	unsigned char	buffer[16];
-	size_t			i;
+	int8_t 	*tmp;
+	uint8_t	buffer[16];
+	size_t	i;
 
 	i = 0;
-	tmp = (char *)s;
+	tmp = (int8_t *)s;
 	while (size-- && i < 16)
 	{
 		if (isprint(*tmp))
