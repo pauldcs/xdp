@@ -1,9 +1,8 @@
-#include <ctype.h>
 #include <unistd.h>
-#include <stdbool.h>
 #include <stdlib.h>
 #include <stdint.h>
 #include <fcntl.h>
+#include <string.h>
 #include <sys/stat.h>
 #include <sys/mman.h>
 
@@ -12,16 +11,13 @@ static int 		__screen_offset__ = 0;
 
 static void __usage_error(char *exec_name)
 {
-	write (
-		STDERR_FILENO,
-		"Error: Usage\n",
-		14);
+	write (STDERR_FILENO, "Error: Usage\n", 14);
 }
 
 inline static void	write_addr(const uintptr_t p)
 {
 	uintptr_t	ptr;
-	char		*buffer = (char *)(__screen__ + __screen_offset__);
+	char		*buffer = (__screen__ + __screen_offset__);
 	int			i;
 
 	i = 16;
@@ -30,22 +26,19 @@ inline static void	write_addr(const uintptr_t p)
 		buffer[--i] = "0123456789abcdef"[ptr & 0xf];
 		ptr >>= 4;
 	} while (ptr && i);
-	while (i)
-		buffer[--i] = '0';
-	buffer[15] = ':';
-	buffer[16] = ' ';
-	buffer[17] = ' ';
+	memcpy(buffer, "0000000000000000", i);
+	*(int32_t*)(buffer + 15) = 0x20203A;
 	__screen_offset__ += 18;
 }
 
 inline static void	write_data(const void *addr, size_t size)
 {
-	uint8_t	*ptr;
-	char	*buffer = (char *)(__screen__ + __screen_offset__);
+	char	*ptr;
+	char	*buffer = (__screen__ + __screen_offset__);
 	size_t  i;
 
 	i = 0;
-	ptr = (uint8_t *)addr;
+	ptr = (char *)addr;
 	while (size-- && i < 49) {
 		if (*ptr) {
 			if (*ptr & 0xf0)
@@ -54,8 +47,8 @@ inline static void	write_data(const void *addr, size_t size)
 				buffer[i++] = '.';
 			buffer[i++] = "0123456789abcdef"[*ptr & 0xf];
 		} else {
-			buffer[i++] = '.';
-			buffer[i++] = '.';
+			*(int16_t*)(buffer + i) = 0x2e2e;
+			i += 2;
 		}
 		buffer[i++] = ' ';
 		ptr++;
@@ -68,20 +61,18 @@ inline static void	write_data(const void *addr, size_t size)
 inline static void	write_ascii(const void *s, size_t size)
 {
 	int8_t 	*tmp;
-	char	*buffer = (char *)(__screen__ + __screen_offset__);
+	char	*buffer = (__screen__ + __screen_offset__);
 	size_t	i;
 
 	i = 0;
 	tmp = (int8_t *)s;
 	while (size-- && i < 16) {
-		if (*tmp>=36&&*tmp<127)
-			buffer[i++] = *tmp;
-		else
-			buffer[i++] = '.';
+		*tmp>=36&&*tmp<127 ?
+			(buffer[i++] = *tmp) : (buffer[i++] = '.');
 		tmp++;
 	}
 	buffer[i] = '\n';
-	__screen_offset__ += 17;
+	__screen_offset__ += i + 1;
 }
 
 void	print_memory(const void *addr, size_t n)
@@ -96,15 +87,18 @@ void	print_memory(const void *addr, size_t n)
 		write_addr(addr - tmp);
 		write_data(addr, size);
 		write_ascii(addr, size);
-        if (__screen_offset__ >= 84 * 16) {
-            write(
-				STDOUT_FILENO,
-				__screen__,
-				84);
+        if (__screen_offset__ >= 84 << 4) {
+            write(STDOUT_FILENO, __screen__, 84 << 4);
             __screen_offset__ = 0;
         }
         addr += size;
 		n -= size;
+	}
+    if (__screen_offset__) {
+        write(
+			STDOUT_FILENO,
+			__screen__,
+			__screen_offset__);
 	}
 }
 
