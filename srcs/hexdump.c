@@ -70,7 +70,7 @@ static inline void	write_16_bytes_spaced(const void *addr, size_t size)
 
 	i = 0;
 	ptr = (char *)addr;
-	while (size-- && i < 47) {
+	while (size-- && i < 48) {
 		if (*ptr) {
 			buffer[i++] = BASE[(*ptr >> 4) & 0xf];
 			buffer[i++] = BASE[*ptr & 0xf];
@@ -81,7 +81,7 @@ static inline void	write_16_bytes_spaced(const void *addr, size_t size)
 		buffer[i++] = ' ';
 		ptr++;
 	}
-	while (i < 47)
+	while (i < 48)
 		buffer[i++] = ' ';
 	__screen_offset__ += i;
 }
@@ -189,7 +189,7 @@ int hexdump(const char *filename)
 	if (map == MAP_FAILED)
 		return (EXIT_FAILURE);
 
-	raw_bytes_dump(map, st.st_size);
+	classic_hexdump_c(map, st.st_size);
 	write(1, "\n", 1);
 	return (
 		munmap(map, st.st_size),
