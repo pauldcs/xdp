@@ -3,6 +3,11 @@
 
 # define BASE "0123456789abcdef"
 
-int hexdump(const char *filename);
+typedef enum e_mode {
+	DUMP_RAW,
+	CLASSIC
+}	t_mode;
+
+int hexdump(const char *filename, t_mode mode);
 
 #endif /* __HEXDUMP_H__ */

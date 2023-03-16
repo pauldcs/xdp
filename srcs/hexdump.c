@@ -104,15 +104,9 @@ static inline void	write_16_ascii(const void *s, size_t size)
 
 bool raw_bytes_dump(const void *addr, size_t size)
 {
-/*
-	Dumps bytes as a stream of hexadecimal characters:
-
-	cffaedfe0c....01........02......12......b804....85..20..........19..
-	...
-*/
 	char	*ptr = (char *)addr;
 
-	if ((__screen__ = malloc(size + 1)) == NULL)
+	if ((__screen__ = malloc(size * 2 + 1)) == NULL)
 		return (false);
 	while (size--)
 	{
@@ -133,14 +127,6 @@ bool raw_bytes_dump(const void *addr, size_t size)
 
 bool	classic_hexdump_c(const void *addr, size_t n)
 {
-/*
-Dumps in the following format:
-
-	0000000000:  cf fa ed fe 0c .. .. 01 .. .. .. .. 02 .. .. ..  ................
-	0000000010:  12 .. .. .. b8 04 .. .. 85 .. 20 .. .. .. .. ..  ................
-	0000000020:  19 .. .. .. 48 .. .. .. 5f 5f 50 41 47 45 5a 45  ....H...__PAGEZE
-	0000000030:  52 4f .. .. .. .. .. .. .. .. .. .. .. .. .. ..  RO..............
-*/
 	size_t		size;
 	const void 	*tmp = addr;
 
@@ -172,24 +158,23 @@ Dumps in the following format:
 	return(true);
 }
 
-int hexdump(const char *filename)
+int hexdump(const char *filename, t_mode mode)
 {
 	void 		*map;
 	int 		fd;
 	struct stat	st;
-	
+
 	if (stat(filename, &st) == -1
 		|| (fd = open(filename, O_RDONLY)) == -1)
-		return (
-			perror(0),
-			free(__screen__),
-			EXIT_FAILURE);
+		return (perror(0), EXIT_FAILURE);
 	map = mmap(0, st.st_size, PROT_READ, MAP_PRIVATE, fd, 0);
 	close(fd);
 	if (map == MAP_FAILED)
 		return (EXIT_FAILURE);
-
-	classic_hexdump_c(map, st.st_size);
+	if (mode == CLASSIC)
+		classic_hexdump_c(map, st.st_size);
+	else if (mode == DUMP_RAW)
+		raw_bytes_dump(map, st.st_size);
 	write(1, "\n", 1);
 	return (
 		munmap(map, st.st_size),
