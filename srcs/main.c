@@ -14,7 +14,7 @@ void print_usage(void) {
     fprintf(stderr, "Options:\n");
     fprintf(stderr, "  --size=SIZE\t\tMaximum number of bytes to read from the file (default: unlimited).\n");
     fprintf(stderr, "  --start=OFFSET\tStarting byte offset to read from (default: 0).\n");
-    fprintf(stderr, "  --end=OFFSET\t\tEnding byte offset to read to (default: end of file).\n");
+    fprintf(stderr, "  --end=OFFSET\t\tEnding byte offset (default: end of file).\n");
     fprintf(stderr, "  --raw\t\t\tOutput raw bytes in hexadecimal format, without formatting.\n\n");
     fprintf(stderr, "Arguments:\n");
     fprintf(stderr, "  FILE\t\t\tThe path to the file to be read.\n\n");
