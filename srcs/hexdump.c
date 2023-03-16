@@ -1,5 +1,6 @@
-#include "hexdump.h"
+#include "../incs/hexdump.h"
 #include <unistd.h>
+#include <assert.h>
 #include <stdbool.h>
 #include <stdlib.h>
 #include <stdint.h>
@@ -106,7 +107,7 @@ bool raw_bytes_dump(const void *addr, size_t size)
 {
 	char	*ptr = (char *)addr;
 
-	if ((__screen__ = malloc(size * 2 + 1)) == NULL)
+	if ((__screen__ = (char *)malloc(size * 2 + 1)) == NULL)
 		return (false);
 	while (size--)
 	{
@@ -130,7 +131,7 @@ bool	classic_hexdump_c(const void *addr, size_t n)
 	size_t		size;
 	const void 	*tmp = addr;
 
-	if ((__screen__ = malloc(79 << 5)) == NULL)
+	if ((__screen__ = (char *)malloc(79 << 5)) == NULL)
 		return (false);
 	while (n) {
 		size = (n > 16 ? 16 : n);
@@ -158,27 +159,46 @@ bool	classic_hexdump_c(const void *addr, size_t n)
 	return(true);
 }
 
-int hexdump(const char *filename, t_mode mode)
+int hexdump(t_dump_params *params)
 {
 	void 		*map;
 	int 		fd;
 	struct stat	st;
 
-	if (stat(filename, &st) == -1
-		|| (fd = open(filename, O_RDONLY)) == -1)
+	if (stat(params->filename, &st) == -1
+		|| (fd = open(params->filename, O_RDONLY)) == -1)
 		return (perror(0), EXIT_FAILURE);
+	
+	if (!params->end_offset)
+			params->end_offset = st.st_size;
+	
+	if (params->start_offset || params->end_offset) {
+		assert(params->start_offset <= params->end_offset);
+		assert(params->start_offset <= st.st_size);
+		assert(params->end_offset <= st.st_size);
+	}
+	if (params->max_size) {
+		assert(params->max_size < st.st_size);
+		assert(params->max_size < (params->end_offset - params->start_offset));	
+	} else {
+		params->max_size = (params->end_offset - params->start_offset);
+	}
+
 	map = mmap(0, st.st_size, PROT_READ, MAP_PRIVATE, fd, 0);
 	close(fd);
 	if (map == MAP_FAILED)
 		return (EXIT_FAILURE);
-	switch (mode) {
-		case CLASSIC:
-			classic_hexdump_c(map, st.st_size);
+	
+	char *ptr = (char *)map;
+	ptr += params->start_offset;
+	
+	switch (params->mode) {
+		case DUMP_CLASSIC:
+			classic_hexdump_c(ptr, params->max_size);
 			break;
 		case DUMP_RAW:
-			raw_bytes_dump(map, st.st_size);
+			raw_bytes_dump(ptr, params->max_size);
 			break;
-		default: break;
 	}
 	write(1, "\n", 1);
 	return (
