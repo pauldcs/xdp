@@ -1,6 +1,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdint.h>
+#include <stdio.h>
 #include <fcntl.h>
 #include <string.h>
 #include <sys/stat.h>
@@ -12,7 +13,40 @@
 static char 	*__screen__;
 static int 		__screen_offset__ = 0;
 
-static inline void	write_addr(const uintptr_t p)
+size_t	write_all(int fd, const void *buf, size_t s)
+{
+	ssize_t	c;
+	size_t	ret;
+
+	ret = 0;
+	while (s)
+	{
+		c = write(fd, buf + ret, s);
+		if (c == -1)
+			continue ;
+		ret += c;
+		s -= c;
+	}
+	return (ret);
+}
+
+static void print_screen(void)
+{
+	write_all(STDOUT_FILENO,
+		__screen__,
+		__screen_offset__);
+	__screen_offset__ = 0;
+}
+
+static void screen_write_string(const char *str)
+{
+	while (*str) {
+		*(__screen__ + (__screen_offset__)) = *str++;
+		__screen_offset__++;
+	}
+}
+
+static inline void	write_offset(const uintptr_t p)
 {
 	char		*buffer = (__screen__ + __screen_offset__);
 	uintptr_t	ptr;
@@ -26,11 +60,10 @@ static inline void	write_addr(const uintptr_t p)
 	} while (ptr && i);
 	while (i)
 		buffer[i--] = '0';
-	*(int32_t *)(buffer + 10)= 0x20203a;
-	__screen_offset__ += 13;
+	__screen_offset__ += 10;
 }
 
-static inline void	write_data(const void *addr, size_t size)
+static inline void	write_16_bytes_spaced(const void *addr, size_t size)
 {
 	char	*buffer = (__screen__ + __screen_offset__);
 	char	*ptr;
@@ -38,7 +71,7 @@ static inline void	write_data(const void *addr, size_t size)
 
 	i = 0;
 	ptr = (char *)addr;
-	while (size-- && i < 49) {
+	while (size-- && i < 47) {
 		if (*ptr) {
 			buffer[i++] = BASE[(*ptr >> 4) & 0xf];
 			buffer[i++] = BASE[*ptr & 0xf];
@@ -49,12 +82,12 @@ static inline void	write_data(const void *addr, size_t size)
 		buffer[i++] = ' ';
 		ptr++;
 	}
-	while (i < 49)
+	while (i < 47)
 		buffer[i++] = ' ';
 	__screen_offset__ += i;
 }
 
-static inline void	write_ascii(const void *s, size_t size)
+static inline void	write_16_ascii(const void *s, size_t size)
 {
 	char	*buffer = (__screen__ + __screen_offset__);
 	int8_t 	*tmp;
@@ -67,19 +100,10 @@ static inline void	write_ascii(const void *s, size_t size)
 			(buffer[i++] = *tmp) : (buffer[i++] = '.');
 		tmp++;
 	}
-	buffer[i++] = '\n';
 	__screen_offset__ += i;
 }
 
-static inline void dump_screen(void)
-{
-	write (STDOUT_FILENO,
-		__screen__,
-		__screen_offset__);
-	__screen_offset__ = 0;
-}
-
-static void	print_memory(const void *addr, size_t n)
+static void	classic_hexdump_c(const void *addr, size_t n)
 {
 	size_t		size;
 	const void 	*tmp = addr;
@@ -88,21 +112,24 @@ static void	print_memory(const void *addr, size_t n)
 		size = (n > 16 ? 16 : n);
 		if (tmp != addr && !memcmp(addr - 16, addr, 16)) {
 			if (__screen_offset__) {
-				dump_screen();
+				print_screen();
 				write (STDOUT_FILENO, "<snip>\n", 7);
 			}
 		} else {
-			write_addr(addr - tmp);
-			write_data(addr, size);
-			write_ascii(addr, size);
+			write_offset(addr - tmp);
+			screen_write_string(":  ");
+			write_16_bytes_spaced(addr, size);
+			screen_write_string(" ");
+			write_16_ascii(addr, size);
+			screen_write_string("\n");
         	if (__screen_offset__ >= SCREEN_LINE_SIZE << 5)
-				dump_screen();
+				print_screen();
 		}
         addr += size;
 		n -= size;
 	}
     if (__screen_offset__)
-		dump_screen();
+		print_screen();
 }
 
 int hexdump(const char *filename)
@@ -116,6 +143,7 @@ int hexdump(const char *filename)
 	if (stat(filename, &st) == -1
 		|| (fd = open(filename, O_RDONLY)) == -1)
 		return (
+			perror(0),
 			free(__screen__),
 			EXIT_FAILURE);
 	map = mmap(0, st.st_size, PROT_READ, MAP_PRIVATE, fd, 0);
@@ -125,7 +153,7 @@ int hexdump(const char *filename)
 			free(__screen__),
 			EXIT_FAILURE);
 
-	print_memory(map, st.st_size);
+	classic_hexdump_c(map, st.st_size);
 	write(STDOUT_FILENO, "\n", 1);
 	return (
 		munmap(map, st.st_size),
@@ -138,7 +166,7 @@ int main(int ac, char *av[])
 	int ret;
 
 	if (ac < 2) {
-		write (STDERR_FILENO, "Error: Usage\n", 14);
+		write(STDERR_FILENO, "Error: Usage\n", 14);
 		return (EXIT_FAILURE);
 	}
 	while (--ac)
