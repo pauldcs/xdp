@@ -171,10 +171,15 @@ int hexdump(const char *filename, t_mode mode)
 	close(fd);
 	if (map == MAP_FAILED)
 		return (EXIT_FAILURE);
-	if (mode == CLASSIC)
-		classic_hexdump_c(map, st.st_size);
-	else if (mode == DUMP_RAW)
-		raw_bytes_dump(map, st.st_size);
+	switch (mode) {
+		case CLASSIC:
+			classic_hexdump_c(map, st.st_size);
+			break;
+		case DUMP_RAW:
+			raw_bytes_dump(map, st.st_size);
+			break;
+		default: break;
+	}
 	write(1, "\n", 1);
 	return (
 		munmap(map, st.st_size),

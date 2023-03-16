@@ -26,7 +26,7 @@ int main(int ac, char *av[])
 					STDERR_FILENO,
 					"Error: Missing argument\n",
 					25);
-				ret = EXIT_FAILURE;
+				return(EXIT_FAILURE);
 			}
 		}
 		else
