@@ -73,7 +73,7 @@ static inline void	write_ascii(const void *s, size_t size)
 
 static inline void dump_screen(void)
 {
-	write (STDIN_FILENO,
+	write (STDOUT_FILENO,
 		__screen__,
 		__screen_offset__);
 	__screen_offset__ = 0;
@@ -95,7 +95,7 @@ static void	print_memory(const void *addr, size_t n)
 			write_addr(addr - tmp);
 			write_data(addr, size);
 			write_ascii(addr, size);
-        	if (__screen_offset__ >= SCREEN_LINE_SIZE << 4)
+        	if (__screen_offset__ >= SCREEN_LINE_SIZE << 5)
 				dump_screen();
 		}
         addr += size;
@@ -105,20 +105,16 @@ static void	print_memory(const void *addr, size_t n)
 		dump_screen();
 }
 
-int main(int ac, char *av[])
+int hexdump(const char *filename)
 {
 	void 		*map;
 	int 		fd;
 	struct stat	st;
 	
-	if (ac < 2) {
-		write (STDERR_FILENO, "Error: Usage\n", 14);
+	if ((__screen__ = malloc(SCREEN_LINE_SIZE << 5)) == NULL)
 		return (EXIT_FAILURE);
-	}
-	if ((__screen__ = malloc(SCREEN_LINE_SIZE << 4)) == NULL)
-		return (EXIT_FAILURE);
-	if (stat(av[1], &st) == -1
-		|| (fd = open(av[1], O_RDONLY)) == -1)
+	if (stat(filename, &st) == -1
+		|| (fd = open(filename, O_RDONLY)) == -1)
 		return (
 			free(__screen__),
 			EXIT_FAILURE);
@@ -130,8 +126,22 @@ int main(int ac, char *av[])
 			EXIT_FAILURE);
 
 	print_memory(map, st.st_size);
+	write(STDOUT_FILENO, "\n", 1);
 	return (
 		munmap(map, st.st_size),
 		free(__screen__),
 		EXIT_SUCCESS);
+}
+
+int main(int ac, char *av[])
+{
+	int ret;
+
+	if (ac < 2) {
+		write (STDERR_FILENO, "Error: Usage\n", 14);
+		return (EXIT_FAILURE);
+	}
+	while (--ac)
+		ret = hexdump(*++av);
+	return (ret);
 }
