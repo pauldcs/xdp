@@ -225,7 +225,7 @@ RunTest() {
                     Output \
                         "$(\
                             2>&1                    \
-                            diff --color -Tp        \
+                            diff --color            \
                             "$actual_output_file"   \
                             "$expected_output_file" \
                             | sed 's/^/        /'
@@ -248,6 +248,7 @@ RunTest() {
                 )"
             ((memory_errors++))
         }
+    echo 
 }
 
 

@@ -9,8 +9,8 @@ LIBSTRINGF  := libs/libstringf
 
 SRCS := main.c          \
 	display_usage.c     \
-	parse_argument.c    \
-	handle_parameters.c \
+	arguments.c    \
+	parameters.c \
 	hexdump.c           \
 	\
 	reader/reader.c         \

@@ -30,7 +30,7 @@ static size_t	write_all(int fd, const void *buf, size_t s)
 
 /* dump the current content in __screen__
  */
-static void print_screen(void)
+static void __dump_screen(void)
 {
 	write_all(STDOUT_FILENO,
 		__screen__,
@@ -83,9 +83,6 @@ static inline void	write_16_bytes_spaced(const void *addr, size_t size)
 	__screen_offset__ += i;
 }
 
-/* write 16 bytes in ascii into __screen__, if the bytes is 
- * non printable, it writes a '.' instead
- */
 static inline void	write_16_ascii(const void *s, size_t size)
 {
 	char	*buffer = (__screen__ + __screen_offset__);
@@ -105,7 +102,7 @@ static inline void	write_16_ascii(const void *s, size_t size)
 /* write the bytes as a stream without any formatting. Null bytes are 
  * replaced by ".." and the whole thing is dumped with one write()
 */
-bool raw_bytes_dump(const void *addr, size_t size)
+static bool raw_bytes_dump(const void *addr, size_t size)
 {
 	char	*ptr = (char *)addr;
 
@@ -118,14 +115,14 @@ bool raw_bytes_dump(const void *addr, size_t size)
 		ptr++;
 	}
 	*(__screen__ + (__screen_offset__++)) = '\n';
-	print_screen();
+	__dump_screen();
 	free(__screen__);
 	return (true);
 }
 
 /* mimic of the Linux hexdump -C
  */
-bool	classic_hexdump_c(const void *addr, size_t n)
+static bool	classic_hexdump_c(const void *addr, size_t n)
 {
 	size_t		size;
 	const void 	*tmp = addr;
@@ -135,19 +132,17 @@ bool	classic_hexdump_c(const void *addr, size_t n)
 	while (n) {
 		size = (n > 16 ? 16 : n);
 		if (tmp != addr
-			&& *((uint64_t *)(addr - 4)) == *((uint64_t *)addr)
-    		&& *((uint64_t *)(addr - 3)) == *((uint64_t *)addr + 1)
-    		&& *((uint64_t *)(addr - 2)) == *((uint64_t *)addr + 2)
-    		&& *((uint64_t *)(addr - 1)) == *((uint64_t *)addr + 3)
+    		&& *((uint64_t *)(addr - 2)) == *((uint64_t *)addr + 0)
+    		&& *((uint64_t *)(addr - 1)) == *((uint64_t *)addr + 1)
 		) {
 			if (__screen_offset__) {
 				*(__screen__ + (__screen_offset__++)) = '*';
 				*(__screen__ + (__screen_offset__++)) = '\n';
-				print_screen();
+				__dump_screen();
 			}
 		} else {
         	if (__screen_offset__ >= 78 << 7)
-				print_screen();
+				__dump_screen();
 			write_pointer((uintptr_t)(addr - tmp), 10);
 			*(__screen__ + (__screen_offset__++)) = ':';
 			*(__screen__ + (__screen_offset__++)) = ' ';
@@ -161,14 +156,14 @@ bool	classic_hexdump_c(const void *addr, size_t n)
 		n -= size;
 	}
     if (__screen_offset__)
-		print_screen();
+		__dump_screen();
 	free(__screen__);
 	return(true);
 }
 
 bool hexdump(t_dump_params *params)
 {
-	if (!handle_parameters(params))
+	if (!prepare_params_struct(params))
 		return (false);
 	if (!params->is_stdin) {
 
