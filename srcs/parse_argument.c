@@ -23,9 +23,6 @@ static const char	*str_to_uint(const char *str, int64_t *result)
 }
 
 bool parse_argument(const char *argument, t_dump_params *params) {
-    if (argument == NULL || params == NULL) {
-        return (fputstr(2, "'%s': Invalid format\n", argument), false);
-    }
     if (strncmp(argument, "--size=", 7) == 0) {
         if (!str_to_uint(argument + 7, &params->max_size)) {
             return (fputstr(2, "'%s': Invalid format\n", argument), false);

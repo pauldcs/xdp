@@ -18,7 +18,7 @@ static unsigned char	*read_data_from_stdin(void)
 	r.fd = 0;
 	r.save.buf = NULL;
 	r.save.size = 0;
-	ret = reader(&map, &r, "\0");
+	ret = reader(&map, &r, "");
 	
 	if (ret == -1)
 		return (NULL);
@@ -38,7 +38,6 @@ bool handle_parameters(t_dump_params *params)
             return false;
         }
         params->actual_size = strlen(params->map);
-        return true;
 
     } else {
 		if (params->filename == NULL) {
@@ -88,7 +87,7 @@ bool handle_parameters(t_dump_params *params)
         return false;
     }
 
-    if (params->max_size > 0) {
+    if (params->max_size) {
         if (params->max_size > params->end_offset - params->start_offset) {
             fputstr(2, "Trying to dump more bytes than available in the range start - end\n");
             return false;
@@ -100,6 +99,8 @@ bool handle_parameters(t_dump_params *params)
         }
     } else {
         params->max_size = params->end_offset - params->start_offset;
+		if (!params->max_size)
+			params->max_size = params->actual_size;
     }
     return true;
 }
