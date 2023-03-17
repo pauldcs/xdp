@@ -25,7 +25,7 @@ typedef struct s_dump_params {
 }	            t_dump_params;
 
 void 	display_usage(void);
-bool 	parse_argument(char *argument, t_dump_params *params);
+bool 	parse_argument(const char *argument, t_dump_params *params);
 bool 	handle_parameters(t_dump_params *params);
 bool 	hexdump(t_dump_params *params);
 

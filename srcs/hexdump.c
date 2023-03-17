@@ -1,6 +1,4 @@
 #include "hexdump.h"
-#include "libstringf.h"
-#include "reader.h"
 #include <unistd.h>
 #include <stdbool.h>
 #include <stdlib.h>
@@ -183,21 +181,21 @@ bool hexdump(t_dump_params *params)
 	if (!handle_parameters(params))
 		return (false);
 	if (!params->is_stdin) {
+
 		params->map = mmap(
 				0,
 				params->actual_size,
 				PROT_READ,
 				MAP_PRIVATE,
 				params->fd,
-				0
-			);
+				0);
+	
 		close(params->fd);
 		if (params->map == MAP_FAILED)
 			return (false);
 	}
 
-	char *ptr = (char *)params->map;
-	ptr += params->start_offset;
+	char *ptr = (char *)(params->map + params->start_offset);
 	
 	switch (params->mode) {
 		case DUMP_CLASSIC:

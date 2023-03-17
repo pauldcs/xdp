@@ -4,7 +4,7 @@
 #include <string.h>
 #include <stdbool.h>
 
-static char	*str_to_uint(char *str, int64_t *result)
+static const char	*str_to_uint(const char *str, int64_t *result)
 {
 	long tmp;
 
@@ -22,26 +22,31 @@ static char	*str_to_uint(char *str, int64_t *result)
 	return (str);
 }
 
-bool parse_argument(char *argument, t_dump_params *params)
-{
-	if (!strncmp(argument, "--size=", 7)) {
-		if (!str_to_uint(argument + 7, &params->max_size))
-			return (fputstr(2, "incorrect format: --size\n"), display_usage(), false);
-	} else if (!strncmp(argument, "--start=", 8)) {
-		if (!str_to_uint(argument + 8, &params->start_offset))
-		return (fputstr(2, "incorrect format: --start\n"), display_usage(), false);
-	} else if (!strncmp(argument, "--end=", 6)) {
-		if (!str_to_uint(argument + 6, &params->end_offset))
-			return (fputstr(2, "incorrect format: --end\n"), display_usage(), false);
-	} else if (!strncmp(argument, "--raw", 5)) {
-		params->mode = DUMP_RAW;
-	} else if (!strncmp(argument, "--stdin", 7)) {
-		params->is_stdin = true;
-	} else {
-		if (params->filename != NULL) {
-			return (display_usage(), false);
-		}
-		params->filename = argument;
-	}
-	return (true);
+bool parse_argument(const char *argument, t_dump_params *params) {
+    if (argument == NULL || params == NULL) {
+        return (fputstr(2, "%s: Invalid format", argument), false);
+    }
+    if (strncmp(argument, "--size=", 7) == 0) {
+        if (!str_to_uint(argument + 7, &params->max_size)) {
+            return (fputstr(2, "%s: Invalid format", argument), false);
+        }
+    } else if (strncmp(argument, "--start=", 8) == 0) {
+        if (!str_to_uint(argument + 8, &params->start_offset)) {
+            return (fputstr(2, "%s: Invalid format", argument), false);
+        }
+    } else if (strncmp(argument, "--end=", 6) == 0) {
+        if (!str_to_uint(argument + 6, &params->end_offset)) {
+            return (fputstr(2, "%s: Invalid format", argument), false);
+        }
+    } else if (strcmp(argument, "--raw") == 0) {
+        params->mode = DUMP_RAW;
+    } else if (strcmp(argument, "--stdin") == 0) {
+        params->is_stdin = true;
+    } else {
+        if (params->filename != NULL) {
+            return (fputstr(2, "%s: Duplicate filename", argument), false);
+        }
+        params->filename = argument;
+    }
+    return true;
 }
