@@ -88,7 +88,7 @@ bool handle_parameters(t_dump_params *params)
 
     if (params->max_size) {
         if (params->max_size > params->end_offset - params->start_offset) {
-            report_error("--size' exceeds the range '--start' to '--end'\n");
+            report_error("'--size' exceeds the range '--start' to '--end'\n");
             return false;
         }
 

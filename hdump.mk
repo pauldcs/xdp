@@ -1,10 +1,10 @@
 NAME		:= hdump
-CC			:= gcc
+CC			:= clang
 SRCS_DIR	:= srcs
 OBJS_DIR	:= .objs
 INCS_DIR	:= incs
 SANITIZER	:= -g3 -fstack-protector-strong -fsanitize=address
-CFLAGS 		:= -Wall -Wextra -Werror -O2
+CFLAGS 		:= -Wall -Wextra -Werror -O3
 LIBSTRINGF  := libs/libstringf
 
 SRCS := main.c          \

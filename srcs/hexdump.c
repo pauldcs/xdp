@@ -38,19 +38,6 @@ static void print_screen(void)
 	__screen_offset__ = 0;
 }
 
-/* write a string into __screen__,
- * there is zero checks for overflows,
- * for optimisation reasons, the developer has to make sure 
- * that the string will fit.
- */
-static void screen_write_string(const char *str)
-{
-	while (*str) {
-		*(__screen__ + (__screen_offset__)) = *str++;
-		__screen_offset__++;
-	}
-}
-
 /* writes a pointer in hex format into the __screen__
  */
 static inline void	write_pointer(const uintptr_t p, size_t width)
@@ -126,13 +113,8 @@ bool raw_bytes_dump(const void *addr, size_t size)
 		return (false);
 	while (size--)
 	{
-		if (*ptr) {
-			*(__screen__ + (__screen_offset__++)) = BASE[(*ptr >> 4) & 0xf];
-			*(__screen__ + (__screen_offset__++)) = BASE[*ptr & 0xf];
-		} else {
-			*(int16_t*)(__screen__ + (__screen_offset__)) = 0x2e2e;
-			__screen_offset__ += 2;
-		}
+		*(__screen__ + (__screen_offset__++)) = BASE[(*ptr >> 4) & 0xf];
+		*(__screen__ + (__screen_offset__++)) = BASE[*ptr & 0xf];
 		ptr++;
 	}
 	*(__screen__ + (__screen_offset__++)) = '\n';
@@ -148,24 +130,32 @@ bool	classic_hexdump_c(const void *addr, size_t n)
 	size_t		size;
 	const void 	*tmp = addr;
 
-	if ((__screen__ = (char *)malloc(79 << 5)) == NULL)
+	if ((__screen__ = (char *)malloc(79 << 7)) == NULL)
 		return (false);
 	while (n) {
 		size = (n > 16 ? 16 : n);
-		if (tmp != addr && !memcmp(addr - 16, addr, 16)) {
+		if (tmp != addr
+			&& *((uint64_t *)(addr - 4)) == *((uint64_t *)addr)
+    		&& *((uint64_t *)(addr - 3)) == *((uint64_t *)addr + 1)
+    		&& *((uint64_t *)(addr - 2)) == *((uint64_t *)addr + 2)
+    		&& *((uint64_t *)(addr - 1)) == *((uint64_t *)addr + 3)
+		) {
 			if (__screen_offset__) {
+				*(__screen__ + (__screen_offset__++)) = '*';
+				*(__screen__ + (__screen_offset__++)) = '\n';
 				print_screen();
-				write(1, "<snip>\n", 7);
 			}
 		} else {
-			write_pointer((uintptr_t)(addr - tmp), 10);
-			screen_write_string(":  ");
-			write_16_bytes_spaced(addr, size);
-			screen_write_string(" ");
-			write_16_ascii(addr, size);
-			screen_write_string("\n");
-        	if (__screen_offset__ >= 79 << 5)
+        	if (__screen_offset__ >= 78 << 7)
 				print_screen();
+			write_pointer((uintptr_t)(addr - tmp), 10);
+			*(__screen__ + (__screen_offset__++)) = ':';
+			*(__screen__ + (__screen_offset__++)) = ' ';
+			*(__screen__ + (__screen_offset__++)) = ' ';
+			write_16_bytes_spaced(addr, size);
+			*(__screen__ + (__screen_offset__++)) = ' ';
+			write_16_ascii(addr, size);
+			*(__screen__ + (__screen_offset__++)) = '\n';
 		}
         addr += size;
 		n -= size;
