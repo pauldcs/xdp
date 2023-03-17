@@ -1,15 +1,10 @@
-#include "../incs/hexdump.h"
-#include "../incs/libstringf.h"
-#include "../incs/reader.h"
+#include "hexdump.h"
+#include "libstringf.h"
+#include "reader.h"
 #include <unistd.h>
-#include <assert.h>
 #include <stdbool.h>
 #include <stdlib.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <fcntl.h>
 #include <string.h>
-#include <sys/stat.h>
 #include <sys/mman.h>
 
 static char    *__screen__;
@@ -183,76 +178,25 @@ bool	classic_hexdump_c(const void *addr, size_t n)
 	return(true);
 }
 
-unsigned char	*read_data_from_stdin(void)
+bool hexdump(t_dump_params *params)
 {
-	unsigned char	*line;
-	t_reader        r;
-	int             ret;
-
-	r.fd = STDIN_FILENO;
-	r.save.buf = NULL;
-	r.save.size = 0;
-	ret = reader(&line, &r, "");
-	if (ret == -1)
-		return (NULL);
-	reader_destroy(&r);
-	return (line);
-}
-
-int hexdump(t_dump_params *params)
-{
-	void 		*map;
-	int64_t      actual_size;
-	int 		fd;
-	struct stat	st;
-
-	if (params->is_stdin) {
-		if ((map = read_data_from_stdin()) == NULL);
-			return (EXIT_FAILURE);
-		actual_size = strlen(map);
-	} else {
-		if (stat(params->filename, &st) == -1)
-			return (perror(params->filename), EXIT_FAILURE);
-		actual_size = st.st_size;
-		if (S_ISDIR(st.st_mode))
-			return (fputstr(2, "%s: Is a directory\n", params->filename),
-				EXIT_FAILURE);
-		if (!S_ISREG(st.st_mode))
-			return (fputstr(2, "%s: Is not a regular file\n", params->filename),
-				EXIT_FAILURE);
-		if ((fd = open(params->filename, O_RDONLY)) == -1)
-			return (perror(params->filename), EXIT_FAILURE);
-	}
-
-	if (!params->end_offset)
-			params->end_offset = actual_size;
-
-	if (params->start_offset || params->end_offset){
-		assert(params->start_offset <= params->end_offset
-			&& "Start offset comes after the end offset ?");
-		assert(params->start_offset <= actual_size
-			&& "Start offset comes after EOF");
-		assert(params->end_offset <= actual_size
-			&& "End offset comes after EOF");
-	}
-
-	if (params->max_size) {
-		assert(params->max_size < actual_size
-			&& "Number of bytes to print exceeds the actual size");
-		assert(params->max_size < (params->end_offset - params->start_offset)
-			&& "Trying to dump more bytes than available in the range start - end");	
-	} else {
-		params->max_size = (params->end_offset - params->start_offset);
-	}
-
+	if (!handle_parameters(params))
+		return (false);
 	if (!params->is_stdin) {
-		map = mmap(0, actual_size, PROT_READ, MAP_PRIVATE, fd, 0);
-		close(fd);
-		if (map == MAP_FAILED)
-			return (EXIT_FAILURE);
+		params->map = mmap(
+				0,
+				params->actual_size,
+				PROT_READ,
+				MAP_PRIVATE,
+				params->fd,
+				0
+			);
+		close(params->fd);
+		if (params->map == MAP_FAILED)
+			return (false);
 	}
 
-	char *ptr = (char *)map;
+	char *ptr = (char *)params->map;
 	ptr += params->start_offset;
 	
 	switch (params->mode) {
@@ -267,9 +211,9 @@ int hexdump(t_dump_params *params)
 	write(1, "\n", 1);
 
 	if (!params->is_stdin)
-		munmap(map, st.st_size);
+		munmap(params->map, params->actual_size);
 	else
-		free(map);
+		free(params->map);
 
-	return (EXIT_SUCCESS);
+	return (true);
 }

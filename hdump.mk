@@ -7,8 +7,11 @@ SANITIZER	:= -g3 -fstack-protector-strong -fsanitize=address
 CFLAGS 		:= -Wall -Wextra -Werror -O2
 LIBSTRINGF  := libs/libstringf
 
-SRCS := main.c \
-	hexdump.c  \
+SRCS := main.c          \
+	display_usage.c     \
+	parse_argument.c    \
+	handle_parameters.c \
+	hexdump.c           \
 	\
 	reader/reader.c         \
 	reader/reader_destroy.c \
