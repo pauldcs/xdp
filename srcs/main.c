@@ -67,8 +67,7 @@ int main(int ac, char *av[])
 		} else if (strncmp(ptr, "--start=", 8) == 0) {
 			if (!str_to_uint(ptr + 8, &params.start_offset))
 				return (
-					fprintf(stderr,
-					"incorrect format: --start\n"),
+					fprintf(stderr, "incorrect format: --start\n"),
 					print_usage(),
 					EXIT_FAILURE);
 		} else if (strncmp(ptr, "--end=", 6) == 0) {

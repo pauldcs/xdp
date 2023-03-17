@@ -13,6 +13,9 @@
 static char    *__screen__;
 static int     __screen_offset__ = 0;
 
+/*  Forces to write the buffer fully if write() failes, 
+ *	it's ok if this ends up looping endlessly.
+ */
 static size_t	write_all(int fd, const void *buf, size_t s)
 {
 	ssize_t	c;
@@ -30,6 +33,8 @@ static size_t	write_all(int fd, const void *buf, size_t s)
 	return (ret);
 }
 
+/* dump the current content in __screen__
+ */
 static void print_screen(void)
 {
 	write_all(STDOUT_FILENO,
@@ -38,6 +43,11 @@ static void print_screen(void)
 	__screen_offset__ = 0;
 }
 
+/* write a string into __screen__,
+ * there is zero checks for overflows,
+ * for optimisation reasons, the developer has to make sure 
+ * that the string will fit.
+ */
 static void screen_write_string(const char *str)
 {
 	while (*str) {
@@ -46,6 +56,8 @@ static void screen_write_string(const char *str)
 	}
 }
 
+/* writes a pointer in hex format into the __screen__
+ */
 static inline void	write_pointer(const uintptr_t p, size_t width)
 {
 	char		*buffer = (__screen__ + __screen_offset__);
@@ -63,6 +75,8 @@ static inline void	write_pointer(const uintptr_t p, size_t width)
 	__screen_offset__ += width;
 }
 
+/* write 16 bytes of data into __screen__, each byte separed by a space
+ */
 static inline void	write_16_bytes_spaced(const void *addr, size_t size)
 {
 	char	*buffer = (__screen__ + __screen_offset__);
@@ -87,6 +101,9 @@ static inline void	write_16_bytes_spaced(const void *addr, size_t size)
 	__screen_offset__ += i;
 }
 
+/* write 16 bytes in ascii into __screen__, if the bytes is 
+ * non printable, it writes a '.' instead
+ */
 static inline void	write_16_ascii(const void *s, size_t size)
 {
 	char	*buffer = (__screen__ + __screen_offset__);
@@ -103,6 +120,9 @@ static inline void	write_16_ascii(const void *s, size_t size)
 	__screen_offset__ += i;
 }
 
+/* write the bytes as a stream without any formatting. Null bytes are 
+ * replaced by ".." and the whole thing is dumped with one write()
+*/
 bool raw_bytes_dump(const void *addr, size_t size)
 {
 	char	*ptr = (char *)addr;
@@ -126,6 +146,8 @@ bool raw_bytes_dump(const void *addr, size_t size)
 	return (true);
 }
 
+/* mimic of the hexdump -C utility but faster
+ */
 bool	classic_hexdump_c(const void *addr, size_t n)
 {
 	size_t		size;
@@ -165,21 +187,39 @@ int hexdump(t_dump_params *params)
 	int 		fd;
 	struct stat	st;
 
-	if (stat(params->filename, &st) == -1
-		|| (fd = open(params->filename, O_RDONLY)) == -1)
-		return (perror(0), EXIT_FAILURE);
+	if (stat(params->filename, &st) == -1)
+		return (perror(params->filename), EXIT_FAILURE);
+
+	if (S_ISDIR(st.st_mode))
+		return (fprintf(stderr,
+				"%s: Is a directory\n", params->filename),
+			EXIT_FAILURE);
+
+	if (!S_ISREG(st.st_mode))
+		return (fprintf(stderr, 
+				"%s: Is not a regular file\n", params->filename),
+			EXIT_FAILURE);
+
+	if ((fd = open(params->filename, O_RDONLY)) == -1)
+		return (perror(params->filename), EXIT_FAILURE);
 	
 	if (!params->end_offset)
 			params->end_offset = st.st_size;
-	
-	if (params->start_offset || params->end_offset) {
-		assert(params->start_offset <= params->end_offset);
-		assert(params->start_offset <= st.st_size);
-		assert(params->end_offset <= st.st_size);
+
+	if (params->start_offset || params->end_offset){
+		assert(params->start_offset <= params->end_offset
+			&& "Start offset comes after the end offset ?");
+		assert(params->start_offset <= st.st_size
+			&& "Start offset comes after EOF");
+		assert(params->end_offset <= st.st_size
+			&& "End offset comes after EOF");
 	}
+
 	if (params->max_size) {
-		assert(params->max_size < st.st_size);
-		assert(params->max_size < (params->end_offset - params->start_offset));	
+		assert(params->max_size < st.st_size
+			&& "Number of bytes print exceeds the actual size");
+		assert(params->max_size < (params->end_offset - params->start_offset)
+			&& "Trying to dump more bytes than available in the range start - end");	
 	} else {
 		params->max_size = (params->end_offset - params->start_offset);
 	}
