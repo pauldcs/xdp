@@ -6,7 +6,7 @@
 /*   By: pducos <pducos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 00:09:56 by pducos            #+#    #+#             */
-/*   Updated: 2022/10/28 21:52:35 by pducos           ###   ########.fr       */
+/*   Updated: 2023/03/17 20:09:13 by pducos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ typedef struct s_reader
 	int		fd;
 	size_t	cap;
 	size_t	checked;
+	size_t  max_size;
 	struct	s_save {
 		uint8_t	*buf;
 		size_t	size;

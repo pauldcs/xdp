@@ -9,7 +9,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
-static unsigned char	*read_data_from_stdin(void)
+static unsigned char	*read_data_from_stdin(t_dump_params *params)
 {
 	unsigned char	*map;
 	t_reader        r;
@@ -18,11 +18,12 @@ static unsigned char	*read_data_from_stdin(void)
 	r.fd = 0;
 	r.save.buf = NULL;
 	r.save.size = 0;
+	r.max_size = params->max_size;
 	ret = reader(&map, &r, "");
 	
 	if (ret == -1)
 		return (NULL);
-	
+	params->actual_size = ret;
 	reader_destroy(&r);
 	return (map);
 }
@@ -32,13 +33,11 @@ bool handle_parameters(t_dump_params *params)
     struct stat st;
 
     if (params->is_stdin) {
-        params->map = read_data_from_stdin();
+        params->map = read_data_from_stdin(params);
         if (params->map == NULL) {
             report_error("Error: Failed to read data from stdin\n");
             return false;
         }
-        params->actual_size = strlen(params->map);
-
     } else {
 		if (params->filename == NULL) {
 			report_error("Error: No input file\n");

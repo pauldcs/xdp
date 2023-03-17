@@ -70,6 +70,8 @@ ssize_t	reader(uint8_t **buf, t_reader *r, char *sep)
 		return (R_ERROR);
 	while (!search_char(r, sep, *buf, size))
 	{
+		if (r->max_size && size > r->max_size)
+			break;
 		if (size >= r->cap
 			&& !r_realloc(buf, &r->cap, size, 2 * r->cap))
 			return (R_ERROR);
