@@ -34,35 +34,35 @@ bool handle_parameters(t_dump_params *params)
     if (params->is_stdin) {
         params->map = read_data_from_stdin();
         if (params->map == NULL) {
-            fputstr(2, "Failed to read data from stdin\n");
+            report_error("Error: Failed to read data from stdin\n");
             return false;
         }
         params->actual_size = strlen(params->map);
 
     } else {
 		if (params->filename == NULL) {
-			fputstr(2, "No input file\n");
+			report_error("Error: No input file\n");
 			return false;
 		}
 
 		if (stat(params->filename, &st) == -1) {
-			fputstr(2, "%s: %s\n", params->filename, strerror(errno));
+			report_error("%s: %s\n", params->filename, strerror(errno));
 			return false;
 		}
 
 		if (S_ISDIR(st.st_mode)) {
-			fputstr(2, "%s: Is a directory\n", params->filename);
+			report_error("%s: Is a directory\n", params->filename);
 			return false;
 		}
 
 		if (!S_ISREG(st.st_mode)) {
-			fputstr(2, "%s: Is not a regular file\n", params->filename);
+			report_error("%s: Is not a regular file\n", params->filename);
 			return false;
 		}
 
 		params->fd = open(params->filename, O_RDONLY);
 		if (params->fd == -1) {
-			fputstr(2, "%s: %s\n", params->filename, strerror(errno));
+			report_error("%s: %s\n", params->filename, strerror(errno));
 			return false;
 		}
 		params->actual_size = st.st_size;
@@ -72,29 +72,29 @@ bool handle_parameters(t_dump_params *params)
         params->end_offset = params->actual_size;
     }
 
-    if (params->start_offset > params->end_offset) {
-        fputstr(2, "Start offset comes after the end offset\n");
+	if (params->start_offset > params->actual_size) {
+        report_error("'--start' is beyond EOF\n");
         return false;
     }
 
-    if (params->start_offset > params->actual_size) {
-        fputstr(2, "Start offset comes after EOF\n");
+    if (params->start_offset > params->end_offset) {
+        report_error("'--start' is beyond '--end'\n");
         return false;
     }
 
     if (params->end_offset > params->actual_size) {
-        fputstr(2, "End offset comes after EOF\n");
+        report_error("'--end' is beyond EOF\n");
         return false;
     }
 
     if (params->max_size) {
         if (params->max_size > params->end_offset - params->start_offset) {
-            fputstr(2, "Trying to dump more bytes than available in the range start - end\n");
+            report_error("--size' exceeds the range '--start' to '--end'\n");
             return false;
         }
 
         if (params->max_size > params->actual_size) {
-            fputstr(2, "Number of bytes to print exceeds the actual size\n");
+            report_error("'--size' exceeds the actual size\n");
             return false;
         }
     } else {
