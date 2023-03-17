@@ -1,4 +1,5 @@
 #include "../incs/hexdump.h"
+#include "../incs/libstringf.h"
 #include <limits.h>
 #include <ctype.h>
 #include <stdbool.h>
@@ -8,16 +9,19 @@
 #include <stdio.h>
 
 void print_usage(void) {
-    fprintf(stderr, "Usage: ./hdump [OPTIONS] FILE\n\n");
-    fprintf(stderr, "Description:\n");
-    fprintf(stderr, "  Display the contents of a file in hexadecimal format.\n\n");
-    fprintf(stderr, "Options:\n");
-    fprintf(stderr, "  --size=SIZE\t\tMaximum number of bytes to read from the file (default: unlimited).\n");
-    fprintf(stderr, "  --start=OFFSET\tStarting byte offset to read from (default: 0).\n");
-    fprintf(stderr, "  --end=OFFSET\t\tEnding byte offset (default: end of file).\n");
-    fprintf(stderr, "  --raw\t\t\tOutput raw bytes in hexadecimal format, without formatting.\n\n");
-    fprintf(stderr, "Arguments:\n");
-    fprintf(stderr, "  FILE\t\t\tThe path to the file to be read.\n\n");
+	fputstr(STDOUT_FILENO,
+		"Usage: ./hdump [OPTIONS] FILE\n\n"
+		"Description:\n"
+		"  Display the contents of a file in hexadecimal format.\n\n"
+		"Options:\n"
+		"  --stdin         Read from stdin instead of a file"
+		"  --size=SIZE     Maximum number of bytes to read from the file (default: unlimited).\n"
+		"  --start=OFFSET  Starting byte offset to read from (default: 0).\n"
+		"  --end=OFFSET    Ending byte offset (default: end of file).\n"
+		"  --raw           Output raw bytes in hexadecimal format, without formatting.\n\n"
+		"Arguments:\n"
+		"  FILE            The path to the file to be read.\n\n"
+	);
 }
 
 char	*str_to_uint(char *str, int64_t *result)
@@ -58,26 +62,28 @@ int main(int ac, char *av[])
 	}
 	memset(&params, 0, sizeof(params));
 	while ((ptr = (char *)get_next_argument(&ac, &av)) != NULL) {
-		if (strncmp(ptr, "--size=", 7) == 0) {
+		if (!strncmp(ptr, "--size=", 7)) {
 			if (!str_to_uint(ptr + 7, &params.max_size))
 				return (
 					fprintf(stderr, "incorrect format: --size\n"),
 					print_usage(),
 					EXIT_FAILURE);
-		} else if (strncmp(ptr, "--start=", 8) == 0) {
+		} else if (!strncmp(ptr, "--start=", 8)) {
 			if (!str_to_uint(ptr + 8, &params.start_offset))
 				return (
 					fprintf(stderr, "incorrect format: --start\n"),
 					print_usage(),
 					EXIT_FAILURE);
-		} else if (strncmp(ptr, "--end=", 6) == 0) {
+		} else if (!strncmp(ptr, "--end=", 6)) {
 			if (!str_to_uint(ptr + 6, &params.end_offset))
 				return (
 					fprintf(stderr, "incorrect format: --end\n"),
 					print_usage(),
 					EXIT_FAILURE);
-		} else if (strncmp(ptr, "--raw", 5) == 0) {
+		} else if (!strncmp(ptr, "--raw", 5)) {
 			params.mode = DUMP_RAW;
+		} else if (!strncmp(ptr, "--stdin", 7)) {
+			params.is_stdin = true;
 		} else {
 			if (params.filename != NULL) {
 				return (print_usage(), EXIT_FAILURE);
