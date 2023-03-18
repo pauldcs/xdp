@@ -32,6 +32,9 @@ bool prepare_params_struct(t_dump_params *params)
 {
     struct stat st;
 
+	/* if the content is read from stdin it needs to be allocated before
+	 * the paramters check as we need to know it's size */
+
     if (params->is_stdin) {
         params->map = read_data_from_stdin(params);
         if (params->map == NULL)

@@ -8,11 +8,11 @@
 static char    *__screen__;
 static int     __screen_offset__ = 0;
 
-/*  Forces to write the buffer fully if write() failes, 
- *	it's ok if this ends up looping endlessly.
- */
 static size_t	write_all(int fd, const void *buf, size_t s)
 {
+	/* Forces to write the buffer fully if write() failes, 
+     * it's ok if this ends up looping endlessly.
+     */
 	ssize_t	c;
 	size_t	ret;
 
@@ -28,20 +28,20 @@ static size_t	write_all(int fd, const void *buf, size_t s)
 	return (ret);
 }
 
-/* dump the current content in __screen__
- */
 static void __dump_screen(void)
 {
+	/* Dumps the content of __screen__ to stdout
+	 */
 	write_all(STDOUT_FILENO,
 		__screen__,
 		__screen_offset__);
 	__screen_offset__ = 0;
 }
 
-/* writes a pointer in hex format into the __screen__
- */
 static inline void	write_pointer(const uintptr_t p, size_t width)
 {
+	/* Writes a pointer in hex format into __screen__
+ 	 */
 	char		*buffer = (__screen__ + __screen_offset__);
 	uintptr_t	ptr;
 	int			i;
@@ -57,10 +57,10 @@ static inline void	write_pointer(const uintptr_t p, size_t width)
 	__screen_offset__ += width;
 }
 
-/* write 16 bytes of data into __screen__, each byte separed by a space
- */
 static inline void	write_16_bytes_spaced(const void *addr, size_t size)
 {
+	/* Writes 16 bytes of data into __screen__, each byte separed by a space
+ 	 */
 	char	*buffer = (__screen__ + __screen_offset__);
 	char	*ptr;
 	size_t  i;
@@ -85,6 +85,9 @@ static inline void	write_16_bytes_spaced(const void *addr, size_t size)
 
 static inline void	write_16_ascii(const void *s, size_t size)
 {
+	/* Writes 16 bytes of ascii into __screen__, non printable characters
+ 	 * are replaced by '.'
+ 	 */
 	char	*buffer = (__screen__ + __screen_offset__);
 	int8_t 	*tmp;
 	size_t	i;
@@ -99,11 +102,11 @@ static inline void	write_16_ascii(const void *s, size_t size)
 	__screen_offset__ += i;
 }
 
-/* write the bytes as a stream without any formatting. Null bytes are 
- * replaced by ".." and the whole thing is dumped with one write()
-*/
 static bool raw_bytes_dump(const void *addr, size_t size)
 {
+	/* write the bytes as a stream without any formatting. Null bytes are 
+ 	 * replaced by ".."
+	 */
 	char	*ptr = (char *)addr;
 
 	if ((__screen__ = (char *)malloc(size * 2 + 1)) == NULL)
@@ -120,10 +123,10 @@ static bool raw_bytes_dump(const void *addr, size_t size)
 	return (true);
 }
 
-/* mimic of the Linux hexdump -C
- */
 static bool	classic_hexdump_c(const void *addr, size_t n)
 {
+	/* mimic of the Linux hexdump -C
+ 	*/
 	size_t		size;
 	const void 	*tmp = addr;
 
@@ -165,8 +168,8 @@ bool hexdump(t_dump_params *params)
 {
 	if (!prepare_params_struct(params))
 		return (false);
-	if (!params->is_stdin) {
 
+	if (!params->is_stdin) {
 		params->map = mmap(
 				0,
 				params->actual_size,
