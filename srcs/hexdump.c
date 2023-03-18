@@ -49,7 +49,7 @@ bool hexdump(t_dump_params *params)
 		}
 	}
 
-	debug_params(params);
+	//debug_params(params);
 
 	switch (params->mode) {
 		case DUMP_CLASSIC:
