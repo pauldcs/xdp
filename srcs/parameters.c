@@ -32,10 +32,8 @@ bool prepare_params_struct(t_dump_params *params)
 {
     struct stat st;
 
-	/* if the content is read from stdin it needs to be allocated before
-	 * the paramters check as we need to know it's size */
-
-    if (params->is_stdin) {
+    if (!params->filename) {
+		params->is_stdin = true;
         params->map = read_data_from_stdin(params);
 		params->map_type = MALLOC;
         if (params->map == NULL)
@@ -45,11 +43,6 @@ bool prepare_params_struct(t_dump_params *params)
 
     } else {
 
-		if (params->filename == NULL)
-			return (report_error("%s\n",
-					"No input files\n"),
-				false);
-	
 		if (stat(params->filename, &st) == -1)
 			return (report_error("%s: %s\n",
 					params->filename, strerror(errno)),

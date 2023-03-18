@@ -16,10 +16,6 @@ int main(int ac, char *av[])
 	t_dump_params 	params;
 	char			*ptr;
 
-	if (ac < 2) {
-		display_usage();
-		return (EXIT_FAILURE);
-	}
 	memset(&params, 0x00, sizeof(params));
 	while ((ptr = get_next_argument(&ac, &av)) != NULL) {
 		if (!parse_argument(ptr, &params))

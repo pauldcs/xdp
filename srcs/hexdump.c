@@ -18,7 +18,7 @@ bool hexdump(t_dump_params *params)
 			params->actual_size
 	);
 
-	if (!params->is_stdin && params->map_type == MMAP) {
+	if (params->map_type == MMAP) {
 		params->map = mmap(
 				0, map_size,
 		 		PROT_READ | PROT_WRITE,
@@ -33,7 +33,7 @@ bool hexdump(t_dump_params *params)
 
 		close(params->fd);
 
-	} else {
+	} else if (!params->is_stdin) {
 		params->map = malloc(params->max_size);
 
 		if (params->map == NULL)

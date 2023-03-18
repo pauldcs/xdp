@@ -7,7 +7,6 @@ void display_usage(void)
 		"Description:\n"
 		"    Display the contents of a file in hexadecimal format.\n\n"
 		"Options:\n"
-		"    --stdin         Read from stdin instead of a file\n"
 		"    --size=SIZE     Maximum number of bytes to read from the file (default: unlimited).\n"
 		"    --start=OFFSET  Starting byte offset to read from (default: 0).\n"
 		"    --end=OFFSET    Ending byte offset (default: end of file).\n"

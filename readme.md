@@ -5,7 +5,6 @@ Description:
   Display the contents of a file in hexadecimal format.
 
 Options:
-  --stdin         Read from stdin instead of a file
   --size=SIZE     Maximum number of bytes to read from the file (default: unlimited).
   --start=OFFSET  Starting byte offset to read from (default: 0).
   --end=OFFSET    Ending byte offset (default: end of file).

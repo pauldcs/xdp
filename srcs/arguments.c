@@ -53,8 +53,6 @@ bool parse_argument(const char *argument, t_dump_params *params)
                 false);
     } else if (!strcmp(argument, "--raw"))
         params->mode = DUMP_RAW;
-    else if (!strcmp(argument, "--stdin"))
-        params->is_stdin = true;
     else if (!params->filename)
         params->filename = argument;
     return true;
