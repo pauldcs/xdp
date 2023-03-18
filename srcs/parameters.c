@@ -37,26 +37,39 @@ bool prepare_params_struct(t_dump_params *params)
 
     if (params->is_stdin) {
         params->map = read_data_from_stdin(params);
+		params->map_type = MALLOC;
         if (params->map == NULL)
-            return (report_error("Error: Failed to read data from stdin\n"), false);
+            return (report_error(
+					"Failed to read data from stdin\n"),
+				false);
 
     } else {
 
 		if (params->filename == NULL)
-			return (report_error("Error: No input file\n"), false);
+			return (report_error("%s\n",
+					"No input files\n"),
+				false);
 	
 		if (stat(params->filename, &st) == -1)
-			return (report_error("%s: %s\n", params->filename, strerror(errno)), false);
+			return (report_error("%s: %s\n",
+					params->filename, strerror(errno)),
+				false);
 	
 		if (S_ISDIR(st.st_mode))
-			return (report_error("%s: Is a directory\n", params->filename), false);
+			return (report_error("%s: %s\n",
+					params->filename, "is a directory"),
+				false);
 
 		if (!S_ISREG(st.st_mode))
-			return (report_error("%s: Is not a regular file\n", params->filename), false);
+			return (report_error("%s: %s\n",
+					params->filename, "Is not a regular file"),
+				false);
 
 		params->fd = open(params->filename, O_RDONLY);
 		if (params->fd == -1)
-			return (report_error("%s: %s\n", params->filename, strerror(errno)), false);
+			return (report_error("%s: %s\n",
+					params->filename, strerror(errno)),
+				false);
 		
 		params->actual_size = st.st_size;
 	}
@@ -64,26 +77,49 @@ bool prepare_params_struct(t_dump_params *params)
     if (!params->end_offset)
         params->end_offset = params->actual_size;
 
+	if ((params->start_offset || params->end_offset)
+		&& (params->start_offset == params->end_offset))
+		return (report_error(
+				"'--start' and '--end' are the same ?\n"),
+			false);
+		
 	if (params->start_offset > params->actual_size)
-        return (report_error("'--start' is beyond EOF\n"), false);
+        return (report_error(
+				"'--start' is beyond EOF\n"),
+			false);
 
     if (params->start_offset > params->end_offset)
-        return (report_error("'--start' is beyond '--end'\n"), false);
+        return (report_error(
+				"'--start' is beyond '--end'\n"),
+			false);
 
     if (params->end_offset > params->actual_size) 
-        return (report_error("'--end' is beyond EOF\n"), false);
+        return (report_error(
+				"'--end' is beyond EOF\n"),
+			false);
 
     if (params->max_size) {
         if (params->max_size > params->end_offset - params->start_offset)
-            return (report_error("'--size' exceeds the range '--start' to '--end'\n"), false);
+            return (report_error(
+					"'--size' exceeds the range '--start' to '--end'\n"),
+				false);
 
         if (params->max_size > params->actual_size)
-            return (report_error("'--size' exceeds the actual size\n"), false);
+            return (report_error(
+					"'--size' exceeds the actual size\n"),
+				false);
 
     } else {
         params->max_size = params->end_offset - params->start_offset;
 		if (!params->max_size)
 			params->max_size = params->actual_size;
     }
+
+	if (!params->is_stdin) {
+		if (params->max_size < params->actual_size)
+			params->map_type = MALLOC;
+		else
+			params->map_type = MMAP;
+	}
     return true;
 }
