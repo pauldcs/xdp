@@ -34,10 +34,10 @@ static const char	*str_to_uint(const char *str, int64_t *result)
 	return (str);
 }
 
-bool parse_single_argument(const char *argument, t_dump_params *params)
+bool try_parse_argument(const char *argument, t_dump_params *params)
 {
     if (!strncmp(argument, "--size=", 7)) {
-        if (!str_to_uint(argument + 7, &params->max_size))
+        if (!str_to_uint(argument + 7, &params->range_size))
             return (report_error(
                     "'%s': %s\n", argument, "Invalid format"),
                 false);
@@ -58,7 +58,7 @@ bool parse_single_argument(const char *argument, t_dump_params *params)
         params->mode = DUMP_RAW;
 
     } else if (!strcmp(argument, "-h") || !strcmp(argument, "--help")) {
-        display_usage();
+        __usage();
         exit (0);
     
     } else if (!params->filename) {

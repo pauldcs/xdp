@@ -27,33 +27,29 @@ typedef enum e_mode {
 	DUMP_RAW
 }	t_mode;
 
-typedef enum e_map_type {
-	MMAP,
-	MALLOC
-}	t_map_type;
-
 typedef struct s_dump_params {
 	t_mode 		 mode;
 	bool 		 is_stdin;
-	t_map_type   map_type;
 	const char   *filename;
 	int 		 fd;
-	void         *map;
-	int64_t      map_size;
-	int64_t      actual_size;
-	int64_t      max_size;
+	void         *data;
+	bool 		 is_mapped;
+	int64_t      capacity;
+	int64_t      file_size;
+	int64_t      range_size;
 	int64_t      aligned_offset;
 	int64_t      start_offset;
 	int64_t      end_offset;
 }	            t_dump_params;
 
-void 	display_usage(void);
+void 	__usage(void);
+char 	*get_next_argument(int *ac, char ***av);
 void 	debug_params(t_dump_params *params);
 bool 	safe_open(t_dump_params *params);
-bool	should_mmap(int fd, size_t file_size, size_t range_size);
-bool 	mem_efficient_mmap(t_dump_params *params);
-bool 	read_exact_range(t_dump_params *params);
-bool 	parse_single_argument(const char *argument, t_dump_params *params);
+bool	should_use_mmap(int fd, size_t file_size, size_t range_size);
+bool 	memory_efficient_mmap(t_dump_params *params);
+bool 	read_range_only(t_dump_params *params);
+bool 	try_parse_argument(const char *argument, t_dump_params *params);
 bool 	read_data_from_stdin(t_dump_params *params);
 bool 	build_dump_structure(t_dump_params *params);
 bool 	hexdump(t_dump_params *params);

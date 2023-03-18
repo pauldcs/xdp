@@ -4,20 +4,21 @@ SRCS_DIR	:= srcs
 OBJS_DIR	:= .objs
 INCS_DIR	:= incs
 SANITIZER	:= -g3 -fstack-protector-strong -fsanitize=address
-CFLAGS 		:= -Wall -Wextra -Werror -O3 -g3
+CFLAGS 		:= -Wall -Wextra -Werror
 LIBSTRINGF  := libs/libstringf
 
 SRCS := main.c              \
-	display_usage.c         \
-	mem_efficient_mmap.c    \
-	read_exact_range.c      \
+	usage.c                 \
 	debug.c                 \
-	should_mmap.c           \
-	safe_open.c             \
-	parse_single_argument.c \
-	build_dump_structure.c  \
 	core.c                  \
 	hexdump.c               \
+	get_next_argument.c     \
+	memory_efficient_mmap.c \
+	read_range_only.c       \
+	should_use_mmap.c       \
+	safe_open.c             \
+	try_parse_argument.c    \
+	build_dump_structure.c  \
 	read_data_from_stdin.c  \
 	\
 	reader/reader.c         \

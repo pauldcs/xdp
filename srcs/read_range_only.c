@@ -3,12 +3,12 @@
 #include <string.h>
 #include <stdlib.h>
 
-bool read_exact_range(t_dump_params *params)
+bool read_range_only(t_dump_params *params)
 {
-	params->map_size = params->max_size;
-	params->map = malloc(params->max_size);
+	params->capacity = params->range_size;
+	params->data = malloc(params->range_size);
 
-	if (params->map == NULL)
+	if (params->data == NULL)
 		return (
 			report_error("malloc: %s\n", "Failed to allocate memory"),
 			false);
@@ -18,10 +18,10 @@ bool read_exact_range(t_dump_params *params)
 			report_error("lseek: %s\n", strerror(errno)),
 			false);
 	
-	if (read(params->fd, params->map, params->max_size) == -1) 
+	if (read(params->fd, params->data, params->range_size) == -1) 
 		return (
 			report_error("read: %s\n", strerror(errno)),
 			false);
-			
+
 	return (true);
 }

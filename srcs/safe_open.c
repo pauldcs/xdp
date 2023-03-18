@@ -28,6 +28,6 @@ bool safe_open(t_dump_params *params)
 				params->filename, strerror(errno)),
 			false);
 	
-	params->actual_size = st.st_size;
+	params->file_size = st.st_size;
 	return (true);
 }

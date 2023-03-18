@@ -1,6 +1,6 @@
 #include "libstringf.h"
 
-void display_usage(void)
+void __usage(void)
 {
 	fputstr(1,
 		"Usage: ./hdump [OPTIONS] FILE\n\n"

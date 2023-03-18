@@ -10,13 +10,13 @@
 bool hexdump(t_dump_params *params)
 {
 	if (!params->filename) {
+		params->is_mapped = false;
 		if (!read_data_from_stdin(params))
 			return (report_error(
 					"read_data_from_stdin(): Failed\n"),
 				false);
 
 		params->is_stdin = true;
-		params->map_type = MALLOC;
 
 	} else if (!safe_open(params)) 
 		return (report_error(
@@ -29,49 +29,48 @@ bool hexdump(t_dump_params *params)
 			false);
 
 	if (params->filename) {
-		if (should_mmap(
+		if (should_use_mmap(
 				params->fd,
-				params->actual_size,
-				params->max_size)) {
+				params->file_size,
+				params->range_size)) {
 	
-				params->map_type = MMAP;
-			if (!mem_efficient_mmap(params))
+			params->is_mapped = true;
+			if (!memory_efficient_mmap(params))
 				return (report_error(
 						"mem_efficient_mmap(): Failed\n"),
 					false);
 
 		} else {
-			params->map_type = MALLOC;
-			if (!read_exact_range(params))
+			params->is_mapped = false;
+			if (!read_range_only(params))
 				return (report_error(
 						"read_exact_range(): Failed\n"),
 					false);
 		}
 	}
 
-	char *ptr = (char *)(params->map);
-	//debug_params(params); return (0);
+	debug_params(params);
 
 	switch (params->mode) {
 		case DUMP_CLASSIC:
 			classic_hexdump_c(
-				ptr + params->start_offset,
-				params->max_size);
+				params->data,
+				params->range_size);
 			break;
 
 		case DUMP_RAW:
 			raw_bytes_dump(
-				ptr + params->start_offset,
-				params->max_size);
+				params->data,
+				params->range_size);
 			break;
 	}
 
-	write(1, "\n", 1);
+	write(STDOUT_FILENO, "\n", 1);
 	
-	if (params->map_type == MMAP)
-		munmap(params->map, params->map_size);
+	if (params->is_mapped)
+		munmap(params->data, params->capacity);
 	else
-		free(params->map);
+		free(params->data);
 
 	return (true);
 }
