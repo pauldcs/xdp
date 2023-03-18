@@ -128,13 +128,14 @@ static bool	classic_hexdump_c(const void *addr, size_t n)
 	/* mimic of the Linux hexdump -C
  	*/
 	size_t		size;
+	uint64_t 	*ptr;
 	const void 	*tmp = addr;
 
 	if ((__screen__ = (char *)malloc(79 << 7)) == NULL)
 		return (false);
 	while (n) {
-		size = (n > 16 ? 16 : n);
-		uint64_t *ptr = (uint64_t *)addr;
+		size = (16 < n ? 16 : n);
+		ptr = (uint64_t *)addr;
 		if (tmp != addr
     		&& *(ptr - 2) == *(ptr + 0)
     		&& *(ptr - 1) == *(ptr + 1)
