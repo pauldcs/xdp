@@ -1,5 +1,6 @@
 #include "hexdump.h"
 #include <stdlib.h>
+#include <unistd.h>
 #include <string.h>
 
 static char *get_next_argument(int *ac, char ***av)
@@ -15,13 +16,15 @@ int main(int ac, char *av[])
 {
 	t_dump_params 	params;
 	char			*ptr;
+	int             ret;
 
 	memset(&params, 0x00, sizeof(params));
 	while ((ptr = get_next_argument(&ac, &av)) != NULL) {
-		if (!parse_argument(ptr, &params))
+		if (!parse_single_argument(ptr, &params))
 			return (EXIT_FAILURE);
 	}
-	if (!hexdump(&params))
-		return (EXIT_FAILURE);
-	return (EXIT_SUCCESS);
+	ret = hexdump(&params);
+	if (params.fd)
+		close(params.fd);
+	return (ret);
 }

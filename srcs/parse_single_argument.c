@@ -34,30 +34,40 @@ static const char	*str_to_uint(const char *str, int64_t *result)
 	return (str);
 }
 
-bool parse_argument(const char *argument, t_dump_params *params)
+bool parse_single_argument(const char *argument, t_dump_params *params)
 {
     if (!strncmp(argument, "--size=", 7)) {
         if (!str_to_uint(argument + 7, &params->max_size))
             return (report_error(
                     "'%s': %s\n", argument, "Invalid format"),
                 false);
+
     } else if (!strncmp(argument, "--start=", 8)) {
         if (!str_to_uint(argument + 8, &params->start_offset))
             return (report_error(
                     "'%s': %s\n", argument, "Invalid format"),
                 false);
+
     } else if (!strncmp(argument, "--end=", 6)) {
         if (!str_to_uint(argument + 6, &params->end_offset))
             return (report_error(
                     "'%s': %s\n", argument, "Invalid format"),
                 false);
-    } else if (!strcmp(argument, "--raw"))
+
+    } else if (!strcmp(argument, "--raw")) {
         params->mode = DUMP_RAW;
-    else if (!strcmp(argument, "-h") || !strcmp(argument, "--help")) {
+
+    } else if (!strcmp(argument, "-h") || !strcmp(argument, "--help")) {
         display_usage();
         exit (0);
-    }
-    else if (!params->filename)
+    
+    } else if (!params->filename) {
         params->filename = argument;
-    return true;
+
+    } else {
+        return (report_error(
+                    "'%s': %s\n", argument, "Unrecognized argument"),
+                false);
+    }
+    return (true);
 }
