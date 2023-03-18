@@ -53,6 +53,10 @@ bool parse_argument(const char *argument, t_dump_params *params)
                 false);
     } else if (!strcmp(argument, "--raw"))
         params->mode = DUMP_RAW;
+    else if (!strcmp(argument, "-h") || !strcmp(argument, "--help")) {
+        display_usage();
+        exit (0);
+    }
     else if (!params->filename)
         params->filename = argument;
     return true;
