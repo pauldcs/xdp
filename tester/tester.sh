@@ -225,7 +225,7 @@ RunTest() {
                     Output \
                         "$(\
                             2>&1                    \
-                            diff --color            \
+                            diff --color -p         \
                             "$actual_output_file"   \
                             "$expected_output_file" \
                             | sed 's/^/        /'

@@ -110,7 +110,7 @@ bool raw_bytes_dump(const void *addr, size_t size)
 	 */
 	char	*ptr = (char *)addr;
 
-	if ((__screen__ = (char *)malloc(size * 2 + 1)) == NULL)
+	if ((__screen__ = (char *)malloc((size << 1) + 1)) == NULL)
 		return (false);
 	while (size--)
 	{
