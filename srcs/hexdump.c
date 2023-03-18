@@ -134,11 +134,11 @@ static bool	classic_hexdump_c(const void *addr, size_t n)
 		return (false);
 	while (n) {
 		size = (n > 16 ? 16 : n);
+		uint64_t *ptr = (uint64_t *)addr;
 		if (tmp != addr
-    		&& *((uint64_t *)(addr - 4)) == *((uint64_t *)addr + 0)
-    		&& *((uint64_t *)(addr - 3)) == *((uint64_t *)addr + 1)
-			&& *((uint64_t *)(addr - 2)) == *((uint64_t *)addr + 2)
-    		&& *((uint64_t *)(addr - 1)) == *((uint64_t *)addr + 3)
+    		&& *(ptr - 2) == *(ptr + 0)
+    		&& *(ptr - 1) == *(ptr + 1)
+
 		) {
 			if (__screen_offset__) {
 				*(__screen__ + (__screen_offset__++)) = '*';
