@@ -31,7 +31,7 @@
 #define toupper(c)	_Toupper[(int)(c)]
 
 		/* static data */
-static const short ctyp_tab[257] = {0, /* EOF */
+static const short ctyp_tab[256] = { /* EOF */
    0, _BB, _BB, _BB, _BB, _BB, _BB, _BB,
  _BB, _CN, _CN, _CN, _CN, _CN, _BB, _BB,
  _BB, _BB, _BB, _BB, _BB, _BB, _BB, _BB,

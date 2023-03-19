@@ -15,9 +15,19 @@
 # define MAG "\e[0;35m"
 # define CYN "\e[0;36m"
 # define WHT "\e[0;37m"
+# define GRY "\x1b[2;37m"
 # define END "\e[0m"
 
-# define BASE "0123456789abcdef"
+#define BLK_UINT64 *(uint64_t*)BLK
+#define RED_UINT64 *(uint64_t*)RED
+#define GRN_UINT64 *(uint64_t*)GRN
+#define YEL_UINT64 *(uint64_t*)YEL
+#define BLU_UINT64 *(uint64_t*)BLU
+#define MAG_UINT64 *(uint64_t*)MAG
+#define CYN_UINT64 *(uint64_t*)CYN
+#define WHT_UINT64 *(uint64_t*)WHT
+#define GRY_UINT64 *(uint64_t*)GRY
+#define END_UINT64 *(uint64_t*)END
 
 # define report_error(fmt, ...) \
     fputstr(2, "hdump: " fmt "\n", ##__VA_ARGS__)
@@ -29,6 +39,7 @@ typedef enum e_mode {
 
 typedef struct s_dump_params {
 	t_mode 		 mode;
+	bool 		 colored_output;
 	bool 		 is_stdin;
 	const char   *filename;
 	int 		 fd;
@@ -55,5 +66,6 @@ bool 	hexdump(t_dump_params *params);
 
 bool 	raw_bytes_dump(const void *addr, size_t size);
 bool	classic_hexdump_c(const void *addr, size_t n);
+bool	classic_hexdump_c_color(const void *addr, size_t n);
 
 #endif /* __HEXDUMP_H__ */

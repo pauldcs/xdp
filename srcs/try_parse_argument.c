@@ -58,6 +58,9 @@ bool try_parse_argument(const char *argument, t_dump_params *params)
     } else if (!params->filename) {
         params->filename = argument;
 
+    } else if (!strcmp(argument, "--color")) {
+        params->colored_output = true;
+
     } else {
         return (report_error(
                     "'%s': %s\n", argument, "Unrecognized argument"),

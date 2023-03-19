@@ -52,9 +52,14 @@ bool hexdump(t_dump_params *params)
 	bool ret; 
 	switch (params->mode) {
 		case DUMP_CLASSIC:
-			ret = classic_hexdump_c(
-				params->data,
-				params->range_size);
+			ret = (params->colored_output ? 
+						classic_hexdump_c_color(
+							params->data,
+							params->range_size)
+						: classic_hexdump_c(
+							params->data,
+							params->range_size)
+			);
 			break;
 
 		case DUMP_RAW:

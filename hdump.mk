@@ -4,8 +4,8 @@ SRCS_DIR	:= srcs
 OBJS_DIR	:= .objs
 INCS_DIR	:= incs
 SANITIZER	:= -g3 -fstack-protector-strong -fsanitize=address
-CFLAGS 		:= -Wall -Wextra -Werror 
-LOGGING     := -D __LOGGING__
+CFLAGS 		:= -Wall -Wextra -Werror -O3
+LOGGING     := 
 LIBSTRINGF  := libs/libstringf
 
 SRCS := main.c              \
