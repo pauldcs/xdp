@@ -25,23 +25,29 @@ static inline void	write_pointer(const uintptr_t p)
 	write(1, buffer, 12);
 }
 
-bool	dump_strings(const uint8_t *addr, size_t n, size_t len)
+bool dump_strings(const uint8_t* addr, size_t n, size_t len)
 {
-	uint8_t *ptr = (uint8_t *)addr;
-	uint8_t *tmp = ptr;
-	size_t count;
-	
-	while (n)
-	{
-		count = 0;
-		while (n-- && isprint(*++ptr))
-			count++;
-		if (count > len)
-		{
-			write_pointer((uintptr_t)(ptr - tmp));
-			write(1, ptr - count, count);
-			write(1, "\n", 1);
-		}
-	}
-	return (true);
+    const uint8_t* ptr = addr;
+    const uint8_t* end = addr + n;
+    
+    while (ptr < end)
+    {
+        size_t count = 0;
+        const uint8_t* tmp = ptr;
+        
+        while (ptr < end && isprint(*ptr)) {
+            ++ptr;
+            ++count;
+        }
+        
+        if (count > len) {
+            write_pointer((uintptr_t)(tmp - addr));
+            write(1, tmp, count);
+            write(1, "\n", 1);
+        }
+        
+        while (ptr < end && !isprint(*ptr))
+            ++ptr;
+    }
+    return (true);
 }

@@ -13,6 +13,13 @@ enum e_log_lvl {
     FATAL
 };
 
+#  define FATAL_ERROR(fmt, ...) \
+    do { \
+        fputstr(2,              \
+            "Fatal: " fmt "\n", \
+             ##__VA_ARGS__); \
+    } while (0)
+
 # ifdef __LOGGING__
 #  define LOG(level, fmt, ...) \
     do { \
@@ -28,26 +35,7 @@ enum e_log_lvl {
         fputstr(2, "[%s] " fmt "\n", level_str, ##__VA_ARGS__); \
 } while (0)
 
-#  define FATAL_ERROR(fmt, ...) \
-    do { \
-        fputstr(2,                  \
-            "[%s:%d] Fatal: " fmt "\n",         \
-            __FILE__, __LINE__, ##__VA_ARGS__); \
-    } while (0)
-
-#  define ASSERT(expr) \
-    do { \
-        if (!(expr)) {                              \
-            fputstr(2,                  \
-                "[%s:%d] Assertion failed: '%s'\n", \
-                __FILE__, __LINE__, #expr);         \
-            abort();                                \
-        } \
-    } while (0)
-
 # else
 #  define LOG(level, fmt, ...)
-#  define FATAL_ERROR(fmt, ...) 
-#  define ASSERT(expr) 
 # endif /* __LOGGING__ */
 #endif /* __LOGGING_H__ */

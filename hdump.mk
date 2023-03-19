@@ -10,7 +10,7 @@ LIBSTRINGF  := libs/libstringf
 
 SRCS := main.c              \
 	usage.c                 \
-	core.c                  \
+	hex_core.c              \
 	dump.c                  \
 	get_next_argument.c     \
 	file_partial_mmap.c     \

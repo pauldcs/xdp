@@ -32,10 +32,12 @@ bool build_dump_structure(t_dump_params *params)
 
         return (true);
     }
-    LOG(FATAL, 
+    
+    FATAL_ERROR(
         "start offset (%p) exceeds the maximum offset (%p)",
         params->file.start_offset,
         params->file.file_size
     );
+
     return (false);
 }
