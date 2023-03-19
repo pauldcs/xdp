@@ -3,7 +3,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-bool read_range_only(t_dump_params *params)
+bool file_seek_and_read(t_dump_params *params)
 {
 	params->capacity = params->range_size;
 	params->data = malloc(params->range_size);

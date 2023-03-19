@@ -3,7 +3,7 @@
 #include <string.h>
 #include <sys/stat.h>
 
-bool safe_open(t_dump_params *params)
+bool open_hexable_file(t_dump_params *params)
 {
 	struct stat st;
 		

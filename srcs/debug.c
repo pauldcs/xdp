@@ -1,14 +1,15 @@
 #include "hexdump.h"
+#include "logging.h"
 #include "libstringf.h"
 
 void debug_params(t_dump_params *params)
 {
-	putstr("\n<--- DEBUG --->\n");
-	putstr("   - file_size       %d\n",   params->file_size);
-	putstr("   - is_mapped       %s\n",  (params->is_mapped ? "true" : "false"));
-	putstr("   - aligned_offset  %d\n",   params->aligned_offset);
-	putstr("   - capacity        %d\n",   params->capacity);
-	putstr("   - range_size      %d\n",   params->range_size);
-	putstr("   - start_offset    %d\n",   params->start_offset);
-	putstr("   - end_offset      %d\n\n", params->end_offset);
+	(void)params;
+
+	LOG(INFO, "file_size: %d",   params->file_size);
+	LOG(INFO, "is_mapped: %s",  (params->is_mapped ? "true" : "false"));
+	LOG(INFO, "aligned_offset: %d",   params->aligned_offset);
+	LOG(INFO, "capacity: %d",   params->capacity);
+	LOG(INFO, "range_size: %d",   params->range_size);
+	LOG(INFO, "start_offset: %d",   params->start_offset);
 }

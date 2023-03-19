@@ -20,7 +20,7 @@
 # define BASE "0123456789abcdef"
 
 # define report_error(fmt, ...) \
-    fputstr(2, "Error: " fmt "\n", ##__VA_ARGS__)
+    fputstr(2, "hdump: " fmt "\n", ##__VA_ARGS__)
 
 typedef enum e_mode {
 	DUMP_CLASSIC,
@@ -39,18 +39,17 @@ typedef struct s_dump_params {
 	int64_t      range_size;
 	int64_t      aligned_offset;
 	int64_t      start_offset;
-	int64_t      end_offset;
 }	            t_dump_params;
 
 void 	__usage(void);
 char 	*get_next_argument(int *ac, char ***av);
 void 	debug_params(t_dump_params *params);
-bool 	safe_open(t_dump_params *params);
-bool	should_use_mmap(int fd, size_t file_size, size_t range_size);
-bool 	memory_efficient_mmap(t_dump_params *params);
-bool 	read_range_only(t_dump_params *params);
+bool 	open_hexable_file(t_dump_params *params);
+bool	file_is_mmapabble(int fd, size_t file_size, size_t range_size);
+bool 	file_partial_mmap(t_dump_params *params);
+bool 	file_seek_and_read(t_dump_params *params);
 bool 	try_parse_argument(const char *argument, t_dump_params *params);
-bool 	read_data_from_stdin(t_dump_params *params);
+bool 	start_stdin_reader(t_dump_params *params);
 bool 	build_dump_structure(t_dump_params *params);
 bool 	hexdump(t_dump_params *params);
 

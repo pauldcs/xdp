@@ -1,4 +1,5 @@
 #include "hexdump.h"
+#include "logging.h"
 #include "libstringf.h"
 #include <sys/mman.h>
 #include <stdbool.h>
@@ -11,66 +12,64 @@ bool hexdump(t_dump_params *params)
 {
 	if (!params->filename) {
 		params->is_mapped = false;
-		if (!read_data_from_stdin(params))
-			return (report_error(
-					"read_data_from_stdin(): Failed\n"),
-				false);
-
+		if (!start_stdin_reader(params)) {
+			LOG(ERROR, "start_stdin_reader()");
+			return (false);
+		}
 		params->is_stdin = true;
 
-	} else if (!safe_open(params)) 
-		return (report_error(
-				"safe_open(): Failed\n"),
-			false);
-
-	if (!build_dump_structure(params))
-		return (report_error(
-				"build_dump_structure(): Failed\n"),
-			false);
-
+	} else if (!open_hexable_file(params)) {
+		LOG(ERROR, "open_hexable_file()");
+		return (false);
+	}
+	if (!build_dump_structure(params)) {
+		LOG(ERROR, "build_dump_structure()");
+		return (false);
+	}
 	if (params->filename) {
-		if (should_use_mmap(
+		if (file_is_mmapabble(
 				params->fd,
 				params->file_size,
 				params->range_size)) {
-	
+
 			params->is_mapped = true;
-			if (!memory_efficient_mmap(params))
-				return (report_error(
-						"mem_efficient_mmap(): Failed\n"),
-					false);
+			if (!file_partial_mmap(params)) {
+				LOG(ERROR, "file_partial_mmap()");
+				return (false);
+			}
 
 		} else {
 			params->is_mapped = false;
-			if (!read_range_only(params))
-				return (report_error(
-						"read_exact_range(): Failed\n"),
-					false);
+			if (!file_seek_and_read(params)) {
+				LOG(ERROR, "file_seek_and_read()");
+				return (false);
+			}
 		}
 	}
 
-	//debug_params(params);
+	debug_params(params);
 
+	bool ret; 
 	switch (params->mode) {
 		case DUMP_CLASSIC:
-			classic_hexdump_c(
+			ret = classic_hexdump_c(
 				params->data,
 				params->range_size);
 			break;
 
 		case DUMP_RAW:
-			raw_bytes_dump(
+			ret = raw_bytes_dump(
 				params->data,
 				params->range_size);
 			break;
 	}
 
 	write(STDOUT_FILENO, "\n", 1);
-	
+
 	if (params->is_mapped)
 		munmap(params->data, params->capacity);
 	else
 		free(params->data);
 
-	return (true);
+	return (ret);
 }

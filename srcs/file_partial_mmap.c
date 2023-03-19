@@ -4,7 +4,7 @@
 #include <unistd.h>
 #include <sys/mman.h>
 
-bool memory_efficient_mmap(t_dump_params *params)
+bool file_partial_mmap(t_dump_params *params)
 {
 	params->aligned_offset = params->start_offset & ~(sysconf(_SC_PAGE_SIZE) - 1);
 	params->start_offset = (params->start_offset - params->aligned_offset);

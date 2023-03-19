@@ -35,13 +35,6 @@ Options
     -o   <output_directory> (default: ${DEFAULT_OUTPUT_DIRECTORY})
           The directory to write the output files to.
     
-    -m   <mode> (default: ${DEFAULT_MODE})
-          The mode in which to run the tests.
-          Available modes:
-              - args
-              - path    
-    -c    Don't do infile - outfile comparisons.
-    
     -v    Run each test case through Valgrind.
   
     -r   <output_file>
@@ -52,31 +45,27 @@ Options
 EOF
 }
 
-while getopts "p:s:a:i:o:m:cvr:h" opt; do
+while getopts "p:s:i:o:avr:h" opt; do
     case $opt in
         p) program_name="$OPTARG";;
-        m) mode="$OPTARG";;
-        a) extra_args="$OPTARG";;
         s) input_file_suffix="$OPTARG";;
         i) input_directory="$OPTARG";;
         o) output_directory="$OPTARG";;
         v) run_under_valgrind=true;;
         r) do_redirection="$OPTARG";;
-        c) compare=false;;
+        a) add_test=true;;
         h) ShowUsage; exit 0;;
         \?) ShowUsage; exit 1;;
     esac
 done
 
 program_name=${program_name:-$DEFAULT_PROGRAM}
-mode=${mode:-$DEFAULT_MODE}
-extra_args=${extra_args:=""}
 input_file_suffix=${input_file_suffix:-$DEFAULT_INPUT_SUFFIX}
 input_directory=${input_directory:-$DEFAULT_INPUT_DIRECTORY}
 output_directory=${output_directory:-$DEFAULT_OUTPUT_DIRECTORY}
 run_under_valgrind=${run_under_valgrind:-false}
 do_redirection=${do_redirection:-false}
-compare=${compare:-true}
+add_test=${add_test:-false}
 
 ExitWithError() {
     >&2 printf "$PROG: %s\n" "${1}"
@@ -99,7 +88,7 @@ CheckPrerequisites() {
     [[ -r "${input_directory}" ]] ||
         ExitWithError "${input_directory}: Not readable (-i argument)" 
 
-    [[ -z "$(ls -A ${input_directory}/*.${input_file_suffix} 2> /dev/null)" ]] &&
+    [[ -z "$(ls -A "${input_directory}"/*."${input_file_suffix}" 2> /dev/null)" ]] &&
         ExitWithError "${input_directory}: Is empty (-i argument)" 
 
     [[ -d "${output_directory}" ]] ||
@@ -113,7 +102,8 @@ CheckPrerequisites() {
         ExitWithError "Valgrind: Not found (-v argument)" 
 }
 
-ArgsMode() {
+
+TestFunction() {
     local input_file="${1}"
     local actual_output_file="${2}"
     local valgrind_log_file="${3}"
@@ -122,69 +112,51 @@ ArgsMode() {
         then
             timeout "${DEFAULT_TIMEOUT}"          \
             cat "${input_file}"                   \
-            | xargs                               \
-            valgrind                              \
+            | xargs valgrind                      \
                 -q                                \
                 --leak-check=full                 \
                 --show-leak-kinds=all             \
                 --track-origins=yes               \
                 --log-file="${valgrind_log_file}" \
                 --error-exitcode=1                \
-                ./"${program_name}" ${extra_args} &> "${actual_output_file}"
+                ./"${program_name}" &> "${actual_output_file}"
         else
             timeout "${DEFAULT_TIMEOUT}" \
-            cat "${input_file}"          \
-            | xargs                      \
-            ./"${program_name}" ${extra_args} &> "${actual_output_file}"
+                cat "${input_file}"      \
+                | xargs ./"${program_name}" &> "${actual_output_file}"
     fi
 
     exit_code=$?
     return $exit_code
 }
 
-PathMode() {
-    local input_file="${1}"
-    local actual_output_file="${2}"
-    local valgrind_log_file="${3}"
+AddTest() {
 
-    if [[ "${run_under_valgrind}" == true ]];
+    [[ ! -d "${input_directory}" ]] && mkdir -vp ${input_directory}
+
+    if read -p " - Test name: " name 
         then
-            timeout "${DEFAULT_TIMEOUT}"          \
-            valgrind                              \
-                -q                                \
-                --leak-check=full                 \
-                --show-leak-kinds=all             \
-                --track-origins=yes               \
-                --log-file="${valgrind_log_file}" \
-                --error-exitcode=1                \
-                ./"${program_name}" ${extra_args} "${input_file}" &> "${actual_output_file}"
-    else
-        timeout "${DEFAULT_TIMEOUT}"                                               \
-        ./"${program_name}" ${extra_args} "${input_file}" &> "${actual_output_file}"
+            vi "${input_directory}"/"${name}".in
+            vi "${input_directory}"/"${name}".out
+            echo "${input_directory}"/"${name}".in: Added
+        else
+            rm -f "${input_directory}"/"${name}".in
+            rm -f "${input_directory}"/"${name}".out
+            ExitWithError "Failed to add test" 
     fi
-    exit_code=$?
-    return $exit_code
 }
 
 RunTest() {
-    local name="${1}"
-    local input_file="${2}"
-    local actual_output_file="${3}"
-    local valgrind_log_file="${4}"
-    local expected_output_file="${5}"
+    local name="$1"
+    local input_file="$2"
+    local actual_output_file="$3"
+    local valgrind_log_file="$4"
+    local expected_output_file="$5"
 
     Output "$input_file"
 
-    func="None"
-    if   [[ "${mode}" == "args" ]]; then func='ArgsMode'
-    elif [[ "${mode}" == "path" ]]; then func='PathMode'
-    else
-        Output "    └── Status: ${RED}Aborted${END}"
-        ExitWithError "${mode}: Not supported"
-    fi
-
-    $func "${input_file}" "${actual_output_file}" "${valgrind_log_file}"
-
+    TestFunction "$input_file" "$actual_output_file" "$valgrind_log_file"
+    
     exit_code="${?}"
 
     # Remove leading and trailing whitespaces from both the
@@ -211,29 +183,24 @@ RunTest() {
             return 
         }
 
-    if [[ "${compare}" == true ]]
+    if cmp -s "${actual_output_file}" "$expected_output_file"
         then
-            if cmp -s "${actual_output_file}" "$expected_output_file"
-                then
-                    Output "    └── Status: ${GRN}OK${END}"
-                    ((passed++))
-                else
-                    Output "    └── Status: ${RED}KO${END}"
-                    Output "    └── Expected: $expected_output_file"
-                    Output "    └── Actual: $actual_output_file"
-                    Output ""
-                    Output \
-                        "$(\
-                            2>&1                    \
-                            diff --color -p         \
-                            "$actual_output_file"   \
-                            "$expected_output_file" \
-                            | sed 's/^/        /'
-                        )"
-                    ((failed++))
-            fi
+            Output "    └── Status: ${GRN}OK${END}"
+            ((passed++))
         else
-            ((skipped++))
+            Output "    └── Status: ${RED}KO${END}"
+            Output "    └── Expected: $expected_output_file"
+            Output "    └── Actual: $actual_output_file"
+            Output ""
+            Output \
+                "$(\
+                    2>&1                    \
+                    diff --color -p         \
+                    "$actual_output_file"   \
+                    "$expected_output_file" \
+                    | sed 's/^/        /'
+                )"
+            ((failed++))
     fi
 
     [[ -s "${valgrind_log_file}" ]] \
@@ -265,6 +232,12 @@ EOF
 
 CheckPrerequisites
 
+if [[ "${add_test}" == true ]]
+    then
+        AddTest
+        exit 0
+fi
+
 passed=0
 failed=0
 skipped=0
@@ -275,7 +248,7 @@ for file in "${input_directory}"/*."${input_file_suffix}";
         filename=$(basename -- "${file}")
         test_name="${filename%.*}"
  
-        RunTest                                       \
+        RunTest \
             "${test_name}"                            \
             "${file}"                                 \
             "${output_directory}"/"${test_name}.out"  \

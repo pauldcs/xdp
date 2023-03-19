@@ -6,12 +6,12 @@
 /*   By: pducos <pducos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 00:09:56 by pducos            #+#    #+#             */
-/*   Updated: 2023/03/18 16:32:56 by pducos           ###   ########.fr       */
+/*   Updated: 2023/03/19 12:53:35 by pducos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef READER_H
-# define READER_H
+#ifndef __READER_H__
+# define __READER_H__
 
 # include <stdbool.h>
 # include <sys/types.h>
@@ -63,4 +63,4 @@ bool		r_alloc(uint8_t **ptr, size_t size);
 bool		r_realloc(uint8_t **buf, size_t *cap, size_t len, size_t new_cap);
 void		*r_memcpy(uint8_t *dst, const uint8_t *src, size_t n);
 
-#endif
+#endif /* __READER_H__ */

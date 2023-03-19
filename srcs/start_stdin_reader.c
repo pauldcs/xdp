@@ -3,7 +3,7 @@
 
 #include <stdbool.h>
 
-bool read_data_from_stdin(t_dump_params *params)
+bool start_stdin_reader(t_dump_params *params)
 {
 	t_reader        r;
 	int             ret;

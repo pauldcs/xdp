@@ -14,7 +14,7 @@ int main(int ac, char *av[])
 		if (!try_parse_argument(ptr, &params))
 			return (EXIT_FAILURE);
 	}
-	ret = hexdump(&params);
+	ret = !hexdump(&params);
 	if (params.fd)
 		close(params.fd);
 	return (ret);

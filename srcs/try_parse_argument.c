@@ -48,12 +48,6 @@ bool try_parse_argument(const char *argument, t_dump_params *params)
                     "'%s': %s\n", argument, "Invalid format"),
                 false);
 
-    } else if (!strncmp(argument, "--end=", 6)) {
-        if (!str_to_uint(argument + 6, &params->end_offset))
-            return (report_error(
-                    "'%s': %s\n", argument, "Invalid format"),
-                false);
-
     } else if (!strcmp(argument, "--raw")) {
         params->mode = DUMP_RAW;
 

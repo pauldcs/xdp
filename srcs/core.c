@@ -1,13 +1,15 @@
 #include "hexdump.h"
+#include "hex_lookup.h"
 #include "libstringf.h"
+#include "c_types.h"
 #include <unistd.h>
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/mman.h>
 
-static char    *__screen__;
-static int     __screen_offset__ = 0;
+static uint8_t *__screen__;
+static size_t   __screen_offset__ = 0;
 
 static size_t	write_all(int fd, const void *buf, size_t s)
 {
@@ -43,7 +45,7 @@ static inline void	write_pointer(const uintptr_t p, size_t width)
 {
 	/* Writes a pointer in hex format into __screen__
  	 */
-	char		*buffer = (__screen__ + __screen_offset__);
+	uint8_t		*buffer = (uint8_t *)(__screen__ + __screen_offset__);
 	uintptr_t	ptr;
 	int			i;
 
@@ -58,24 +60,19 @@ static inline void	write_pointer(const uintptr_t p, size_t width)
 	__screen_offset__ += width;
 }
 
-static inline void	write_16_bytes_spaced(const void *addr, size_t size)
+static inline void	write_16_bytes_spaced(const uint8_t *addr, size_t size)
 {
 	/* Writes 16 bytes of data into __screen__, each byte separed by a space
  	 */
-	char	*buffer = (__screen__ + __screen_offset__);
-	char	*ptr;
+	uint8_t	*buffer = (__screen__ + __screen_offset__);
+	uint8_t	*ptr;
 	size_t  i;
 
 	i = 0;
-	ptr = (char *)addr;
+	ptr = (uint8_t *)addr;
 	while (size-- && i < 48) {
-		if (*ptr) {
-			buffer[i++] = BASE[(*ptr >> 4) & 0xf];
-			buffer[i++] = BASE[*ptr & 0xf];
-		} else {
-			*(int16_t*)(buffer + i) = 0x2e2e;
-			i += 2;
-		}
+		*(int16_t*)(buffer + i) = _xlookup[*ptr];
+		i += 2;
 		buffer[i++] = ' ';
 		ptr++;
 	}
@@ -84,21 +81,24 @@ static inline void	write_16_bytes_spaced(const void *addr, size_t size)
 	__screen_offset__ += i;
 }
 
-static inline void	write_16_ascii(const void *s, size_t size)
+static inline void	write_16_ascii(const uint8_t *s, size_t size)
 {
 	/* Writes 16 bytes of ascii into __screen__, non printable characters
  	 * are replaced by '.'
  	 */
-	char	*buffer = (__screen__ + __screen_offset__);
-	int8_t 	*tmp;
+	uint8_t	*buffer = (__screen__ + __screen_offset__);
+	uint8_t *tmp;
 	size_t	i;
 
 	i = 0;
-	tmp = (int8_t *)s;
+	tmp = s;
 	while (size-- && i < 16) {
-		*tmp >= 36 && *tmp < 127 ?
-			(buffer[i++] = *tmp) : (buffer[i++] = '.');
+		if (isprint(*tmp)) 
+			buffer[i] = *tmp;
+		else
+			buffer[i] = '.';
 		tmp++;
+		i++;
 	}
 	__screen_offset__ += i;
 }
@@ -108,9 +108,9 @@ bool raw_bytes_dump(const void *addr, size_t size)
 	/* write the bytes as a stream without any formatting. Null bytes are 
  	 * replaced by ".."
 	 */
-	char	*ptr = (char *)addr;
+	uint8_t	*ptr = (uint8_t *)addr;
 
-	if ((__screen__ = (char *)malloc((size << 1) + 1)) == NULL)
+	if ((__screen__ = (uint8_t *)malloc((size << 1) + 1)) == NULL)
 		return (false);
 	while (size--)
 	{
@@ -132,7 +132,7 @@ bool	classic_hexdump_c(const void *addr, size_t n)
 	uint64_t 	*ptr;
 	const void 	*tmp = addr;
 
-	if ((__screen__ = (char *)malloc(79 << 7)) == NULL)
+	if ((__screen__ = (uint8_t *)malloc(79 << 7)) == NULL)
 		return (false);
 	while (n) {
 		size = (16 < n ? 16 : n);

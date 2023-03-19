@@ -6,7 +6,7 @@
 #include <errno.h>
 #include <stdlib.h>
 
-bool should_use_mmap(int fd, size_t file_size, size_t range_size)
+bool file_is_mmapabble(int fd, size_t file_size, size_t range_size)
 {
     size_t 		page_size = sysconf(_SC_PAGE_SIZE);
 	struct stat file_info;
