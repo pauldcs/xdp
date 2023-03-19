@@ -37,13 +37,13 @@ static const char	*str_to_uint(const char *str, int64_t *result)
 bool try_parse_argument(const char *argument, t_dump_params *params)
 {
     if (!strncmp(argument, "--size=", 7)) {
-        if (!str_to_uint(argument + 7, &params->range_size))
+        if (!str_to_uint(argument + 7, &params->file.range_size))
             return (report_error(
                     "'%s': %s\n", argument, "Invalid format"),
                 false);
 
     } else if (!strncmp(argument, "--start=", 8)) {
-        if (!str_to_uint(argument + 8, &params->start_offset))
+        if (!str_to_uint(argument + 8, &params->file.start_offset))
             return (report_error(
                     "'%s': %s\n", argument, "Invalid format"),
                 false);
@@ -51,12 +51,18 @@ bool try_parse_argument(const char *argument, t_dump_params *params)
     } else if (!strcmp(argument, "--raw")) {
         params->mode = DUMP_RAW;
 
+    } else if (!strncmp(argument, "--string=", 9)) {
+        params->mode = DUMP_STRINGS;
+        if (!str_to_uint(argument + 9, &params->string_size))
+            return (report_error(
+                    "'%s': %s\n", argument, "Invalid format"),
+                false);
     } else if (!strcmp(argument, "-h") || !strcmp(argument, "--help")) {
         __usage();
         exit (0);
     
-    } else if (!params->filename) {
-        params->filename = argument;
+    } else if (!params->file.filename) {
+        params->file.filename = argument;
 
     } else if (!strcmp(argument, "--color")) {
         params->colored_output = true;

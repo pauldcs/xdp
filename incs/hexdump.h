@@ -34,27 +34,32 @@
 
 typedef enum e_mode {
 	DUMP_CLASSIC,
+	DUMP_STRINGS,
 	DUMP_RAW
 }	t_mode;
 
 typedef struct s_dump_params {
-	t_mode 		 mode;
-	bool 		 colored_output;
-	bool 		 is_stdin;
-	const char   *filename;
-	int 		 fd;
-	void         *data;
-	bool 		 is_mapped;
-	int64_t      capacity;
-	int64_t      file_size;
-	int64_t      range_size;
-	int64_t      aligned_offset;
-	int64_t      start_offset;
-}	            t_dump_params;
+	t_mode 	mode;
+	int64_t string_size;
+	bool 	colored_output;
+	bool 	is_stdin;
+	struct  s_data {
+		void         *data;
+		bool 		 is_mapped;
+		int64_t      aligned_offset;
+		int64_t      capacity;
+	}   data;
+	struct  s_file {
+		const char   *filename;
+		int 		 fd;
+		int64_t      file_size;
+		int64_t      range_size;
+		int64_t      start_offset;
+	}   file;
+}	t_dump_params;
 
 void 	__usage(void);
 char 	*get_next_argument(int *ac, char ***av);
-void 	debug_params(t_dump_params *params);
 bool 	open_hexable_file(t_dump_params *params);
 bool	file_is_mmapabble(int fd, size_t file_size, size_t range_size);
 bool 	file_partial_mmap(t_dump_params *params);
@@ -62,8 +67,8 @@ bool 	file_seek_and_read(t_dump_params *params);
 bool 	try_parse_argument(const char *argument, t_dump_params *params);
 bool 	start_stdin_reader(t_dump_params *params);
 bool 	build_dump_structure(t_dump_params *params);
-bool 	hexdump(t_dump_params *params);
-
+bool 	dump(t_dump_params *params);
+bool	dump_strings(const uint8_t *addr, size_t n, size_t len);
 bool 	raw_bytes_dump(const void *addr, size_t size);
 bool	classic_hexdump_c(const void *addr, size_t n);
 bool	classic_hexdump_c_color(const void *addr, size_t n);

@@ -10,31 +10,31 @@
 static uint8_t *__screen__;
 static size_t   __screen_offset__ = 0;
 
-// static size_t	write_all(int fd, const void *buf, size_t s)
-// {
-// 	/* Forces to write the buffer fully if write() failes, 
-//      * it's ok if this ends up looping endlessly.
-//      */
-// 	ssize_t	c;
-// 	size_t	ret;
+static size_t	write_all(int fd, const void *buf, size_t s)
+{
+	/* Forces to write the buffer fully if write() failes, 
+     * it's ok if this ends up looping endlessly.
+     */
+	ssize_t	c;
+	size_t	ret;
 
-// 	ret = 0;
-// 	while (s)
-// 	{
-// 		c = write(fd, buf + ret, s);
-// 		if (c == -1)
-// 			continue ;
-// 		ret += c;
-// 		s -= c;
-// 	}
-// 	return (ret);
-// }
+	ret = 0;
+	while (s)
+	{
+		c = write(fd, buf + ret, s);
+		if (c == -1)
+			continue ;
+		ret += c;
+		s -= c;
+	}
+	return (ret);
+}
 
 static void __dump_screen(void)
 {
 	/* Dumps the content of __screen__ to stdout
 	 */
-	write(STDOUT_FILENO,
+	write_all(STDOUT_FILENO,
 		__screen__,
 		__screen_offset__);
 	__screen_offset__ = 0;
@@ -59,37 +59,41 @@ static inline void	write_pointer(const uintptr_t p, size_t width)
 	__screen_offset__ += width;
 }
 
- static inline void	write_16_bytes_spaced(const uint8_t *addr, size_t size)
+static inline void	write_16_bytes_spaced(const uint8_t *addr, size_t size)
 {
-	// Writes 16 bytes of data into __screen__, each byte separed by a space
- 	//
-	uint8_t	*buffer = (__screen__ + __screen_offset__);
-	uint8_t	*ptr;
-	size_t  i;
+	/* Writes 16 bytes of data into __screen__, each byte separed by a space
+ 	 */
+	uint8_t		*buffer  = (__screen__ + __screen_offset__);
+	uint8_t 	*ptr = (uint8_t *)addr;
+	uint8_t 	*tmp = buffer;
+	size_t 		pad;
 
-	i = 0;
-	ptr = (uint8_t *)addr;
-	while (size-- && i < 48) {
-		*(int16_t*)(buffer + i) = _xlookup[*ptr];
-		i += 2;
-		buffer[i++] = ' ';
-		ptr++;
+	size = (size < 16 ? 16 : size);
+	pad = 16 - size;
+
+	while (size) {
+		*(uint16_t*)(buffer) = _xlookup[*ptr++];
+		*(buffer + 2) = ' ';
+		buffer += 3;
+		--size;
 	}
-	while (i < 48)
-		buffer[i++] = ' ';
-	__screen_offset__ += i;
+	while (pad--) {
+		*(uint32_t*)(buffer) = 0x202020;
+		buffer += 3;
+	}
+	__screen_offset__ += buffer - tmp;
 }
 
 static inline void	write_16_bytes_spaced_colorized(const uint8_t *addr, size_t size)
 {
-	/* Writes 16 bytes of data into __screen__, each byte separed by a space
+	/* Writes 16 bytes of colored data into __screen__, each byte separed by a space
  	 */
 	uint8_t		*buffer  = (__screen__ + __screen_offset__);
 	uint8_t 	*tmp = buffer;
 	uint8_t 	*ptr = (uint8_t *)addr;
 	size_t 		pad;
 
-	size = (size < 16 ? : size);
+	size = (size < 16 ? 16 : size);
 	pad = 16 - size;
 
 	while (size) {
@@ -133,14 +137,8 @@ static inline void	write_16_ascii(const uint8_t *s, size_t size)
 
 	i = 0;
 	tmp = (uint8_t *)s;
-	while (size-- && i < 16) {
-		if (isprint(*tmp)) 
-			buffer[i] = *tmp;
-		else
-			buffer[i] = '.';
-		tmp++;
-		i++;
-	}
+	while (size-- && i < 16)
+		buffer[i++] = ctyp_print[*tmp++];
 	__screen_offset__ += i;
 }
 
