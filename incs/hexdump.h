@@ -72,7 +72,7 @@ bool 	build_dump_structure(t_dump_params *params);
 bool 	dump(t_dump_params *params);
 bool	dump_strings(const uint8_t *addr, size_t n, size_t len);
 bool 	raw_bytes_dump(const void *addr, size_t size);
-bool	classic_hexdump_c(const void *addr, size_t n);
-bool	classic_hexdump_c_color(const void *addr, size_t n);
+bool	classic_hexdump_c(const void *addr, size_t n, int64_t start_offset);
+bool	classic_hexdump_c_color(const void *addr, size_t n, int64_t start_offset);
 
 #endif /* __HEXDUMP_H__ */
