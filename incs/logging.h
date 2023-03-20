@@ -13,7 +13,7 @@ enum e_log_lvl {
     FATAL
 };
 
-#  define FATAL_ERROR(fmt, ...) \
+# define FATAL_ERROR(fmt, ...) \
     do { \
         fputstr(2,              \
             "Fatal: " fmt "\n", \

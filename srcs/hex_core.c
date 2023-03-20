@@ -55,7 +55,7 @@ static inline void	write_pointer(const uintptr_t p, size_t width)
 		ptr >>= 4;
 	} while (ptr && i);
 	while (i)
-		buffer[--i] = '.';
+		buffer[--i] = '0';
 	__screen_offset__ += width;
 }
 
@@ -72,10 +72,10 @@ static inline void	write_16_bytes_spaced(const uint8_t *addr, size_t size)
 	pad = 16 - size;
 
 	while (size) {
-		*(uint16_t*)(buffer) = _xlookup[*ptr++];
-		*(buffer + 2) = ' ';
+		*(uint32_t*)(buffer) = _xlookup[*ptr++];
 		buffer += 3;
-		--size;
+		if (--size == 8)
+			*(buffer++) = ' ';
 	}
 	while (pad--) {
 		*(uint32_t*)(buffer) = 0x202020;
@@ -84,7 +84,7 @@ static inline void	write_16_bytes_spaced(const uint8_t *addr, size_t size)
 	__screen_offset__ += buffer - tmp;
 }
 
-static inline void	write_16_bytes_spaced_colorized(const uint8_t *addr, size_t size)
+static inline void	write_16_bytes_spaced_colorized(const uint8_t *addr, size_t n)
 {
 	/* Writes 16 bytes of colored data into __screen__, each byte separed by a space
  	 */
@@ -93,27 +93,27 @@ static inline void	write_16_bytes_spaced_colorized(const uint8_t *addr, size_t s
 	uint8_t 	*ptr = (uint8_t *)addr;
 	size_t 		pad;
 
-	size = (size < 16 ? 16 : size);
-	pad = 16 - size;
+	n = (n < 16 ? 16 : n);
+	pad = 16 - n;
 
-	while (size) {
+	while (n) {
 		if (isprint(*ptr)) {
 			*(uint64_t*)(buffer) = CYN_UINT64;
-			buffer += sizeof(uint64_t);
-			while (size && isprint(*ptr)) {
-				*(uint16_t*)(buffer) = _xlookup[*ptr++];
-				*(buffer + 2) = ' ';
+			buffer += 8;
+			while (n && isprint(*ptr)) {
+				*(uint32_t*)(buffer) = _xlookup[*ptr++];
 				buffer += 3;
-				--size;
+				if (--n == 8)
+					*(buffer++) = ' ';
 			}
 		} else {
 			*(uint64_t*)(buffer) = GRY_UINT64;
-			buffer += sizeof(uint64_t);
-			while (size && !isprint(*ptr)) {
-				*(uint16_t*)(buffer) = _xlookup[*ptr++];
-				*(buffer + 2) = ' ';
+			buffer += 8;
+			while (n && !isprint(*ptr)) {
+				*(uint32_t*)(buffer) = _xlookup[*ptr++];
 				buffer += 3;
-				--size;
+				if (--n == 8)
+					*(buffer++) = ' ';
 			}
 		}
 	}
@@ -149,7 +149,7 @@ bool raw_bytes_dump(const void *addr, size_t size)
 	 */
 	uint8_t	*ptr = (uint8_t *)addr;
 
-	if ((__screen__ = (uint8_t *)malloc((size << 1) + 1)) == NULL)
+	if ((__screen__ = (uint8_t *)malloc((size << 1) + 1)) == 0)
 		return (false);
 	while (size--)
 	{
@@ -179,20 +179,18 @@ bool	classic_hexdump_c(const void *addr, size_t n)
 		if (tmp != addr
     		&& *(ptr - 2) == *(ptr + 0)
     		&& *(ptr - 1) == *(ptr + 1)
-
 		) {
 			if (__screen_offset__) {
-				*(__screen__ + (__screen_offset__++)) = '*';
-				*(__screen__ + (__screen_offset__++)) = '\n';
+				*(uint16_t *)(__screen__ + (__screen_offset__)) = *(uint16_t *)"+\n";
+				__screen_offset__ += 2;
 				__dump_screen();
 			}
 		} else {
         	if (__screen_offset__ >= 78 << 7)
 				__dump_screen();
-			write_pointer((uintptr_t)(addr - tmp), 10);
-			*(__screen__ + (__screen_offset__++)) = ':';
-			*(__screen__ + (__screen_offset__++)) = ' ';
-			*(__screen__ + (__screen_offset__++)) = ' ';
+			write_pointer(addr - tmp, 10);
+			*(uint32_t *)(__screen__ + __screen_offset__) = *(uint32_t *)":  ";
+			__screen_offset__ += 3;
 			write_16_bytes_spaced(addr, size);
 			*(__screen__ + (__screen_offset__++)) = ' ';
 			write_16_ascii(addr, size);
@@ -215,7 +213,7 @@ bool	classic_hexdump_c_color(const void *addr, size_t n)
 	uint64_t 	*ptr;
 	const void 	*tmp = addr;
 
-	if ((__screen__ = (uint8_t *)malloc((79 + (16 + 5) * 8) << 7)) == NULL)
+	if ((__screen__ = (uint8_t *)malloc((79 + 16 * 8) << 7)) == NULL)
 		return (false);
 	while (n) {
 		size = (16 < n ? 16 : n);
@@ -223,20 +221,19 @@ bool	classic_hexdump_c_color(const void *addr, size_t n)
 		if (tmp != addr
     		&& *(ptr - 2) == *(ptr + 0)
     		&& *(ptr - 1) == *(ptr + 1)
-
 		) {
 			if (__screen_offset__) {
-				*(__screen__ + (__screen_offset__++)) = '*';
-				*(__screen__ + (__screen_offset__++)) = '\n';
+				*(uint16_t *)(__screen__ + (__screen_offset__)) = *(uint16_t *)"+\n";
+				__screen_offset__ += 2;
 				__dump_screen();
 			}
 		} else {
         	if (__screen_offset__ >= 78 << 7)
 				__dump_screen();
-			write_pointer((uintptr_t)(addr - tmp), 10);
-			*(__screen__ + (__screen_offset__++)) = ':';
-			*(__screen__ + (__screen_offset__++)) = ' ';
-			*(__screen__ + (__screen_offset__++)) = ' ';
+				
+			write_pointer(addr - tmp, 10);
+			*(uint32_t *)(__screen__ + __screen_offset__) = *(uint32_t *)":  ";
+			__screen_offset__ += 3;
 			write_16_bytes_spaced_colorized(addr, size);
 			*(__screen__ + (__screen_offset__++)) = ' ';
 			write_16_ascii(addr, size);

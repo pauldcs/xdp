@@ -1,4 +1,5 @@
 #include "libstringf.h"
+#include "logging.h"
 #include "hexdump.h"
 #include <string.h>
 #include <unistd.h>
@@ -18,10 +19,9 @@ bool file_partial_mmap(t_dump_params *params)
 	 		params->file.fd,
 			params->data.aligned_offset);
 	
-	if (params->data.data == MAP_FAILED)
-		return (
-			report_error("mmap: %s\n", strerror(errno)),
-			false);
-
+	if (params->data.data == MAP_FAILED) {
+		FATAL_ERROR("fstat: failed");
+		return (false);
+	}
 	return (true);
 }

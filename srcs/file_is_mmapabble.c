@@ -1,4 +1,5 @@
 #include "hexdump.h"
+#include "logging.h"
 #include <sys/stat.h>
 #include <unistd.h>
 #include <stdbool.h>
@@ -18,7 +19,7 @@ bool file_is_mmapabble(int fd, size_t file_size, size_t range_size)
         return (false);
 
     if (fstat(fd, &file_info) != 0) {
-        report_error("fstat: %s\n", strerror(errno)),
+        FATAL_ERROR("fstat: failed");
 		exit(1);
     }
     size_t block_size = file_info.st_blksize;

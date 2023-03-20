@@ -4,7 +4,7 @@ SRCS_OBJS := $(patsubst %.c,$(OBJS_DIR)/%.o,$(SRCS))
 
 $(OBJS_DIR)/%.o:$(SRCS_DIR)/%.c
 	@mkdir -vp $(dir $@)
-	$(CC) $(CFLAGS) -g3 -MMD -MP -o $@ -c $< -I $(INCS_DIR) $(LOGGING)
+	$(CC) $(CFLAGS) -g3 -MMD -MP -o $@ -c $< -I $(INCS_DIR)
 
 all: $(NAME)
 
@@ -12,10 +12,10 @@ all: $(NAME)
 
 $(NAME): $(SRCS_OBJS)
 	$(MAKE) -C $(LIBSTRINGF)
-	$(CC) $(CFLAGS) $^ -o $(NAME) -L $(LIBSTRINGF) -lstringf $(SANITIZER)
+	$(CC) $(CFLAGS) $^ -o $(NAME) -L $(LIBSTRINGF) -lstringf
 
 clean:
-	rm -f $(SRCS_OBJS)
+	rm -rf $(OBJS_DIR)
 
 fclean: clean
 	$(MAKE) fclean -C $(LIBSTRINGF)
