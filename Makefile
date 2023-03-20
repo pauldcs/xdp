@@ -14,30 +14,31 @@ LIBSTRINGF  := libs/libstringf
 SRCS := main.c              \
 	_entry.c                \
 	hex_core.c              \
-	file_partial_mmap.c     \
-	file_seek_and_read.c    \
-	file_is_mmapabble.c     \
 	build_dump_structure.c  \
 	dump_strings.c          \
 	\
-	arguments/parse_expr/lexer/token_list_create.c   \
-	arguments/parse_expr/lexer/lst_destroy.c         \
-	arguments/parse_expr/lexer/lst_size.c            \
-	arguments/parse_expr/lexer/lst_new_token.c       \
-	arguments/parse_expr/lexer/lst_add_token.c       \
-	arguments/parse_expr/ast/ast_new_operator.c      \
-	arguments/parse_expr/ast/ast_create.c            \
-	arguments/parse_expr/ast/ast_new_value.c         \
-	arguments/parse_expr/ast/ast_solve.c             \
-	arguments/parse_expr/ast/ast_debug.c             \
-	arguments/parse_expr/expr_parser.c               \
-	arguments/parse_argument.c                       \
-	\
 	utils/get_next_argument.c \
-	utils/file_try_open.c     \
 	utils/usage.c             \
 	utils/str_to_uint64.c     \
 	utils/write_all.c         \
+	\
+	file/file_partial_mmap.c  \
+	file/file_seek_and_read.c \
+	file/file_is_mmapabble.c  \
+	file/file_try_open.c      \
+	\
+	arguments/parse_expr/lexer/token_list_create.c \
+	arguments/parse_expr/lexer/lst_destroy.c       \
+	arguments/parse_expr/lexer/lst_size.c          \
+	arguments/parse_expr/lexer/lst_new_token.c     \
+	arguments/parse_expr/lexer/lst_add_token.c     \
+	arguments/parse_expr/ast/ast_new_operator.c    \
+	arguments/parse_expr/ast/ast_create.c          \
+	arguments/parse_expr/ast/ast_new_value.c       \
+	arguments/parse_expr/ast/ast_solve.c           \
+	arguments/parse_expr/ast/ast_debug.c           \
+	arguments/parse_expr/expr_parser.c             \
+	arguments/parse_argument.c                     \
 	\
 	reader/reader.c         \
 	reader/reader_destroy.c \
@@ -55,10 +56,8 @@ all: $(NAME)
 
 dbg: CFLAGS=$(CFLAGS_DBG)
 dbg: all
-
 asan: CFLAGS=$(CFLAGS_ASAN)
 asan: all
-
 test: CFLAGS=$(CFLAGS_TEST)
 test: re
 	(cd tests && ./tester.sh)
