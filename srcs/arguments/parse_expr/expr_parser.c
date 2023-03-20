@@ -6,7 +6,7 @@
 /*   By: pducos <pducos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 17:02:40 by pducos            #+#    #+#             */
-/*   Updated: 2023/03/20 15:18:01 by pducos           ###   ########.fr       */
+/*   Updated: 2023/03/20 22:09:21 by pducos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #include "expr_parser.h"
 #include "libstringf.h"
 #include <stdbool.h>
-#include <stdio.h>
 #include <math.h>
 
 static bool syntatic_check(t_token *list)

@@ -12,8 +12,8 @@ bool build_dump_structure(t_dump_params *params)
             
             LOG(WARNING, 
                 "range exceeds the maximum offset (%p), trucating it to %d",
-                params->file.file_size,
-                params->file.file_size - params->file.start_offset
+                    params->file.file_size,
+                    params->file.file_size - params->file.start_offset
             );
             
             params->file.range_size = params->file.file_size - params->file.start_offset;
@@ -26,8 +26,8 @@ bool build_dump_structure(t_dump_params *params)
     
     FATAL_ERROR(
         "start offset (%p) exceeds the maximum offset (%p)",
-        params->file.start_offset,
-        params->file.file_size
+            params->file.start_offset,
+            params->file.file_size
     );
 
     return (false);

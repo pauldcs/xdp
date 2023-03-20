@@ -25,7 +25,7 @@ static void __dump_screen(void)
 static inline void	write_offset(const uintptr_t p)
 {
 	uint8_t		*buffer = (uint8_t *)(__screen__ + __screen_offset__);
-	uintptr_t ptr = (uintptr_t)p;
+	uintptr_t 	ptr = (uintptr_t)p;
 
 	*(buffer + 8) = BASE16_ASCII_CHARS[(ptr >>  0) & 0xf];
 	*(buffer + 7) = BASE16_ASCII_CHARS[(ptr >>  4) & 0xf];
@@ -56,16 +56,16 @@ static inline void	write_16_ascii(const uint8_t *s, size_t size)
 	i = 0;
 	tmp = (uint8_t *)s;
 	if (size == 16) {
-		 buffer[0] = _Cprint[*(tmp + 0)];
-		 buffer[1] = _Cprint[*(tmp + 1)];
-		 buffer[2] = _Cprint[*(tmp + 2)];
-		 buffer[3] = _Cprint[*(tmp + 3)];
-		 buffer[4] = _Cprint[*(tmp + 4)];
-		 buffer[5] = _Cprint[*(tmp + 5)];
-		 buffer[6] = _Cprint[*(tmp + 6)];
-		 buffer[7] = _Cprint[*(tmp + 7)];
-		 buffer[8] = _Cprint[*(tmp + 8)];
-		 buffer[9] = _Cprint[*(tmp + 9)];
+		buffer[0] = _Cprint[*(tmp + 0)];
+		buffer[1] = _Cprint[*(tmp + 1)];
+		buffer[2] = _Cprint[*(tmp + 2)];
+		buffer[3] = _Cprint[*(tmp + 3)];
+		buffer[4] = _Cprint[*(tmp + 4)];
+		buffer[5] = _Cprint[*(tmp + 5)];
+		buffer[6] = _Cprint[*(tmp + 6)];
+		buffer[7] = _Cprint[*(tmp + 7)];
+		buffer[8] = _Cprint[*(tmp + 8)];
+		buffer[9] = _Cprint[*(tmp + 9)];
 		buffer[10] = _Cprint[*(tmp + 10)];
 		buffer[11] = _Cprint[*(tmp + 11)];
 		buffer[12] = _Cprint[*(tmp + 12)];
@@ -89,14 +89,13 @@ static inline void	write_16_bytes_spaced(const uint8_t *addr, size_t size)
 	uint8_t 	*tmp = buffer;
 	size_t 		pad;
 
-	size = (size < 16 ? 16 : size);
+	size = (size > 16 ? 16 : size);
 	pad = 16 - size;
 
 	while (size) {
 		*(uint32_t*)(buffer) = _xLookup[*ptr++];
 		buffer += 3;
-		if (--size == 8)
-			*(buffer++) = ' ';
+		--size;
 	}
 	while (pad--) {
 		*(uint32_t*)(buffer) = 0x202020;
@@ -114,7 +113,7 @@ static inline void	write_16_bytes_spaced_colorized(const uint8_t *addr, size_t n
 	uint8_t 	*ptr = (uint8_t *)addr;
 	size_t 		pad;
 
-	n = (n < 16 ? 16 : n);
+	n = (n > 16 ? 16 : n);
 	pad = 16 - n;
 
 	while (n) {
@@ -124,8 +123,7 @@ static inline void	write_16_bytes_spaced_colorized(const uint8_t *addr, size_t n
 			while (n && isprint(*ptr)) {
 				*(uint32_t*)(buffer) = _xLookup[*ptr++];
 				buffer += 3;
-				if (--n == 8)
-					*(buffer++) = ' ';
+				--n;
 			}
 		} else {
 			if (!*ptr) { // null bytes: grey
@@ -134,8 +132,7 @@ static inline void	write_16_bytes_spaced_colorized(const uint8_t *addr, size_t n
 				while (n && !*ptr) {
 					*(uint32_t*)(buffer) = _xLookup[*ptr++];
 					buffer += 3;
-					if (--n == 8)
-						*(buffer++) = ' ';
+					--n;
 				}
 			} else { // other: white
 				*(uint64_t*)(buffer) = END_UINT64;
@@ -143,8 +140,7 @@ static inline void	write_16_bytes_spaced_colorized(const uint8_t *addr, size_t n
 				while (n && *ptr && !isprint(*ptr)) {
 					*(uint32_t*)(buffer) = _xLookup[*ptr++];
 					buffer += 3;
-					if (--n == 8)
-						*(buffer++) = ' ';
+					--n;
 				}
 			}
 		}
@@ -205,8 +201,8 @@ bool	classic_hexdump_c(const void *addr, size_t n, size_t start_offset)
         	if (__screen_offset__ >= 78 << 7)
 				__dump_screen();
 			write_offset(addr - tmp + start_offset);
-			*(uint32_t *)(__screen__ + __screen_offset__) = *(uint32_t *)":  ";
-			__screen_offset__ += 3;
+			*(uint16_t *)(__screen__ + __screen_offset__) = *(uint16_t *)"  ";
+			__screen_offset__ += 2;
 			write_16_bytes_spaced(addr, size);
 			*(__screen__ + (__screen_offset__++)) = ' ';
 			write_16_ascii(addr, size);
@@ -247,8 +243,8 @@ bool	classic_hexdump_c_color(const void *addr, size_t n, size_t start_offset)
 				__dump_screen();
 				
 			write_offset(addr - tmp + start_offset);
-			*(uint32_t *)(__screen__ + __screen_offset__) = *(uint32_t *)":  ";
-			__screen_offset__ += 3;
+			*(uint16_t *)(__screen__ + __screen_offset__) = *(uint16_t *)"  ";
+			__screen_offset__ += 2;
 			write_16_bytes_spaced_colorized(addr, size);
 			*(__screen__ + (__screen_offset__++)) = ' ';
 			write_16_ascii(addr, size);

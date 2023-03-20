@@ -36,8 +36,8 @@ bool open_hexable_file(t_dump_params *params)
 	params->file.file_size = st.st_size;
 	LOG(DEBUG,
 		"opened file: %s (size: %db)",
-		params->file.filename,
-		params->file.file_size
+			params->file.filename,
+			params->file.file_size
 	);
 	return (true);
 }

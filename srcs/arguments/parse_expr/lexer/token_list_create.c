@@ -101,10 +101,9 @@ static bool tokenize_operator(t_token **list, char **ptr)
 
 bool token_list_create(t_token **list, const char *in)
 {
-	char	*ptr;
+	char	*ptr = (char *)in;
 	t_token *token;
 
-	ptr = (char *)in;
 	while (*ptr)
 	{
 		while (*ptr && isspace(*ptr))

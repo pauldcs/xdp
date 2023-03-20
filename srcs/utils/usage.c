@@ -7,7 +7,6 @@ void __usage(void)
 		"Description:\n"
 		"    Display the contents of a file in hexadecimal format.\n\n"
 		"Options:\n"
-		"    -               Read file from stdin\n"
 		"    --size=EXPR     Maximum number of bytes to read from the file (default: unlimited).\n"
 		"    --start=EXPR    Starting byte offset to read from (default: 0).\n"
 		"    --string=EXPR   Display strings longer than SIZE.\n"

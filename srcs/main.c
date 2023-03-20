@@ -10,8 +10,9 @@ int main(int ac, char *av[])
 	char			*ptr;
 	int             ret;
 
-	memset(&params, 0, sizeof(params));
 	LOG(WARNING, "Debug mode is enabled");
+	
+	memset(&params, 0, sizeof(params));
 	while ((ptr = get_next_argument(&ac, &av))) {
 		if (!parse_argument(ptr, &params, &ac, &av))
 			return (EXIT_FAILURE);

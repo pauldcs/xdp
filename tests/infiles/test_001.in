@@ -1,1 +1,1 @@
---raw --start 1337 --size 4 assets/random_4521b
+--raw --start "(250+250) *0x2+337" --size="(0x00001+0x1)*2" assets/random_4521b

@@ -1,26 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lst_new_token.c                                    :+:      :+:    :+:   */
+/*   lst_destroy.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pducos <pducos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/05 21:29:25 by pducos            #+#    #+#             */
-/*   Updated: 2023/03/20 15:37:09 by pducos           ###   ########.fr       */
+/*   Updated: 2023/03/20 22:10:11 by pducos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expr_lexer.h"
-#include <string.h>
 #include <stdlib.h>
 
-t_token	*lst_new_token(void)
+void	lst_destroy(t_token **token_list)
 {
-	t_token	*token;
+	t_token	*tmp = *token_list;
+	t_token	*node = tmp;
 
-	token = malloc(sizeof(t_token));
-	if (!token)
-		return (NULL);
-	memset(token, 0, sizeof(t_token));
-	return (token);
+	while (node) {
+		tmp = node;
+		node = node->next;
+		free(tmp);
+	}	
+	*token_list = NULL;
 }
