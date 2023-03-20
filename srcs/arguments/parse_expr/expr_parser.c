@@ -1,17 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser.c                                           :+:      :+:    :+:   */
+/*   expr_parser.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pducos <pducos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 17:02:40 by pducos            #+#    #+#             */
-/*   Updated: 2022/11/28 08:13:40 by pducos           ###   ########.fr       */
+/*   Updated: 2023/03/20 15:18:01 by pducos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lexer.h"
-#include "parser.h"
+#include "expr_lexer.h"
+#include "expr_parser.h"
+#include "libstringf.h"
 #include <stdbool.h>
 #include <stdio.h>
 #include <math.h>
@@ -35,16 +36,12 @@ static bool syntatic_check(t_token *list)
 			&& (cur->kind != TOKEN_ADD
 				&& cur->kind != TOKEN_SUB
 				&& cur->kind != TOKEN_MUL
-				&& cur->kind != TOKEN_DIV
-				&& cur->kind != TOKEN_MOD
 				&& cur->kind != TOKEN_RPAREN
 				&& cur->kind != TOKEN_END))
 			break ;
 		else if ((prev == TOKEN_ADD
 				|| prev == TOKEN_SUB
-				|| prev == TOKEN_MUL
-				|| prev == TOKEN_DIV
-				|| prev == TOKEN_MOD)
+				|| prev == TOKEN_MUL)
 			&& (cur->kind != TOKEN_LPAREN
 				&& cur->kind != TOKEN_VAL))
 			break ;
@@ -56,8 +53,6 @@ static bool syntatic_check(t_token *list)
 			&& (cur->kind != TOKEN_ADD
 				&& cur->kind != TOKEN_SUB
 				&& cur->kind != TOKEN_MUL
-				&& cur->kind != TOKEN_DIV
-				&& cur->kind != TOKEN_MOD
 				&& cur->kind != TOKEN_RPAREN
 				&& cur->kind != TOKEN_END))
 			break ;
@@ -76,9 +71,9 @@ t_ast	*parser(t_token *list)
 	t_ast	*ast;
 
 	if (!syntatic_check(list))
-		return (fprintf(stderr, "Syntax Error\n"), NULL);
+		return (fputstr(2, "Syntax Error\n"), NULL);
 	ast = ast_create(list);
 	if (!ast)
-		return (fprintf(stderr, "Failed to build AST\n"), NULL);
+		return (fputstr(2, "Failed to build AST\n"), NULL);
 	return (ast);
 }

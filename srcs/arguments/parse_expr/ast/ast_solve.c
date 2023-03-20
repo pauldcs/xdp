@@ -6,30 +6,33 @@
 /*   By: pducos <pducos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 20:07:41 by pducos            #+#    #+#             */
-/*   Updated: 2022/11/13 14:57:22 by pducos           ###   ########.fr       */
+/*   Updated: 2023/03/20 15:45:40 by pducos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
-#include "lexer.h"
+#include "expr_parser.h"
+#include "expr_lexer.h"
 #include <math.h>
 #include <stdint.h>
 
 size_t ast_solve(t_ast *ast)
 {
-	size_t dst, x, y;
-	dst = 0;
-	if (ast->kind == EXP_VAL)
-		dst = ast->value;
-	else
-	{
-		x = ast_solve(ast->binop.left);
-		y = ast_solve(ast->binop.right);
-		if (ast->kind == EXP_ADD) { dst = x + y; }
-		if (ast->kind == EXP_SUB) { dst = x - y; }
-		if (ast->kind == EXP_MUL) { dst = x * y; }
-		if (ast->kind == EXP_DIV) { dst = x / y; }
-		if (ast->kind == EXP_MOD) { dst = x % y; }
+	size_t result = 0;
+	
+	if (ast->kind == EXP_VAL) {
+		result = ast->value;
+	
+	} else {
+		size_t x = ast_solve(ast->binop.left);
+		size_t y = ast_solve(ast->binop.right);
+
+		switch (ast->kind)
+		{
+			case EXP_ADD: 	result = x + y; break;
+			case EXP_SUB: 	result = x - y; break;
+			case EXP_MUL: 	result = x * y; break;
+			default:        break;
+		}
 	}
-	return (dst);
+	return (result);
 }

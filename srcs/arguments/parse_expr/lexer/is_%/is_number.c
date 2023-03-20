@@ -1,27 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lst_newtok.c                                       :+:      :+:    :+:   */
+/*   is_number.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pducos <pducos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/05 21:29:25 by pducos            #+#    #+#             */
-/*   Updated: 2022/11/13 14:37:24 by pducos           ###   ########.fr       */
+/*   Created: 2022/11/05 18:35:46 by pducos            #+#    #+#             */
+/*   Updated: 2023/03/20 16:18:23 by pducos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lexer.h"
-#include <stdlib.h>
+#include <stdbool.h>
 
-t_token	*lst_newtok(void)
+bool	is_number(char c)
 {
-	t_token	*tok;
-
-	tok = malloc(sizeof(t_token));
-	if (!tok)
-		return (NULL);
-	tok->kind = 0;
-	tok->value = 0;
-	tok->next = NULL;
-	return (tok);
+	return ((c >= '0' && c <= '9')
+		|| (c >= 'a' && c <= 'f') 
+		|| (c >= '0' && c <= '9'));
 }

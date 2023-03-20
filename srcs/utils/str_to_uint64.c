@@ -26,7 +26,5 @@ const char	*str_to_uint64(const char *str, size_t *result)
         }
     }
 	*result = tmp;
-	if (*str)
-		return (NULL);
 	return (str);
 }

@@ -1,30 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lst_addtok.c                                       :+:      :+:    :+:   */
+/*   is_op.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pducos <pducos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/05 21:29:25 by pducos            #+#    #+#             */
-/*   Updated: 2022/11/13 14:35:23 by pducos           ###   ########.fr       */
+/*   Created: 2022/11/05 18:33:48 by pducos            #+#    #+#             */
+/*   Updated: 2023/03/20 16:02:36 by pducos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lexer.h"
-#include <stdint.h>
+#include <stdbool.h>
 
-void	lst_addtok(t_token **toklist, t_token *tok, t_token_kind kind)
+bool	is_operator(char c)
 {
-	t_token	*node;
-
-	tok->kind = kind;
-	if (!*toklist)
-		*toklist = tok;
-	else
-	{
-		node = *toklist;
-		while (node->next)
-			node = node->next;
-		node->next = tok;
-	}
+	return (c == '+'
+		|| c == '-'
+		|| c == '*');
 }

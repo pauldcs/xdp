@@ -1,18 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   is_num.c                                           :+:      :+:    :+:   */
+/*   lst_new_token.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pducos <pducos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/05 18:35:46 by pducos            #+#    #+#             */
-/*   Updated: 2022/11/05 18:36:30 by pducos           ###   ########.fr       */
+/*   Created: 2022/11/05 21:29:25 by pducos            #+#    #+#             */
+/*   Updated: 2023/03/20 15:37:09 by pducos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdbool.h>
+#include "expr_lexer.h"
+#include <string.h>
+#include <stdlib.h>
 
-bool	is_num(char c)
+t_token	*lst_new_token(void)
 {
-	return (c >= '0' && c <= '9');
+	t_token	*token;
+
+	token = malloc(sizeof(t_token));
+	if (!token)
+		return (NULL);
+	memset(token, 0, sizeof(t_token));
+	return (token);
 }

@@ -12,7 +12,7 @@ all: $(NAME)
 
 $(NAME): $(SRCS_OBJS)
 	$(MAKE) -C $(LIBSTRINGF)
-	$(CC) $(CFLAGS) $^ -o $(NAME) -L $(LIBSTRINGF) -lstringf
+	$(CC) $(CFLAGS) $^ -o $(NAME) -L $(LIBSTRINGF) -lstringf $(SANITIZER)
 
 clean:
 	rm -rf $(OBJS_DIR)

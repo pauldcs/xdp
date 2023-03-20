@@ -1,5 +1,7 @@
 {
 	"files.associations": {
-		"stdlib.h": "c"
+		"stdlib.h": "c",
+		"__node_handle": "c",
+		"sstream": "c"
 	}
 }

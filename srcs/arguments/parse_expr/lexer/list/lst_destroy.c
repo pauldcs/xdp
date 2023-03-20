@@ -1,24 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lst_clear.c                                        :+:      :+:    :+:   */
+/*   lst_destroy.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pducos <pducos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/05 21:29:25 by pducos            #+#    #+#             */
-/*   Updated: 2022/11/09 01:20:31 by pducos           ###   ########.fr       */
+/*   Updated: 2023/03/20 15:15:00 by pducos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lexer.h"
+#include "expr_lexer.h"
 #include <stdlib.h>
 
-void	lst_destroy(t_token **toklist)
+void	lst_destroy(t_token **token_list)
 {
 	t_token	*node;
 	t_token	*tmp;
 
-	tmp = *toklist;
+	tmp = *token_list;
 	node = tmp;
 	while (node)
 	{
@@ -26,5 +26,5 @@ void	lst_destroy(t_token **toklist)
 		node = node->next;
 		free(tmp);
 	}	
-	*toklist = NULL;
+	*token_list = NULL;
 }

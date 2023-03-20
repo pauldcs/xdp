@@ -19,7 +19,23 @@ SRCS := main.c              \
 	start_stdin_reader.c    \
 	dump_strings.c          \
 	\
-	arguments/parse_argument.c \
+	arguments/parse_expr/lexer/token_list_create.c   \
+	arguments/parse_expr/lexer/list/lst_destroy.c    \
+	arguments/parse_expr/lexer/list/lst_size.c       \
+	arguments/parse_expr/lexer/list/lst_new_token.c  \
+	arguments/parse_expr/lexer/list/lst_add_token.c  \
+	arguments/parse_expr/lexer/is_%/is_space.c       \
+	arguments/parse_expr/lexer/is_%/is_oparen.c      \
+	arguments/parse_expr/lexer/is_%/is_cparen.c      \
+	arguments/parse_expr/lexer/is_%/is_number.c      \
+	arguments/parse_expr/lexer/is_%/is_operator.c    \
+	arguments/parse_expr/ast/ast_new_operator.c      \
+	arguments/parse_expr/ast/ast_create.c            \
+	arguments/parse_expr/ast/ast_new_value.c         \
+	arguments/parse_expr/ast/ast_solve.c             \
+	arguments/parse_expr/ast/ast_debug.c             \
+	arguments/parse_expr/expr_parser.c               \
+	arguments/parse_argument.c                       \
 	\
 	utils/get_next_argument.c \
 	utils/usage.c             \

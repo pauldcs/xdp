@@ -1,19 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser.h                                           :+:      :+:    :+:   */
+/*   expr_parser.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pducos <pducos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 14:52:01 by pducos            #+#    #+#             */
-/*   Updated: 2022/11/28 08:10:33 by pducos           ###   ########.fr       */
+/*   Updated: 2023/03/20 15:47:28 by pducos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PARSER_H
-# define PARSER_H
+#ifndef __EXPR_PARSER_H__
+# define __EXPR_PARSER_H__
 
-# include "lexer.h"
+# include "expr_lexer.h"
 # include <stdbool.h>
 
 typedef enum e_exp_kind
@@ -43,12 +43,10 @@ struct s_ast
 };
 
 t_ast	*parser(t_token *list);
-
 t_ast	*ast_create(t_token *tokenlist);
-void	ast_display(t_ast *ast);
-t_ast	*ast_new_val(int value);
-t_ast	*ast_new_op(t_token_kind kind);
-void	ast_display(t_ast *ast);
+t_ast	*ast_new_value(int value);
+t_ast	*ast_new_operator(t_token_kind kind);
+void	ast_debug(t_ast *ast);
 size_t	ast_solve(t_ast *ast);
 
-#endif
+#endif /* __EXPR_PARSER_H__ */

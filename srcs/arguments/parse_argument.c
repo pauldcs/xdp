@@ -1,5 +1,7 @@
 #include "hdump.h"
 #include "libstringf.h"
+#include "expr_parser.h"
+#include "expr_lexer.h"
 #include "utils.h"
 #include <limits.h>
 #include <stdlib.h>
@@ -7,19 +9,40 @@
 #include <string.h>
 #include <stdbool.h>
 
+
+static bool parse_expr(const char *expr, size_t *dst)
+{
+    t_token		*list = NULL;
+
+	if (!*expr
+		|| !token_list_create(&list, expr))
+		return (false);
+
+	t_ast *ast = parser(list);
+    
+	if (!ast)
+		return (lst_destroy(&list), false);
+	ast_debug(ast);
+	
+	*dst = ast_solve(ast);
+	fputstr(2, "result: %d\n", *dst);
+	lst_destroy(&list);
+    return (false);
+}
+
 bool parse_argument(const char *argument, t_dump_params *params, int *ac, char ***av)
 {
     char *arg;
 
     if (!strncmp(argument, "--size", 6)) {
         if (*(argument + 6) == '=') {
-            if (!str_to_uint64(
+            if (!parse_expr(
                     argument + 7,
                     &params->file.range_size))
             return (report_error("'%s': %s\n", argument, "Invalid format"),
                 false);
         } else if ((arg = get_next_argument(ac, av)) != NULL) {
-            if (!str_to_uint64(
+            if (!parse_expr(
                 arg,
                 &params->file.range_size))
                 return (report_error("'%s': %s\n", argument, "Invalid format"),
@@ -30,13 +53,13 @@ bool parse_argument(const char *argument, t_dump_params *params, int *ac, char *
 
     } else if (!strncmp(argument, "--start", 7)) {
         if (*(argument + 7) == '=') {
-            if (!str_to_uint64(
+            if (!parse_expr(
                     argument + 8,
                     &params->file.start_offset))
             return (report_error("'%s': %s\n", argument, "Invalid format"),
                 false);
         } else if ((arg = get_next_argument(ac, av)) != NULL) {
-            if (!str_to_uint64(
+            if (!parse_expr(
                 arg,
                 &params->file.start_offset))
                 return (report_error("'%s': %s\n", argument, "Invalid format"),
@@ -55,13 +78,13 @@ bool parse_argument(const char *argument, t_dump_params *params, int *ac, char *
     } else if (!strncmp(argument, "--string", 8)) {
         params->mode = DUMP_STRINGS;
         if (*(argument + 8) == '=') {
-            if (!str_to_uint64(
+            if (!parse_expr(
                     argument + 9,
                     &params->string_size))
             return (report_error("'%s': %s\n", argument, "Invalid format"),
                 false);
         } else if ((arg = get_next_argument(ac, av)) != NULL) {
-            if (!str_to_uint64(
+            if (!parse_expr(
                 arg,
                 &params->string_size))
                 return (report_error("'%s': %s\n", argument, "Invalid format"),
