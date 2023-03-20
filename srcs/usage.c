@@ -12,7 +12,7 @@ void __usage(void)
 		"    --start=OFFSET  Starting byte offset to read from (default: 0).\n"
 		"    --string=SIZE   Display strings longer than SIZE.\n"
 		"    -r --raw        Output raw bytes in hexadecimal format, without formatting.\n"
-		"    -c --color      Enable color outputi\n"
+		"    -c --color      Enable color output\n"
 		"    -h --help       Show this help message\n\n"
 	);
 }
