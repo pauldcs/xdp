@@ -27,20 +27,21 @@ static inline void	write_offset(const uintptr_t p)
 	uint8_t		*buffer = (uint8_t *)(__screen__ + __screen_offset__);
 	uintptr_t ptr = (uintptr_t)p;
 
-	*(buffer + 7) = BASE16_ASCII_CHARS[(ptr >>  0) & 0xf];
-	*(buffer + 6) = BASE16_ASCII_CHARS[(ptr >>  4) & 0xf];
-	*(buffer + 5) = BASE16_ASCII_CHARS[(ptr >>  8) & 0xf];
-	*(buffer + 4) = BASE16_ASCII_CHARS[(ptr >> 12) & 0xf];
-	*(buffer + 3) = BASE16_ASCII_CHARS[(ptr >> 16) & 0xf];
-	*(buffer + 2) = BASE16_ASCII_CHARS[(ptr >> 20) & 0xf];
-	*(buffer + 1) = BASE16_ASCII_CHARS[(ptr >> 24) & 0xf];
-	*(buffer + 0) = BASE16_ASCII_CHARS[(ptr >> 28) & 0xf];
-	__screen_offset__ += 8;
+	*(buffer + 8) = BASE16_ASCII_CHARS[(ptr >>  0) & 0xf];
+	*(buffer + 7) = BASE16_ASCII_CHARS[(ptr >>  4) & 0xf];
+	*(buffer + 6) = BASE16_ASCII_CHARS[(ptr >>  8) & 0xf];
+	*(buffer + 5) = BASE16_ASCII_CHARS[(ptr >> 12) & 0xf];
+	*(buffer + 4) = BASE16_ASCII_CHARS[(ptr >> 16) & 0xf];
+	*(buffer + 3) = BASE16_ASCII_CHARS[(ptr >> 20) & 0xf];
+	*(buffer + 2) = BASE16_ASCII_CHARS[(ptr >> 24) & 0xf];
+	*(buffer + 1) = BASE16_ASCII_CHARS[(ptr >> 28) & 0xf];
+	*(buffer + 0) = '0';
+	__screen_offset__ += 9;
 
 	int i = 0;
 	while ((ptr >>= 4))
 		i++;
-	*(buffer + 6 - i) = '+';
+	*(buffer + 7 - i) = '+';
 }
 
 /* Writes 16 bytes of ascii into __screen__, non printable characters

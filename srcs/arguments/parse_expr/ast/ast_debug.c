@@ -6,7 +6,7 @@
 /*   By: pducos <pducos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/09 17:32:39 by pducos            #+#    #+#             */
-/*   Updated: 2023/03/20 17:01:13 by pducos           ###   ########.fr       */
+/*   Updated: 2023/03/20 18:20:26 by pducos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ static void	inner(t_ast *ast, size_t depth)
 
 void	ast_debug(t_ast *ast)
 {
+	setbuf(stdout, NULL);
 	putstr(" . Root\n");
 	inner(ast, 0);
 }

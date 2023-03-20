@@ -78,10 +78,12 @@ bool parse_argument(const char *argument, t_dump_params *params, int *ac, char *
                 false);
 
     } else if (!strcmp(argument, "-")) {
+        LOG(DEBUG, "Enabling stdin as input");
         params->is_stdin = true;
 
     } else if (!strcmp(argument, "-r")
            || !strcmp(argument, "--raw")) {
+        LOG(DEBUG, "Setting mode as: raw");
         params->mode = DUMP_RAW;
 
     } else if (!strncmp(argument, "--string", 8)) {
@@ -105,6 +107,7 @@ bool parse_argument(const char *argument, t_dump_params *params, int *ac, char *
 
     } else if (!strcmp(argument, "-c")
              ||!strcmp(argument, "--color")) {
+        LOG(DEBUG, "Enabling colors");
         params->colored_output = true;
 
     } else if (!strcmp(argument, "-h")

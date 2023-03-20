@@ -19,12 +19,7 @@ bool build_dump_structure(t_dump_params *params)
             params->file.range_size = params->file.file_size - params->file.start_offset;
         }
         if (!params->file.range_size)
-            params->file.range_size = params->file.file_size - params->file.start_offset;   
-
-        LOG(DEBUG, 
-            "range size: %db",
-            params->file.file_size - params->file.start_offset
-        ); 
+            params->file.range_size = params->file.file_size - params->file.start_offset;  
         
         return (true);
     }

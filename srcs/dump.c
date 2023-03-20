@@ -51,12 +51,13 @@ bool dump(t_dump_params *params)
 		}
 	}
 
-	LOG(INFO, "file_size      %d",  params->file.file_size);
-	LOG(INFO, "is_mapped      %s", (params->data.is_mapped ? "true" : "false"));
-	LOG(INFO, "aligned_offset %d",  params->data.aligned_offset);
-	LOG(INFO, "capacity       %d",  params->data.capacity);
-	LOG(INFO, "range_size     %d",  params->file.range_size);
-	LOG(INFO, "start_offset   %d",  params->file.start_offset);
+	LOG(INFO, " - data           %p",  params->data.data);
+	LOG(INFO, " - file_size      %d",  params->file.file_size);
+	LOG(INFO, " - is_mapped      %s", (params->data.is_mapped ? "true" : "false"));
+	LOG(INFO, " - aligned_offset %d",  params->data.aligned_offset);
+	LOG(INFO, " - capacity       %d",  params->data.capacity);
+	LOG(INFO, " - range_size     %d",  params->file.range_size);
+	LOG(INFO, " - start_offset   %d",  params->file.start_offset);
 
 	switch (params->mode)
 	{

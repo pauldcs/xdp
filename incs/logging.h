@@ -26,16 +26,15 @@ enum e_log_lvl {
     do { \
         const char* level_str; \
         switch (level) { \
-            case    INFO: level_str = BLU    "INFO" END; break; \
-            case   DEBUG: level_str = YEL   "DEBUG" END; break; \
+            case    INFO: level_str = BLU "   INFO" END; break; \
+            case   DEBUG: level_str = YEL "  DEBUG" END; break; \
             case WARNING: level_str = MAG "WARNING" END; break; \
-            case   ERROR: level_str = RED   "ERROR" END; break; \
-            case   FATAL: level_str = RED   "FATAL" END; break; \
+            case   ERROR: level_str = RED "  ERROR" END; break; \
+            case   FATAL: level_str = RED "  FATAL" END; break; \
             default:      level_str = "OTHER"; break; \
         } \
-        fputstr(2, "[%s] " fmt "\n", level_str, ##__VA_ARGS__); \
+        fputstr(2, " [%s] " fmt "\n", level_str, ##__VA_ARGS__); \
 } while (0)
-
 # else
 #  define LOG(level, fmt, ...)
 # endif /* __LOGGING__ */
