@@ -14,3 +14,5 @@ Options:
   -               Read file from stdin
 
 ```
+<img width="624" alt="Screenshot 2023-03-20 at 13 35 15" src="https://user-images.githubusercontent.com/45094398/226340680-6676c34e-0bd6-400a-9278-98bff47acf67.png">
+
