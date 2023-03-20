@@ -1,52 +1,25 @@
-#include "hexdump.h"
+#include "hdump.h"
 #include "libstringf.h"
+#include "utils.h"
 #include <limits.h>
 #include <stdlib.h>
 #include <errno.h>
 #include <string.h>
 #include <stdbool.h>
 
-static const char	*str_to_uint(const char *str, int64_t *result)
-{
-	long tmp;
-
-	tmp = 0;
-    if (*str == '0' && *(str + 1) == 'x') {
-        char *endptr;
-        tmp = strtol(str, &endptr, 16);
-        str = endptr;
-        if (errno == ERANGE
-            || tmp > INT_MAX
-            || *str)
-        return NULL;
-    } else {
-        while (*str >= '0' && *str <= '9')
-        {
-            tmp *= 10;
-            tmp += *(str++) & 0xCF;
-            if (tmp > INT_MAX)
-                return (NULL);
-        }
-    }
-	*result = tmp;
-	if (*str)
-		return (NULL);
-	return (str);
-}
-
-bool try_parse_argument(const char *argument, t_dump_params *params, int *ac, char ***av)
+bool parse_argument(const char *argument, t_dump_params *params, int *ac, char ***av)
 {
     char *arg;
 
     if (!strncmp(argument, "--size", 6)) {
         if (*(argument + 6) == '=') {
-            if (!str_to_uint(
+            if (!str_to_uint64(
                     argument + 7,
                     &params->file.range_size))
             return (report_error("'%s': %s\n", argument, "Invalid format"),
                 false);
         } else if ((arg = get_next_argument(ac, av)) != NULL) {
-            if (!str_to_uint(
+            if (!str_to_uint64(
                 arg,
                 &params->file.range_size))
                 return (report_error("'%s': %s\n", argument, "Invalid format"),
@@ -57,13 +30,13 @@ bool try_parse_argument(const char *argument, t_dump_params *params, int *ac, ch
 
     } else if (!strncmp(argument, "--start", 7)) {
         if (*(argument + 7) == '=') {
-            if (!str_to_uint(
+            if (!str_to_uint64(
                     argument + 8,
                     &params->file.start_offset))
             return (report_error("'%s': %s\n", argument, "Invalid format"),
                 false);
         } else if ((arg = get_next_argument(ac, av)) != NULL) {
-            if (!str_to_uint(
+            if (!str_to_uint64(
                 arg,
                 &params->file.start_offset))
                 return (report_error("'%s': %s\n", argument, "Invalid format"),
@@ -82,13 +55,13 @@ bool try_parse_argument(const char *argument, t_dump_params *params, int *ac, ch
     } else if (!strncmp(argument, "--string", 8)) {
         params->mode = DUMP_STRINGS;
         if (*(argument + 8) == '=') {
-            if (!str_to_uint(
+            if (!str_to_uint64(
                     argument + 9,
                     &params->string_size))
             return (report_error("'%s': %s\n", argument, "Invalid format"),
                 false);
         } else if ((arg = get_next_argument(ac, av)) != NULL) {
-            if (!str_to_uint(
+            if (!str_to_uint64(
                 arg,
                 &params->string_size))
                 return (report_error("'%s': %s\n", argument, "Invalid format"),

@@ -1,4 +1,4 @@
-#include "hexdump.h"
+#include "hdump.h"
 #include "reader.h"
 
 #include <stdbool.h>

@@ -1,4 +1,5 @@
-#include "hexdump.h"
+#include "hdump.h"
+#include "utils.h"
 #include "xlookup.h"
 #include <unistd.h>
 #include <stdbool.h>
@@ -8,26 +9,6 @@
 
 static uint8_t *__screen__;
 static size_t   __screen_offset__ = 0;
-
-/* Forces to write the buffer fully if write() failes, 
- * it's ok if this ends up looping endlessly.
- */
-static size_t	write_all(int fd, const void *buf, size_t s)
-{
-	ssize_t	c;
-	size_t	ret;
-
-	ret = 0;
-	while (s)
-	{
-		c = write(fd, buf + ret, s);
-		if (c == -1)
-			break ;
-		ret += c;
-		s -= c;
-	}
-	return (ret);
-}
 
 /* Dumps the content of __screen__ to stdout
  */
@@ -199,7 +180,7 @@ bool raw_bytes_dump(const void *addr, size_t size)
 
 /* Mimic of the Linux hexdump -C
 */
-bool	classic_hexdump_c(const void *addr, size_t n, int64_t start_offset)
+bool	classic_hexdump_c(const void *addr, size_t n, size_t start_offset)
 {
 	size_t		size;
 	const void 	*tmp = addr;
@@ -240,7 +221,7 @@ bool	classic_hexdump_c(const void *addr, size_t n, int64_t start_offset)
 }
 /* mimic of the Linux hexdump -C with colors
 */
-bool	classic_hexdump_c_color(const void *addr, size_t n, int64_t start_offset)
+bool	classic_hexdump_c_color(const void *addr, size_t n, size_t start_offset)
 {
 	size_t		size;
 	uint64_t 	*ptr;

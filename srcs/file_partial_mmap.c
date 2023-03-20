@@ -1,6 +1,6 @@
 #include "libstringf.h"
 #include "logging.h"
-#include "hexdump.h"
+#include "hdump.h"
 #include <string.h>
 #include <unistd.h>
 #include <sys/mman.h>
