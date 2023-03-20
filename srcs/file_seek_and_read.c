@@ -4,6 +4,9 @@
 #include <string.h>
 #include <stdlib.h>
 
+/* Reads a portion of a file into memory and updates the input
+ * parameters accordingly.
+ */
 bool file_seek_and_read(t_dump_params *params)
 {
 	params->data.capacity = params->file.range_size;

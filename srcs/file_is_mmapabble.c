@@ -7,6 +7,9 @@
 #include <errno.h>
 #include <stdlib.h>
 
+/* Determines if a given file is suitable for memory mapping by checking the file size,
+ * block size, and requested range size.
+ */
 bool file_is_mmapabble(int fd, size_t file_size, size_t range_size)
 {
     size_t 		page_size = sysconf(_SC_PAGE_SIZE);

@@ -18,6 +18,8 @@
 # define GRY "\x1b[2;37m"
 # define END "\e[0m"
 
+# define BASE16_ASCII_CHARS "0123456789abcdef"
+
 #define BLK_UINT64 *(uint64_t*)BLK
 #define RED_UINT64 *(uint64_t*)RED
 #define GRN_UINT64 *(uint64_t*)GRN
@@ -64,7 +66,7 @@ bool 	open_hexable_file(t_dump_params *params);
 bool	file_is_mmapabble(int fd, size_t file_size, size_t range_size);
 bool 	file_partial_mmap(t_dump_params *params);
 bool 	file_seek_and_read(t_dump_params *params);
-bool 	try_parse_argument(const char *argument, t_dump_params *params);
+bool 	try_parse_argument(const char *argument, t_dump_params *params, int *ac, char ***av);
 bool 	start_stdin_reader(t_dump_params *params);
 bool 	build_dump_structure(t_dump_params *params);
 bool 	dump(t_dump_params *params);

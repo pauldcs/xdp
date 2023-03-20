@@ -2,6 +2,9 @@
 #include "logging.h"
 #include <stdbool.h>
 
+/* Builds a dump structure based on the input parameters,
+ * verifying and adjusting the range if needed.
+ */
 bool build_dump_structure(t_dump_params *params)
 {
     if (params->file.start_offset < params->file.file_size) {

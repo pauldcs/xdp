@@ -4,6 +4,9 @@
 #include <string.h>
 #include <sys/stat.h>
 
+/* Performs basic validation to ensure it is a regular file.
+ * If successful, sets the file descriptor and file size in the parameters.
+ */
 bool open_hexable_file(t_dump_params *params)
 {
 	struct stat st;

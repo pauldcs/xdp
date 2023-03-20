@@ -11,7 +11,7 @@ int main(int ac, char *av[])
 
 	memset(&params, 0, sizeof(params));
 	while ((ptr = get_next_argument(&ac, &av))) {
-		if (!try_parse_argument(ptr, &params))
+		if (!try_parse_argument(ptr, &params, &ac, &av))
 			return (EXIT_FAILURE);
 	}
 	ret = !dump(&params);

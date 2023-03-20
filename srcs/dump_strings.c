@@ -23,6 +23,9 @@ static inline void	write_pointer(const uintptr_t p)
 	write(1, buffer, 12);
 }
 
+/* Scans memory for printable ASCII characters and writes any found strings
+ * longer than len to standard output.
+ */
 bool dump_strings(const uint8_t* addr, size_t n, size_t len)
 {
     const uint8_t   *ptr = addr;
