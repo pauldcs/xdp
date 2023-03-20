@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-bool dump(t_dump_params *params)
+bool _entry(t_dump_params *params)
 {
 	int ret;
 
@@ -16,9 +16,16 @@ bool dump(t_dump_params *params)
 		LOG(ERROR, "No input file");
 			return (false);
 
-	} else if (!open_hexable_file(params)) {
-		LOG(ERROR, "open_hexable_file()");
-		return (false);
+	} else {
+		ssize_t ret = file_try_open(
+				params->file.filename,
+				&params->file.fd
+		);
+		if (ret == -1) {
+			LOG(ERROR, "open_hexable_file()");
+			return (false);
+		}
+		params->file.file_size = ret;
 	}
 
 	if (!build_dump_structure(params)) {

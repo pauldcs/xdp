@@ -1,7 +1,4 @@
-#include "hdump.h"
 #include "reader.h"
-
-#include <stdbool.h>
 
 ssize_t read_from_fd(int fd, char **data)
 {

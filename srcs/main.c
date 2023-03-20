@@ -19,7 +19,7 @@ int main(int ac, char *av[])
 	}
 	if (!params.file.filename)
 		return (__usage(), EXIT_SUCCESS);
-	ret = !dump(&params);
+	ret = !_entry(&params);
 	if (params.file.fd)
 		close(params.file.fd);
 	return (ret);

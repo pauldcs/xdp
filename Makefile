@@ -12,12 +12,11 @@ CFLAGS_TEST := -Wall -Wextra -Werror -g3 $(SANITIZE)
 LIBSTRINGF  := libs/libstringf
 
 SRCS := main.c              \
+	_entry.c                \
 	hex_core.c              \
-	dump.c                  \
 	file_partial_mmap.c     \
 	file_seek_and_read.c    \
 	file_is_mmapabble.c     \
-	open_hexable_file.c     \
 	build_dump_structure.c  \
 	dump_strings.c          \
 	\
@@ -35,6 +34,7 @@ SRCS := main.c              \
 	arguments/parse_argument.c                       \
 	\
 	utils/get_next_argument.c \
+	utils/file_try_open.c     \
 	utils/usage.c             \
 	utils/str_to_uint64.c     \
 	utils/write_all.c         \
