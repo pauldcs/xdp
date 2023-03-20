@@ -25,11 +25,6 @@ SRCS := main.c              \
 	arguments/parse_expr/lexer/list/lst_size.c       \
 	arguments/parse_expr/lexer/list/lst_new_token.c  \
 	arguments/parse_expr/lexer/list/lst_add_token.c  \
-	arguments/parse_expr/lexer/is_%/is_space.c       \
-	arguments/parse_expr/lexer/is_%/is_oparen.c      \
-	arguments/parse_expr/lexer/is_%/is_cparen.c      \
-	arguments/parse_expr/lexer/is_%/is_number.c      \
-	arguments/parse_expr/lexer/is_%/is_operator.c    \
 	arguments/parse_expr/ast/ast_new_operator.c      \
 	arguments/parse_expr/ast/ast_create.c            \
 	arguments/parse_expr/ast/ast_new_value.c         \

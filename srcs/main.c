@@ -16,6 +16,8 @@ int main(int ac, char *av[])
 		if (!parse_argument(ptr, &params, &ac, &av))
 			return (EXIT_FAILURE);
 	}
+	if (!params.file.filename)
+		return (__usage(), EXIT_SUCCESS);
 	ret = !dump(&params);
 	if (params.file.fd)
 		close(params.file.fd);

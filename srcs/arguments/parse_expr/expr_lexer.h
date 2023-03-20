@@ -23,12 +23,6 @@ typedef struct s_token {
 	struct s_token	*next;
 }	t_token;
 
-bool	is_cparen  (char c);
-bool	is_number  (char c);
-bool	is_operator(char c);
-bool	is_oparen  (char c);
-bool	is_space   (char c);
-
 bool	token_list_create(t_token **list, const char *in);
 
 t_token	*lst_new_token(void);

@@ -44,7 +44,6 @@ typedef struct s_dump_params {
 	t_mode 	mode;
 	size_t  string_size;
 	bool 	colored_output;
-	bool 	is_stdin;
 	struct  s_data {
 		void         *data;
 		bool 		 is_mapped;

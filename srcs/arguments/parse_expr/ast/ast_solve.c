@@ -6,7 +6,7 @@
 /*   By: pducos <pducos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 20:07:41 by pducos            #+#    #+#             */
-/*   Updated: 2023/03/20 15:45:40 by pducos           ###   ########.fr       */
+/*   Updated: 2023/03/20 21:22:30 by pducos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,14 @@ size_t ast_solve(t_ast *ast)
 
 		switch (ast->kind)
 		{
-			case EXP_ADD: 	result = x + y; break;
-			case EXP_SUB: 	result = x - y; break;
-			case EXP_MUL: 	result = x * y; break;
-			default:        break;
+			case EXP_ADD:
+				result = x + y; break;
+			case EXP_SUB:
+				result = x - y; break;
+			case EXP_MUL:
+				result = x * y; break;
+			default: 
+				break;
 		}
 	}
 	return (result);

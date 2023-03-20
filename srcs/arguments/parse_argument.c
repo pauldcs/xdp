@@ -49,16 +49,16 @@ bool parse_argument(const char *argument, t_dump_params *params, int *ac, char *
             if (!parse_expr(
                     argument + 7,
                     &params->file.range_size))
-            return (report_error("'%s': %s\n", argument, "Invalid format"),
+            return (report_error("'%s': %s\n", argument, "Invalid"),
                 false);
         } else if ((arg = get_next_argument(ac, av)) != NULL) {
             if (!parse_expr(
                 arg,
                 &params->file.range_size))
-                return (report_error("'%s': %s\n", argument, "Invalid format"),
+                return (report_error("'%s': %s\n", argument, "Invalid"),
                     false);
         } else 
-            return (report_error("'%s': %s\n", argument, "Invalid format"),
+            return (report_error("'%s': %s\n", argument, "Invalid"),
                 false);
 
     } else if (!strncmp(argument, "--start", 7)) {
@@ -67,21 +67,17 @@ bool parse_argument(const char *argument, t_dump_params *params, int *ac, char *
             if (!parse_expr(
                     argument + 8,
                     &params->file.start_offset))
-            return (report_error("'%s': %s\n", argument, "Invalid format"),
+            return (report_error("'%s': %s\n", argument, "Invalid"),
                 false);
         } else if ((arg = get_next_argument(ac, av)) != NULL) {
             if (!parse_expr(
                 arg,
                 &params->file.start_offset))
-                return (report_error("'%s': %s\n", argument, "Invalid format"),
+                return (report_error("'%s': %s\n", argument, "Invalid"),
                     false);
         } else 
-            return (report_error("'%s': %s\n", argument, "Invalid format"),
+            return (report_error("'%s': %s\n", argument, "Invalid"),
                 false);
-
-    } else if (!strcmp(argument, "-")) {
-        LOG(DEBUG, "Enabling stdin as input");
-        params->is_stdin = true;
 
     } else if (!strcmp(argument, "-r")
            || !strcmp(argument, "--raw")) {
@@ -95,16 +91,16 @@ bool parse_argument(const char *argument, t_dump_params *params, int *ac, char *
             if (!parse_expr(
                     argument + 9,
                     &params->string_size))
-            return (report_error("'%s': %s\n", argument, "Invalid format"),
+            return (report_error("'%s': %s\n", argument, "Invalid"),
                 false);
         } else if ((arg = get_next_argument(ac, av)) != NULL) {
             if (!parse_expr(
                 arg,
                 &params->string_size))
-                return (report_error("'%s': %s\n", argument, "Invalid format"),
+                return (report_error("'%s': %s\n", argument, "Invalid"),
                     false);
         } else 
-            return (report_error("'%s': %s\n", argument, "Invalid format"),
+            return (report_error("'%s': %s\n", argument, "Invalid"),
                 false);
 
     } else if (!strcmp(argument, "-c")
@@ -120,9 +116,8 @@ bool parse_argument(const char *argument, t_dump_params *params, int *ac, char *
     } else if (!params->file.filename) {
         params->file.filename = argument;
     } else {
-        LOG(ERROR, "'%s': Could not be parsed", argument);
-        return (report_error("'%s': %s\n", argument, "Unrecognized argument"),
-                false);
+        FATAL_ERROR("'%s': Could not be parsed", argument);
+        return (false);
     }
     return (true);
 }

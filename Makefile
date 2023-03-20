@@ -14,6 +14,9 @@ dbg: all
 asan: CFLAGS=$(CFLAGS_ASAN)
 asan: all
 
+test: all
+	(cd tests && ./tester.sh)
+
 -include  $(SRCS_OBJS:.o=.d)
 
 $(NAME): $(SRCS_OBJS)
@@ -31,4 +34,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY	: all clean fclean re
+.PHONY	: all clean fclean re dbg asan test

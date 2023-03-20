@@ -223,7 +223,6 @@ RunTest() {
 
 PrintSummary() {
     cat << EOF
-
     Summary: [${passed}/$((passed + failed + skipped))]
     --------------------------- 
     Memory errors: ${memory_errors}

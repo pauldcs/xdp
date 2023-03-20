@@ -13,13 +13,8 @@ bool dump(t_dump_params *params)
 	int ret;
 
 	if (!params->file.filename) {
-		params->data.is_mapped = false;
-		params->is_stdin = true;
-
-		if (!start_stdin_reader(params)) {
-			LOG(ERROR, "start_stdin_reader()");
+		LOG(ERROR, "No input file");
 			return (false);
-		}
 
 	} else if (!open_hexable_file(params)) {
 		LOG(ERROR, "open_hexable_file()");
