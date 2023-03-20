@@ -3,9 +3,10 @@ CC			:= clang
 SRCS_DIR	:= srcs
 OBJS_DIR	:= .objs
 INCS_DIR	:= incs
-SANITIZER	:= -fstack-protector-strong -fsanitize=address
 LOGGING     := -D __LOGGING__
-CFLAGS 		:= -Wall -Wextra -Werror -O3 -g3
+CFLAGS 		:= -Wall -Wextra -Werror -O3
+CFLAGS_DBG 	:= $(CFLAGS) $(LOGGING)
+CFLAGS_ASAN := $(CFLAGS_DBG) -fstack-protector-strong -fsanitize=address
 LIBSTRINGF  := libs/libstringf
 
 SRCS := main.c              \
