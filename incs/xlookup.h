@@ -3,8 +3,75 @@
 
 # include <stdint.h>
 
+#define _XA		0x200 /* extra alphabetic */
+#define _XS		0x100 /* extra space */
+#define _BB		0x80 /* BEL, BS, etc. */
+#define _CN		0x40 /* CR, FF, HT, NL, VT */
+#define _DI		0x20 /* '0'-'9' */
+#define _LO		0x10 /* 'a'-'z' */
+#define _PU		0x08 /* punctuation */
+#define _SP		0x04 /* space */
+#define _UP		0x02 /* 'A'-'Z' */
+#define _XD		0x01 /* '0'-'9', 'A'-'F', 'a'-'f' */
+
+#define XDI (_DI|_XD)
+#define XLO (_LO|_XD)
+#define XUP (_UP|_XD)
+
+#define isalnum(c)	(_Ctype[(int)(c)] & (_DI|_LO|_UP|_XA))
+#define isalpha(c)	(_Ctype[(int)(c)] & (_LO|_UP|_XA))
+#define iscntrl(c)	(_Ctype[(int)(c)] & (_BB|_CN))
+#define isdigit(c)	(_Ctype[(int)(c)] & _DI)
+#define isgraph(c)	(_Ctype[(int)(c)] & (_DI|_LO|_PU|_UP|_XA))
+#define islower(c)	(_Ctype[(int)(c)] & _LO)
+#define isprint(c)	(_Ctype[(int)(c)] & (_DI|_LO|_PU|_SP|_UP|_XA))
+#define ispunct(c)	(_Ctype[(int)(c)] & _PU)
+#define isspace(c)	(_Ctype[(int)(c)] & (_CN|_SP|_XS))
+#define isupper(c)	(_Ctype[(int)(c)] & _UP)
+#define isxdigit(c)	(_Ctype[(int)(c)] & _XD)
+
+static const short ctyp_tab[256] = {
+	0, _BB, _BB, _BB, _BB, _BB, _BB, _BB,
+	_BB, _CN, _CN, _CN, _CN, _CN, _BB, _BB,
+	_BB, _BB, _BB, _BB, _BB, _BB, _BB, _BB,
+	_BB, _BB, _BB, _BB, _BB, _BB, _BB, _BB,
+	_SP, _PU, _PU, _PU, _PU, _PU, _PU, _PU,
+	_PU, _PU, _PU, _PU, _PU, _PU, _PU, _PU,
+	XDI, XDI, XDI, XDI, XDI, XDI, XDI, XDI,
+	XDI, XDI, _PU, _PU, _PU, _PU, _PU, _PU,
+	_PU, XUP, XUP, XUP, XUP, XUP, XUP, _UP,
+	_UP, _UP, _UP, _UP, _UP, _UP, _UP, _UP,
+	_UP, _UP, _UP, _UP, _UP, _UP, _UP, _UP,
+	_UP, _UP, _UP, _PU, _PU, _PU, _PU, _PU,
+	_PU, XLO, XLO, XLO, XLO, XLO, XLO, _LO,
+	_LO, _LO, _LO, _LO, _LO, _LO, _LO, _LO,
+	_LO, _LO, _LO, _LO, _LO, _LO, _LO, _LO,
+	_LO, _LO, _LO, _PU, _PU, _PU, _PU, _BB,
+ };
+
+const short *_Ctype = &ctyp_tab[0];
+
+static const char _Cprint[256] = {
+    '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.',
+    '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.',
+    ' ', '!', '"', '#', '$', '%', '&', '\'', '(', ')', '*', '+', ',', '-', '.', '/',
+    '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ':', ';', '<', '=', '>', '?',
+    '@', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O',
+    'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '[', '\\', ']', '^', '_',
+    '`', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o',
+    'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '{', '|', '}', '~', '.',
+    '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.',
+    '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.',
+    '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.',
+    '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.',
+    '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.',
+    '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.',
+    '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.',
+    '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.'
+};
+
 static const uint32_t _xLookup[] = {
-	0x20202d,
+	0x203030,
 	0x203130, 0x203230, 0x203330, 0x203430, 0x203530, 0x203630, 0x203730, 0x203830,
 	0x203930, 0x206130, 0x206230, 0x206330, 0x206430, 0x206530, 0x206630, 0x203031,
 	0x203131, 0x203231, 0x203331, 0x203431, 0x203531, 0x203631, 0x203731, 0x203831,
