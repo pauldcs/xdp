@@ -29,10 +29,12 @@ static bool parse_expr(const char *expr, size_t *dst)
 		return (lst_destroy(&list), false);
     }
     LOG(INFO, "Parser: OK");
+#ifdef __LOGGING__
     ast_debug(ast);
+#endif
 	
 	*dst = ast_solve(ast);
-	LOG(DEBUG, "AST equals: %d", *dst);
+	LOG(OTHER, "-> expression equals %d", *dst);
 	lst_destroy(&list);
     return (true);
 }

@@ -6,7 +6,7 @@
 /*   By: pducos <pducos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/09 17:32:39 by pducos            #+#    #+#             */
-/*   Updated: 2023/03/20 18:20:26 by pducos           ###   ########.fr       */
+/*   Updated: 2023/03/20 19:01:27 by pducos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static void	inner(t_ast *ast, size_t depth)
 
 	i = 0;
 	while (i++ < depth)
-		putstr("%8s", "");
+		putstr("%4s", "");
 	if (ast->kind == EXP_VAL)
 		putstr(" - value='%d'\n", ast->value);
 	else

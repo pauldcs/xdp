@@ -4,8 +4,8 @@ SRCS_DIR	:= srcs
 OBJS_DIR	:= .objs
 INCS_DIR	:= incs
 LOGGING     := -D __LOGGING__
-CFLAGS 		:= -Wall -Wextra -Werror -O3
-CFLAGS_DBG 	:= $(CFLAGS) $(LOGGING)
+CFLAGS 		:= -Wall -Wextra -Werror -O2
+CFLAGS_DBG 	:= $(CFLAGS) -g3 $(LOGGING)
 CFLAGS_ASAN := $(CFLAGS_DBG) -fstack-protector-strong -fsanitize=address
 LIBSTRINGF  := libs/libstringf
 
