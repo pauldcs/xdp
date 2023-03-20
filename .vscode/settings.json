@@ -1,7 +1,0 @@
-{
-	"files.associations": {
-		"stdlib.h": "c",
-		"__node_handle": "c",
-		"sstream": "c"
-	}
-}
