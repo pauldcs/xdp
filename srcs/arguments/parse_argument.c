@@ -1,5 +1,6 @@
 #include "hdump.h"
 #include "libstringf.h"
+#include "logging.h"
 #include "expr_parser.h"
 #include "expr_lexer.h"
 #include "utils.h"
@@ -15,19 +16,25 @@ static bool parse_expr(const char *expr, size_t *dst)
     t_token		*list = NULL;
 
 	if (!*expr
-		|| !token_list_create(&list, expr))
-		return (false);
-
+		|| !token_list_create(&list, expr)) {   
+        LOG(ERROR, "Failed to tokenize expression");   
+		return (lst_destroy(&list), false);
+    }
+    LOG(INFO, "Lexer: OK");
 	t_ast *ast = parser(list);
     
 	if (!ast)
+    {   
+        LOG(ERROR, "Failed to generate AST");   
 		return (lst_destroy(&list), false);
-	ast_debug(ast);
+    }
+    LOG(INFO, "Parser: OK");
+    ast_debug(ast);
 	
 	*dst = ast_solve(ast);
-	fputstr(2, "result: %d\n", *dst);
+	LOG(DEBUG, "AST equals: %d", *dst);
 	lst_destroy(&list);
-    return (false);
+    return (true);
 }
 
 bool parse_argument(const char *argument, t_dump_params *params, int *ac, char ***av)
@@ -35,6 +42,7 @@ bool parse_argument(const char *argument, t_dump_params *params, int *ac, char *
     char *arg;
 
     if (!strncmp(argument, "--size", 6)) {
+        LOG(DEBUG, "parsing argument '--size'");
         if (*(argument + 6) == '=') {
             if (!parse_expr(
                     argument + 7,
@@ -52,6 +60,7 @@ bool parse_argument(const char *argument, t_dump_params *params, int *ac, char *
                 false);
 
     } else if (!strncmp(argument, "--start", 7)) {
+        LOG(DEBUG, "parsing argument '--start'");
         if (*(argument + 7) == '=') {
             if (!parse_expr(
                     argument + 8,
@@ -76,6 +85,7 @@ bool parse_argument(const char *argument, t_dump_params *params, int *ac, char *
         params->mode = DUMP_RAW;
 
     } else if (!strncmp(argument, "--string", 8)) {
+        LOG(DEBUG, "parsing argument '--string'");
         params->mode = DUMP_STRINGS;
         if (*(argument + 8) == '=') {
             if (!parse_expr(
@@ -105,6 +115,7 @@ bool parse_argument(const char *argument, t_dump_params *params, int *ac, char *
     } else if (!params->file.filename) {
         params->file.filename = argument;
     } else {
+        LOG(ERROR, "'%s': Could not be parsed", argument);
         return (report_error("'%s': %s\n", argument, "Unrecognized argument"),
                 false);
     }

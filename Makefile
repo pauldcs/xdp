@@ -4,7 +4,7 @@ SRCS_OBJS := $(patsubst %.c,$(OBJS_DIR)/%.o,$(SRCS))
 
 $(OBJS_DIR)/%.o:$(SRCS_DIR)/%.c
 	@mkdir -vp $(dir $@)
-	$(CC) $(CFLAGS) -MMD -MP -o $@ -c $< -I $(INCS_DIR)
+	$(CC) $(CFLAGS) -MMD -MP -o $@ -c $< -I $(INCS_DIR) $(LOGGING)
 
 all: $(NAME)
 

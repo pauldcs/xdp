@@ -30,9 +30,8 @@ static bool __str_to_uint64(const char *str, size_t *dst)
         tmp = strtol(str, &endptr, 16);
         str = endptr;
         if (errno == ERANGE
-            || tmp > INT_MAX
-            || *str)
-        return (false);
+            || tmp > INT_MAX)
+        	return (false);
     } else {
         while (*str >= '0' && *str <= '9')
         {
@@ -49,6 +48,7 @@ static bool __str_to_uint64(const char *str, size_t *dst)
 		|| *str == '('
 		|| *str == ')')
 		return (true);
+	putstr("false");
 	return (false);
 }
 
@@ -60,6 +60,8 @@ static bool tokenize_number(t_token **list, char **ptr)
 		return (false);
 	if (!__str_to_uint64(*ptr, &token->value))
 		return (free(token), false);
+	if (**ptr == '0' && *(*ptr + 1) == 'x')
+		(*ptr)+=2;
 	while (**ptr >= '0' && **ptr <= '9')
 		(*ptr)++;
 	lst_add_token(list, token, TOKEN_VAL);

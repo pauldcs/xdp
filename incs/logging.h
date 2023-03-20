@@ -2,6 +2,7 @@
 # define __LOGGING_H__
 
 # include "libstringf.h"
+# include "hdump.h"
 # include <unistd.h>
 # include <stdlib.h>
 
