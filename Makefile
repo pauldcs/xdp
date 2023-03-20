@@ -25,6 +25,7 @@ clean:
 
 fclean: clean
 	$(MAKE) fclean -C $(LIBSTRINGF)
+	rm -rf tests/outfiles
 	rm -f $(NAME)
 	rm -rf $(OBJS_DIR)
 

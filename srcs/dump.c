@@ -60,7 +60,6 @@ bool dump(t_dump_params *params)
 	LOG(DEBUG, " - range_size     %d",  params->file.range_size);
 	LOG(DEBUG, " - start_offset   %d",  params->file.start_offset);
 
-	write(1, "\n", 1);
 	switch (params->mode)
 	{
 		case DUMP_CLASSIC:
