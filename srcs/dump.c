@@ -64,11 +64,13 @@ bool dump(t_dump_params *params)
 			ret = (params->colored_output ? 
 						classic_hexdump_c_color(
 							params->data.data,
-							params->file.range_size
+							params->file.range_size,
+							params->file.start_offset
 						)
 						: classic_hexdump_c(
 							params->data.data,
-							params->file.range_size
+							params->file.range_size,
+							params->file.start_offset
 						)
 				); break;
 		
