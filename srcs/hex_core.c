@@ -157,7 +157,7 @@ static inline void	write_16_bytes_spaced_colorized(const uint8_t *addr, size_t n
 /* write the bytes as a stream without any formatting. Null bytes are 
  * replaced by ".."
  */
-bool raw_bytes_dump(const void *addr, size_t size)
+bool perform_raw_hexdump(const void *addr, size_t size)
 {
 	uint8_t	*ptr = (uint8_t *)addr;
 
@@ -177,7 +177,7 @@ bool raw_bytes_dump(const void *addr, size_t size)
 
 /* Mimic of the Linux hexdump -C
 */
-bool	classic_hexdump_c(const void *addr, size_t n, size_t start_offset)
+bool	perform_regular_hexdump(const void *addr, size_t n, size_t start_offset)
 {
 	size_t		size;
 	const void 	*tmp = addr;
@@ -218,7 +218,7 @@ bool	classic_hexdump_c(const void *addr, size_t n, size_t start_offset)
 }
 /* mimic of the Linux hexdump -C with colors
 */
-bool	classic_hexdump_c_color(const void *addr, size_t n, size_t start_offset)
+bool	perform_color_hexdump(const void *addr, size_t n, size_t start_offset)
 {
 	size_t		size;
 	uint64_t 	*ptr;

@@ -1,26 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lst_new_token.c                                    :+:      :+:    :+:   */
+/*   lst_add_token.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pducos <pducos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/05 21:29:25 by pducos            #+#    #+#             */
-/*   Updated: 2023/03/20 22:10:23 by pducos           ###   ########.fr       */
+/*   Updated: 2023/03/21 00:17:21 by pducos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "expr_lexer.h"
-#include <string.h>
-#include <stdlib.h>
+#include "expr/expr_lexer.h"
+#include <stdint.h>
 
-t_token	*lst_new_token(void)
+void	lst_add_token(t_token **token_list, t_token *token, t_token_kind kind)
 {
-	t_token	*token = malloc(sizeof(t_token));
+	t_token	*node;
 
-	if (!token)
-		return (NULL);
-		
-	memset(token, 0, sizeof(t_token));
-	return (token);
+	token->kind = kind;
+	if (!*token_list)
+		*token_list = token;
+	else
+	{
+		node = *token_list;
+		while (node->next)
+			node = node->next;
+		node->next = token;
+	}
 }

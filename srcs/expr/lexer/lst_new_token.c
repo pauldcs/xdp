@@ -1,31 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lst_size.c                                         :+:      :+:    :+:   */
+/*   lst_new_token.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pducos <pducos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/09 03:29:59 by pducos            #+#    #+#             */
-/*   Updated: 2023/03/20 15:35:25 by pducos           ###   ########.fr       */
+/*   Created: 2022/11/05 21:29:25 by pducos            #+#    #+#             */
+/*   Updated: 2023/03/21 00:17:32 by pducos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "expr_lexer.h"
-#include <stddef.h>
+#include "expr/expr_lexer.h"
+#include <string.h>
+#include <stdlib.h>
 
-size_t	lst_size(t_token *lst)
+t_token	*lst_new_token(void)
 {
-        size_t  size;
-        t_token *tmp;
+	t_token	*token = malloc(sizeof(t_token));
 
-        if (lst) {
-                tmp = lst;
-                size = 1;
-                while (tmp->next) {
-                        tmp = tmp->next;
-                        ++size;
-                }
-                return (size);
-        }
-        return (0);
+	if (!token)
+		return (NULL);
+		
+	memset(token, 0, sizeof(t_token));
+	return (token);
 }

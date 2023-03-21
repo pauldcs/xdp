@@ -33,7 +33,7 @@ static inline void	write_offset(const uintptr_t p)
 /* Scans memory for printable ASCII characters and writes any found strings
  * longer than len to standard output.
  */
-bool dump_strings(const uint8_t* addr, size_t n, size_t len)
+bool perform_string_dump(const uint8_t* addr, size_t n, size_t len)
 {
     const uint8_t   *ptr = addr;
     size_t          count;

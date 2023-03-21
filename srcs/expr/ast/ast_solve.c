@@ -6,14 +6,12 @@
 /*   By: pducos <pducos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 20:07:41 by pducos            #+#    #+#             */
-/*   Updated: 2023/03/20 21:22:30 by pducos           ###   ########.fr       */
+/*   Updated: 2023/03/21 00:18:50 by pducos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "expr_parser.h"
-#include "expr_lexer.h"
-#include <math.h>
-#include <stdint.h>
+#include "expr/expr_parser.h"
+#include "expr/expr_lexer.h"
 
 size_t ast_solve(t_ast *ast)
 {

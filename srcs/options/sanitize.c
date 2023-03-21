@@ -5,7 +5,7 @@
 /* Builds a dump structure based on the input parameters,
  * verifying and adjusting the range if needed.
  */
-bool build_dump_structure(t_dump_params *params)
+bool sanitize(t_dump_params *params)
 {
     if (params->file.start_offset < params->file.file_size) {
         if (params->file.start_offset + params->file.range_size > params->file.file_size) {

@@ -1,7 +1,7 @@
 #include "hdump.h"
 #include "logging.h"
-#include "expr_parser.h"
-#include "expr_lexer.h"
+#include "expr/expr_parser.h"
+#include "expr/expr_lexer.h"
 #include <string.h>
 #include <stdbool.h>
 
@@ -35,7 +35,7 @@ static bool parse_expr(const char *expr, size_t *dst)
     return (true);
 }
 
-bool parse_argument(const char *argument, t_dump_params *params, int *ac, char ***av)
+bool parse_single_option(const char *argument, t_dump_params *params, int *ac, char ***av)
 {
     char *arg;
 

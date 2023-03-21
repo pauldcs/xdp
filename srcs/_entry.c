@@ -1,6 +1,8 @@
 #include "hdump.h"
+#include "options.h"
 #include "logging.h"
 #include "libstringf.h"
+#include "file/file.h"
 #include <sys/mman.h>
 #include <stdbool.h>
 #include <unistd.h>
@@ -28,7 +30,7 @@ bool _entry(t_dump_params *params)
 		params->file.file_size = ret;
 	}
 
-	if (!build_dump_structure(params)) {
+	if (!sanitize(params)) {
 		LOG(ERROR, "build_dump_structure()");
 		return (false);
 	}
@@ -66,12 +68,12 @@ bool _entry(t_dump_params *params)
 	{
 		case DUMP_CLASSIC:
 			ret = (params->colored_output ? 
-						classic_hexdump_c_color(
+						perform_color_hexdump(
 							params->data.data,
 							params->file.range_size,
 							params->file.start_offset
 						)
-						: classic_hexdump_c(
+						: perform_regular_hexdump(
 							params->data.data,
 							params->file.range_size,
 							params->file.start_offset
@@ -79,13 +81,13 @@ bool _entry(t_dump_params *params)
 				); break;
 		
 		case DUMP_RAW:
-			ret = raw_bytes_dump(
+			ret = perform_raw_hexdump(
 				params->data.data,
 				params->file.range_size
 			); break;
 		
 		case DUMP_STRINGS:
-			ret = dump_strings(
+			ret = perform_string_dump(
 				params->data.data,
 				params->file.range_size,
 				params->string_size

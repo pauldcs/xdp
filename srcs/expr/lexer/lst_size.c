@@ -1,27 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ast_new_value.c                                    :+:      :+:    :+:   */
+/*   lst_size.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pducos <pducos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/07 15:12:14 by pducos            #+#    #+#             */
-/*   Updated: 2023/03/20 15:22:54 by pducos           ###   ########.fr       */
+/*   Created: 2022/11/09 03:29:59 by pducos            #+#    #+#             */
+/*   Updated: 2023/03/21 00:17:36 by pducos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "expr_parser.h"
-#include "expr_lexer.h"
-#include <stdlib.h>
+#include "expr/expr_lexer.h"
+#include <stddef.h>
 
-t_ast	*ast_new_value(int value)
+size_t	lst_size(t_token *lst)
 {
-	t_ast	*node;
+        size_t  size;
+        t_token *tmp;
 
-	node = malloc(sizeof(t_ast));
-	if (!node)
-		return (NULL);
-	node->kind = EXP_VAL;
-	node->value = value;
-	return (node);
+        if (lst) {
+                tmp = lst;
+                size = 1;
+                while (tmp->next) {
+                        tmp = tmp->next;
+                        ++size;
+                }
+                return (size);
+        }
+        return (0);
 }

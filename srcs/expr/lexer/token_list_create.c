@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "expr_lexer.h"
+#include "expr/expr_lexer.h"
 #include "logging.h"
 #include "libstringf.h"
 #include "utils.h"

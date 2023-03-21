@@ -30,4 +30,4 @@ void	lst_add_token(t_token **token_list, t_token *token, t_token_kind kind);
 void	lst_destroy(t_token **token_list);
 size_t	lst_size(t_token *lst);
 
-#endif
+#endif /* __EXPR_LEXER_H__ */
