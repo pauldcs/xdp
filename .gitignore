@@ -1,6 +1,7 @@
 /.vscode
 .DS_Store
-/.objs
+*.objs
 hdump
 *.o
+*.a
 .todo

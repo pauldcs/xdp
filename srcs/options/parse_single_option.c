@@ -11,7 +11,7 @@ static bool parse_expr(const char *expr, size_t *dst)
     t_token   *list = NULL;
     t_ast     *ast = NULL;
 
-	if (!*expr || !token_list_create(&list, expr)) {   
+	if (!token_list_create(&list, expr)) {   
         LOG(ERROR, "Failed to tokenize expression");   
 		lst_destroy(&list);
         return(false);

@@ -20,11 +20,11 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <limits.h>
+#include <stdio.h>
 
 static bool __str_to_uint64(const char *str, size_t *dst)
 {
 	long tmp;
-
 	tmp = 0;
     if (*str == '0' && *(str + 1) == 'x') {
         char *endptr;
@@ -44,12 +44,9 @@ static bool __str_to_uint64(const char *str, size_t *dst)
 	*dst = tmp;
 	if (!*str
 		|| isspace(*str)
-		|| (*str == '+'
-			|| *str == '-'
-			|| *str == '*'
-		)
+		|| (*str == '+' || *str == '-' || *str == '*')
 		|| *str == '('
-		|| *str == ')')
+		|| *str == ')') 
 		return (true);
 	return (false);
 }
@@ -62,9 +59,9 @@ static bool tokenize_number(t_token **list, char **ptr)
 		return (false);
 	if (!__str_to_uint64(*ptr, &token->value))
 		return (free(token), false);
-	if (**ptr == '0' && *(*ptr + 1) == 'x')
-		(*ptr)+=2;
-	while (**ptr >= '0' && **ptr <= '9')
+	while (isdigit(**ptr)
+		|| **ptr == 'x'
+		|| isxdigit(**ptr))
 		(*ptr)++;
 	lst_add_token(list, token, TOKEN_VAL);
 	return (true);
@@ -109,7 +106,7 @@ bool token_list_create(t_token **list, const char *in)
 		while (*ptr && isspace(*ptr))
 			ptr++;
 
-		if (isdigit(*ptr) 
+		if (isdigit(*ptr)
 			&& tokenize_number(list, &ptr)) {
 			continue ;
 
