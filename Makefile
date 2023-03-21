@@ -11,6 +11,10 @@ SRCS := main.c              \
 	utils/str_to_uint64.c     \
 	utils/write_all.c         \
 	\
+	xlookup/_ascii_char.c  \
+	xlookup/_base16_char.c \
+	xlookup/_char_type.c   \
+	\
 	file/file_partial_mmap.c     \
 	file/file_seek_and_read.c    \
 	file/file_is_mmapabble.c     \

@@ -56,26 +56,26 @@ static inline void	write_16_ascii(const uint8_t *s, size_t size)
 	i = 0;
 	tmp = (uint8_t *)s;
 	if (size == 16) {
-		buffer[0] = _Cprint[*(tmp + 0)];
-		buffer[1] = _Cprint[*(tmp + 1)];
-		buffer[2] = _Cprint[*(tmp + 2)];
-		buffer[3] = _Cprint[*(tmp + 3)];
-		buffer[4] = _Cprint[*(tmp + 4)];
-		buffer[5] = _Cprint[*(tmp + 5)];
-		buffer[6] = _Cprint[*(tmp + 6)];
-		buffer[7] = _Cprint[*(tmp + 7)];
-		buffer[8] = _Cprint[*(tmp + 8)];
-		buffer[9] = _Cprint[*(tmp + 9)];
-		buffer[10] = _Cprint[*(tmp + 10)];
-		buffer[11] = _Cprint[*(tmp + 11)];
-		buffer[12] = _Cprint[*(tmp + 12)];
-		buffer[13] = _Cprint[*(tmp + 13)];
-		buffer[14] = _Cprint[*(tmp + 14)];
-		buffer[15] = _Cprint[*(tmp + 15)];
+		buffer[0] = _ascii_char[*(tmp + 0)];
+		buffer[1] = _ascii_char[*(tmp + 1)];
+		buffer[2] = _ascii_char[*(tmp + 2)];
+		buffer[3] = _ascii_char[*(tmp + 3)];
+		buffer[4] = _ascii_char[*(tmp + 4)];
+		buffer[5] = _ascii_char[*(tmp + 5)];
+		buffer[6] = _ascii_char[*(tmp + 6)];
+		buffer[7] = _ascii_char[*(tmp + 7)];
+		buffer[8] = _ascii_char[*(tmp + 8)];
+		buffer[9] = _ascii_char[*(tmp + 9)];
+		buffer[10] = _ascii_char[*(tmp + 10)];
+		buffer[11] = _ascii_char[*(tmp + 11)];
+		buffer[12] = _ascii_char[*(tmp + 12)];
+		buffer[13] = _ascii_char[*(tmp + 13)];
+		buffer[14] = _ascii_char[*(tmp + 14)];
+		buffer[15] = _ascii_char[*(tmp + 15)];
 		i += 16;
 	} else {
 		while (size-- && i < 16)
-			buffer[i++] = _Cprint[*tmp++];
+			buffer[i++] = _ascii_char[*tmp++];
 	}
 	__screen_offset__ += i;
 }
