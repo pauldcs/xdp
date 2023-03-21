@@ -1,6 +1,7 @@
 #include "hdump.h"
 #include "logging.h"
 #include "options.h"
+#include "utils.h"
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>

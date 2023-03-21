@@ -59,12 +59,7 @@ typedef struct s_dump_params {
 	}   file;
 }	t_dump_params;
 
-char 	*get_next_argument(int *ac, char ***av);
-bool 	_entry_(t_dump_params *params);
-bool	perform_string_dump(const uint8_t *addr, size_t n, size_t len);
-bool 	perform_raw_hexdump(const void *addr, size_t size);
-bool	perform_regular_hexdump(const void *addr, size_t n, size_t start_offset);
-bool	perform_color_hexdump(const void *addr, size_t n, size_t start_offset);
+int 	_entry_(t_dump_params *params);
 void 	usage(void);
 
 #endif /* __HEXDUMP_H__ */

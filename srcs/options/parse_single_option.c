@@ -1,5 +1,6 @@
 #include "hdump.h"
 #include "logging.h"
+#include "utils.h"
 #include "expr/expr_parser.h"
 #include "expr/expr_lexer.h"
 #include <string.h>
