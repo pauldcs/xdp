@@ -2,6 +2,7 @@
 #include "options.h"
 #include "logging.h"
 #include "libstringf.h"
+#include "libxdump.h"
 #include "file/file.h"
 #include <sys/mman.h>
 #include <stdbool.h>
@@ -10,7 +11,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-bool _entry(t_dump_params *params)
+bool _entry_(t_dump_params *params)
 {
 	int ret;
 
@@ -55,7 +56,7 @@ bool _entry(t_dump_params *params)
 		}
 	}
 
-	LOG(INFO, "Parsing: Done");
+	LOG(INFO, "Dumping now");
 	LOG(DEBUG, " - data           %p",  params->data.data);
 	LOG(DEBUG, " - file_size      %d",  params->file.file_size);
 	LOG(DEBUG, " - is_mapped      %s", (params->data.is_mapped ? "true" : "false"));
@@ -64,34 +65,29 @@ bool _entry(t_dump_params *params)
 	LOG(DEBUG, " - range_size     %d",  params->file.range_size);
 	LOG(DEBUG, " - start_offset   %d",  params->file.start_offset);
 
+
 	switch (params->mode)
 	{
 		case DUMP_CLASSIC:
-			ret = (params->colored_output ? 
-						perform_color_hexdump(
-							params->data.data,
-							params->file.range_size,
-							params->file.start_offset
-						)
-						: perform_regular_hexdump(
-							params->data.data,
-							params->file.range_size,
-							params->file.start_offset
-						)
-				); break;
+			ret = xd_dump_lines(
+					params->data.data,
+					params->file.range_size,
+					params->file.start_offset,
+					false)
+			; break;
 		
-		case DUMP_RAW:
-			ret = perform_raw_hexdump(
-				params->data.data,
-				params->file.range_size
-			); break;
+		case DUMP_RAW: ret = 0; break ;
+		//	ret = perform_raw_hexdump(
+		//		params->data.data,
+		//		params->file.range_size
+		//	); break;
 		
-		case DUMP_STRINGS:
-			ret = perform_string_dump(
-				params->data.data,
-				params->file.range_size,
-				params->string_size
-			); break;
+		case DUMP_STRINGS: ret = 0; break ;
+		// ret = perform_string_dump(
+		// 	params->data.data,
+		// 	params->file.range_size,
+		// 	params->string_size
+		// ); break;
 	}
 
 	write(STDOUT_FILENO, "\n", 1);

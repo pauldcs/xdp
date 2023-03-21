@@ -1,7 +1,5 @@
-SRCS := main.c              \
-	_entry.c                \
-	hex_core.c              \
-	perform_string_dump.c   \
+SRCS := main.c \
+	_entry_.c  \
 	\
 	options/parse_single_option.c \
 	options/sanitize.c            \
@@ -10,10 +8,6 @@ SRCS := main.c              \
 	utils/usage.c             \
 	utils/str_to_uint64.c     \
 	utils/write_all.c         \
-	\
-	xlookup/_ascii_char.c  \
-	xlookup/_base16_char.c \
-	xlookup/_char_type.c   \
 	\
 	file/file_partial_mmap.c     \
 	file/file_seek_and_read.c    \
@@ -34,7 +28,8 @@ SRCS := main.c              \
 	/expr/ast/ast_new_value.c       \
 	/expr/ast/ast_solve.c           \
 	/expr/ast/ast_debug.c           \
-	/expr/ast/ast_parser.c          \
+	/expr/ast/ast_parser.c
+
 
 NAME		:= hdump
 CC			:= clang
@@ -48,6 +43,8 @@ CFLAGS_DBG 	:= -Wall -Wextra -Werror -g3 $(LOGGING)
 CFLAGS_ASAN := -Wall -Wextra -Werror -g3 $(LOGGING) $(SANITIZE)
 CFLAGS_TEST := -Wall -Wextra -Werror -g3 $(SANITIZE)
 LIBSTRINGF  := libs/libstringf
+LIBXDUMP  := libs/libxdump
+
 
 SRCS_OBJS := $(patsubst %.c,$(OBJS_DIR)/%.o,$(SRCS))
 
@@ -58,9 +55,9 @@ $(OBJS_DIR)/%.o:$(SRCS_DIR)/%.c
 all: $(NAME)
 
 dbg: CFLAGS=$(CFLAGS_DBG)
-dbg: all
+dbg: fclean all
 asan: CFLAGS=$(CFLAGS_ASAN)
-asan: all
+asan: fclean all
 test: CFLAGS=$(CFLAGS_TEST)
 test: re
 	(cd tests && ./tester.sh)
@@ -69,13 +66,15 @@ test: re
 
 $(NAME): $(SRCS_OBJS)
 	$(MAKE) -C $(LIBSTRINGF)
-	$(CC) $(CFLAGS) $^ -o $(NAME) -L $(LIBSTRINGF) -lstringf
+	$(MAKE) -C $(LIBXDUMP)
+	$(CC) $(CFLAGS) $^ -o $(NAME) -L $(LIBSTRINGF) -lstringf -L $(LIBXDUMP) -lxdump
 	
 clean:
 	rm -rf $(OBJS_DIR)
 
 fclean: clean
 	$(MAKE) fclean -C $(LIBSTRINGF)
+	$(MAKE) fclean -C $(LIBXDUMP)
 	rm -rf tests/outfiles
 	rm -f $(NAME)
 	rm -rf $(OBJS_DIR)

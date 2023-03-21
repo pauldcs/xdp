@@ -24,8 +24,8 @@ static bool parse_expr(const char *expr, size_t *dst)
     }
     LOG(INFO, "Parser: OK");
 
-#ifdef __LOGGING__
-    ast_debug(ast);
+ #ifdef __LOGGING__
+    //ast_debug(ast);
 #endif /* if __LOGGING__ */
 	
 	*dst = ast_solve(ast);
@@ -79,39 +79,39 @@ bool parse_single_option(const char *argument, t_dump_params *params, int *ac, c
             return (report_error("'%s': %s\n", argument, "Invalid"),
                 false);
 
-    } else if (!strcmp(argument, "-r")
-           || !strcmp(argument, "--raw")) {
-        LOG(DEBUG, "Setting mode as: raw");
-        params->mode = DUMP_RAW;
+    // } else if (!strcmp(argument, "-r")
+    //        || !strcmp(argument, "--raw")) {
+    //     LOG(DEBUG, "Setting mode as: raw");
+    //     params->mode = DUMP_RAW;
 
-    } else if (!strncmp(argument, "--string", 8)) {
-        LOG(DEBUG, "parsing argument '--string'");
-        params->mode = DUMP_STRINGS;
-        if (*(argument + 8) == '=') { 
-            if (!parse_expr(
-                    argument + 9,
-                    &params->string_size))
-            return (report_error("'%s': %s\n", argument, "Invalid"),
-                false);
+    // } else if (!strncmp(argument, "--string", 8)) {
+    //     LOG(DEBUG, "parsing argument '--string'");
+    //     params->mode = DUMP_STRINGS;
+    //     if (*(argument + 8) == '=') { 
+    //         if (!parse_expr(
+    //                 argument + 9,
+    //                 &params->string_size))
+    //         return (report_error("'%s': %s\n", argument, "Invalid"),
+    //             false);
         
-        } else if ((arg = get_next_argument(ac, av)) != NULL) {
-            if (!parse_expr(
-                arg,
-                &params->string_size))
-                return (report_error("'%s': %s\n", argument, "Invalid"),
-                    false);
-        } else 
-            return (report_error("'%s': %s\n", argument, "Invalid"),
-                false);
+    //     } else if ((arg = get_next_argument(ac, av)) != NULL) {
+    //         if (!parse_expr(
+    //             arg,
+    //             &params->string_size))
+    //             return (report_error("'%s': %s\n", argument, "Invalid"),
+    //                 false);
+    //     } else 
+    //         return (report_error("'%s': %s\n", argument, "Invalid"),
+    //             false);
 
-    } else if (!strcmp(argument, "-c")
-             ||!strcmp(argument, "--color")) {
-        LOG(DEBUG, "Enabling colors");
-        params->colored_output = true;
+    // } else if (!strcmp(argument, "-c")
+    //          ||!strcmp(argument, "--color")) {
+    //     LOG(DEBUG, "Enabling colors");
+    //     params->colored_output = true;
 
     } else if (!strcmp(argument, "-h")
             || !strcmp(argument, "--help")) {
-        __usage();
+        usage();
         exit (0);
 
     } else if (!params->file.filename) {

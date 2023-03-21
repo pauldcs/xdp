@@ -19,8 +19,8 @@ int main(int ac, char *av[])
 			return (EXIT_FAILURE);
 	}
 	if (!params.file.filename)
-		return (__usage(), EXIT_SUCCESS);
-	ret = !_entry(&params);
+		return (usage(), EXIT_SUCCESS);
+	ret = !_entry_(&params);
 	if (params.file.fd)
 		close(params.file.fd);
 	return (ret);

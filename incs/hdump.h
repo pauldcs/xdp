@@ -18,16 +18,16 @@
 # define GRY "\x1b[2;37m"
 # define END "\e[0m"
 
-#define BLK_UINT64 *(uint64_t*)BLK
-#define RED_UINT64 *(uint64_t*)RED
-#define GRN_UINT64 *(uint64_t*)GRN
-#define YEL_UINT64 *(uint64_t*)YEL
-#define BLU_UINT64 *(uint64_t*)BLU
-#define MAG_UINT64 *(uint64_t*)MAG
-#define CYN_UINT64 *(uint64_t*)CYN
-#define WHT_UINT64 *(uint64_t*)WHT
-#define GRY_UINT64 *(uint64_t*)GRY
-#define END_UINT64 *(uint64_t*)END
+#define BLK_UINT64 *(uint64_t*)"\e[0;30m"
+#define RED_UINT64 *(uint64_t*)"\e[0;31m"
+#define GRN_UINT64 *(uint64_t*)"\e[0;32m"
+#define YEL_UINT64 *(uint64_t*)"\e[0;33m"
+#define BLU_UINT64 *(uint64_t*)"\e[0;34m"
+#define MAG_UINT64 *(uint64_t*)"\e[0;35m"
+#define CYN_UINT64 *(uint64_t*)"\e[0;36m"
+#define WHT_UINT64 *(uint64_t*)"\e[0;37m"
+#define GRY_UINT64 *(uint64_t*)"\x1b[2;37m"
+#define END_UINT64 *(uint64_t*)"\e[0m"
 
 # define BASE16_ASCII_CHARS "0123456789abcdef"
 
@@ -60,11 +60,11 @@ typedef struct s_dump_params {
 }	t_dump_params;
 
 char 	*get_next_argument(int *ac, char ***av);
-bool 	_entry(t_dump_params *params);
+bool 	_entry_(t_dump_params *params);
 bool	perform_string_dump(const uint8_t *addr, size_t n, size_t len);
 bool 	perform_raw_hexdump(const void *addr, size_t size);
 bool	perform_regular_hexdump(const void *addr, size_t n, size_t start_offset);
 bool	perform_color_hexdump(const void *addr, size_t n, size_t start_offset);
-void 	__usage(void);
+void 	usage(void);
 
 #endif /* __HEXDUMP_H__ */
