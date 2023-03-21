@@ -70,8 +70,7 @@ int _entry_(t_dump_params *params)
 			ret = xd_dump_lines(
 					params->data.data,
 					params->file.range_size,
-					params->file.start_offset,
-					false /* no color */)
+					params->file.start_offset)
 			; break;
 		
 		case DUMP_RAW:

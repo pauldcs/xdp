@@ -105,10 +105,10 @@ bool parse_single_option(const char *argument, t_dump_params *params, int *ac, c
     //         return (report_error("'%s': %s\n", argument, "Invalid"),
     //             false);
 
-    // } else if (!strcmp(argument, "-c")
-    //          ||!strcmp(argument, "--color")) {
-    //     LOG(DEBUG, "Enabling colors");
-    //     params->colored_output = true;
+    //} else if (!strcmp(argument, "-c")
+    //         ||!strcmp(argument, "--color")) {
+    //    LOG(DEBUG, "Enabling colors");
+    //    params->colored_output = true;
 
     } else if (!strcmp(argument, "-h")
             || !strcmp(argument, "--help")) {

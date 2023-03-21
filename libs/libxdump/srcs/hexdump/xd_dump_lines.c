@@ -6,10 +6,6 @@
 #include <string.h>
 #include <stdbool.h>
 
-# define  LINE_LEN (77 + 1)
-# define   N_LINES 512
-# define DUMP_SIZE ((LINE_LEN) * N_LINES)
-
 /* Forces to write the buffer fully if write() failes, 
  * it's ok if this ends up looping endlessly.
  */
@@ -30,68 +26,58 @@ static size_t	write_all(int fd, const void *buf, size_t s)
 	return (ret);
 }
 
-ssize_t	xd_dump_lines(const uint8_t *addr, size_t n, size_t offset, bool color)
+ssize_t	xd_dump_lines(const uint8_t *addr, size_t n, size_t offset)
 {
-	size_t (*_print_ptr_func)
-			(uint8_t *, const uintptr_t) = {
-		&xd_pointer_p8_bytes
-	}; 
-
-	size_t (*_print_data_func[2])
-			(uint8_t *, const uint8_t *, size_t
-			) = {
-			(color) ? 
-				&xd_data_16_bytes_color :
-				&xd_data_16_bytes,
-			&xd_ascii_16_bytes
-	}; 
-
 	uint8_t     *prev = NULL;
-	uint8_t     *scr = malloc(DUMP_SIZE);
 	uint8_t     *ptr = (uint8_t *)addr;
-	size_t      size = 0;
-	size_t      idx = 0;
+	uint8_t     *__scr__;
+	size_t      ret = 0;
+	size_t      i = 0;
 
-	if (!scr)
+
+	__scr__ = malloc(DUMP_BUFFER_SIZE);
+	if (!__scr__)
 		return (-1);
 
-	memset(scr, 0x20, DUMP_SIZE);
+	memset(__scr__, ' ', DUMP_BUFFER_SIZE);
 
 	while (n) {
 		if (n >= 16) {
-			if (idx >= DUMP_SIZE) {
-				size += write_all(1, scr, idx);
-				idx = 0;
+			if (i >= DUMP_BUFFER_SIZE) {
+				ret += write_all(1, __scr__, i);
+				i ^= i;
 			}
-			if (prev
-				&& *(uint64_t *)(    prev) == *(uint64_t *)(    ptr)  
-				&& *(uint64_t *)(prev + 8) == *(uint64_t *)(ptr + 8)) {
-				if (idx) {
-					scr[idx++] = '+';
-					scr[idx++] = '\n';
-					size += write_all(1, scr, idx) - 2;
-					idx = 0;
+
+			if (prev && *prev == *ptr) {
+				if (i && *(uint64_t *)(    prev) == *(uint64_t *)(    ptr)  
+					  && *(uint64_t *)(prev + 8) == *(uint64_t *)(ptr + 8)) {
+					__scr__[i++] = '+';
+					__scr__[i++] = '\n';
+					ret += write_all(STDOUT_FILENO, __scr__, i);
+					i ^= i;
 				}
+
 			} else { 
-				idx += _print_ptr_func(scr + idx, offset) + 2;
-				idx += _print_data_func[0](scr + idx, ptr, 16) + 2;
-				idx += _print_data_func[1](scr + idx, ptr, 16);
+				i += 2 + xd_pointer_p8_bytes(&__scr__[i], offset);
+				i += 2 + xd_data_16_bytes(&__scr__[i], ptr, 16);
+				i += xd_ascii_16_bytes(&__scr__[i], ptr, 16);
+				__scr__[i++] = '\n';
 				prev = ptr;
-				scr[idx++] = '\n';
 			}
 			n -= 16;
 
 		} else {
 
-			idx += _print_ptr_func(scr + idx, offset) + 2;
-			idx += _print_data_func[0](scr + idx, ptr, n) + 2;
-			idx += _print_data_func[1](scr + idx, ptr, n);
-			scr[idx++] = '\n';
+			i += 2 + xd_pointer_p8_bytes(&__scr__[i], offset);
+			i += 2 + xd_data_16_bytes(&__scr__[i], ptr, n);
+			i +=     xd_ascii_16_bytes(&__scr__[i], ptr, n);
+		
+			__scr__[i++] = '\n';
 			n = 0;
 		}
 		offset += 16;
 		ptr += 16;
 	}
-	size += write_all(1, scr, idx);
-	return(free(scr), size);
+	ret += write_all(STDOUT_FILENO, __scr__, i);
+	return(free(__scr__), ret);
 }

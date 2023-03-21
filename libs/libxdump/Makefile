@@ -14,7 +14,6 @@ SRCS := \
 	\
 	conv/xd_ascii_16_bytes.c       \
 	conv/xd_data_16_bytes.c        \
-	conv/xd_data_16_bytes_color.c  \
 	conv/xd_pointer_8_bytes.c      \
 	conv/xd_pointer_p8_bytes.c     \
 	\
