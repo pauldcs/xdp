@@ -9,9 +9,9 @@ SRCS := main.c \
 	utils/str_to_uint64.c     \
 	utils/write_all.c         \
 	\
-	file/file_partial_mmap.c     \
-	file/file_seek_and_read.c    \
-	file/file_is_mmapabble.c     \
+	file/file_read_from_offset.c \
+	file/file_mmap_from_offset.c \
+	file/file_mmap_recommended.c \
 	file/file_try_open.c         \
 	file/reader/reader.c         \
 	file/reader/reader_destroy.c \

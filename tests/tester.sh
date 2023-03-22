@@ -259,7 +259,6 @@ for file in "${input_directory}"/*."${input_file_suffix}";
 done
 
 PrintSummary
-rm -rf -- "${DEFAULT_OUTPUT_DIRECTORY}"
 
 if [[ "${failed}" -eq 0 ]];
     then

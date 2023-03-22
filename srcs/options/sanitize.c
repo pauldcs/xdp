@@ -5,29 +5,29 @@
 /* Builds a dump structure based on the input parameters,
  * verifying and adjusting the range if needed.
  */
-bool sanitize(t_dump_params *params)
+bool sanitize(t_hd_opts *opts)
 {
-    if (params->file.start_offset < params->file.file_size) {
-        if (params->file.start_offset + params->file.range_size > params->file.file_size) {
+    if (opts->file.data.start < opts->file.size) {
+        if (opts->file.data.start + opts->file.data.range > opts->file.size) {
             
             LOG(WARNING, 
                 "range exceeds the maximum offset (%p), trucating it to %d",
-                    params->file.file_size,
-                    params->file.file_size - params->file.start_offset
+                    opts->file.size,
+                    opts->file.size - opts->file.data.start
             );
             
-            params->file.range_size = params->file.file_size - params->file.start_offset;
+            opts->file.data.range = opts->file.size - opts->file.data.start;
         }
-        if (!params->file.range_size)
-            params->file.range_size = params->file.file_size - params->file.start_offset;  
+        if (!opts->file.data.range)
+            opts->file.data.range = opts->file.size - opts->file.data.start;  
         
         return (true);
     }
     
     FATAL_ERROR(
         "start offset (%p) exceeds the maximum offset (%p)",
-            params->file.start_offset,
-            params->file.file_size
+            opts->file.data.start,
+            opts->file.size
     );
 
     return (false);

@@ -35,17 +35,17 @@ ssize_t	xd_dump_lines(const uint8_t *addr, size_t n, size_t offset)
 	size_t      i = 0;
 
 
-	__scr__ = malloc(DUMP_BUFFER_SIZE);
+	__scr__ = malloc(DUMP_BUFFER_SIZE + 32);
 	if (!__scr__)
 		return (-1);
 
 	memset(__scr__, ' ', DUMP_BUFFER_SIZE);
 
-	while (n) {
+	while (n > 0) {
 		if (n >= 16) {
 			if (i >= DUMP_BUFFER_SIZE) {
 				ret += write_all(1, __scr__, i);
-				i ^= i;
+				i = 0;
 			}
 
 			if (prev && *prev == *ptr) {
@@ -54,7 +54,7 @@ ssize_t	xd_dump_lines(const uint8_t *addr, size_t n, size_t offset)
 					__scr__[i++] = '+';
 					__scr__[i++] = '\n';
 					ret += write_all(STDOUT_FILENO, __scr__, i);
-					i ^= i;
+					i = 0;
 				}
 
 			} else { 

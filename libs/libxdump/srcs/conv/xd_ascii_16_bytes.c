@@ -5,7 +5,7 @@
 /* Writes 16 bytes of ascii into __screen__, non printable characters
  * are replaced by '.'
  */
-size_t	xd_ascii_16_bytes(uint8_t *dst, const uint8_t *src, size_t n)
+size_t	inline xd_ascii_16_bytes(uint8_t *dst, const uint8_t *src, size_t n)
 {
 	size_t	ret = 0;
 

@@ -5,7 +5,7 @@
 #include <stdint.h>
 #include <stddef.h>
 
-size_t	xd_pointer_p8_bytes(uint8_t *dst, const uintptr_t p)
+size_t	inline xd_pointer_p8_bytes(uint8_t *dst, const uintptr_t p)
 {
 	uintptr_t 	ptr = (uintptr_t)p;
 

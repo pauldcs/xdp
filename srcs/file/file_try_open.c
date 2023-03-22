@@ -1,4 +1,5 @@
 #include "hdump.h"
+#include "file/file.h"
 #include "logging.h"
 #include <fcntl.h>
 #include <string.h>
@@ -7,37 +8,35 @@
 /* Performs basic validation to ensure it is a regular file.
  * If successful, sets the file descriptor and file size in the parameters.
  */
-ssize_t file_try_open(const char *filename, int *fd)
+bool file_try_open(t_hd_file *file)
 {
 	struct stat st;
-	ssize_t     ret;
 		
-	if (stat(filename, &st) == -1) {
-		FATAL_ERROR("%s: %s\n", filename, strerror(errno));
-		return (-1);
+	if (stat(file->name, &st) == -1) {
+		FATAL_ERROR("%s: %s\n", file->name, strerror(errno));
+		return (false);
 	}
 	
 	if (S_ISDIR(st.st_mode)) {
-		FATAL_ERROR("%s: %s\n", filename, "is a directory");
-		return (-1);
+		FATAL_ERROR("%s: %s\n", file->name, "is a directory");
+		return (false);
 	}
 
 	if (!S_ISREG(st.st_mode)) {
-		FATAL_ERROR("%s: %s\n", filename, "Is not a regular file");
-		return (-1);
+		FATAL_ERROR("%s: %s\n", file->name, "Is not a regular file");
+		return (false);
 	}
 	
-	if ((*fd = open(filename, O_RDONLY)) == -1) {
-		FATAL_ERROR("%s: %s\n", filename, strerror(errno));
-		return (-1);
+	if ((file->fd = open(file->name, O_RDONLY)) == -1) {
+		FATAL_ERROR("%s: %s\n", file->name, strerror(errno));
+		return (false);
 	} else {
-		ret = st.st_size;
+		file->size = st.st_size;
 	}
 
 	LOG(DEBUG,
 		"opened file: %s (size: %db)",
-			filename,
-			ret
+			file->name, file->size
 	);
-	return (ret);
+	return (true);
 }

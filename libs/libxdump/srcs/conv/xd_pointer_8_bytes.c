@@ -3,7 +3,7 @@
 
 # define BASE16_ASCII_CHARS "0123456789abcdef"
 
-size_t	xd_pointer_8_bytes(uint8_t *dst, const uintptr_t p)
+size_t	inline xd_pointer_8_bytes(uint8_t *dst, const uintptr_t p)
 {
 	*(dst + 7) = BASE16_ASCII_CHARS[(p >>  0) & 0xf];
 	*(dst + 6) = BASE16_ASCII_CHARS[(p >>  4) & 0xf];

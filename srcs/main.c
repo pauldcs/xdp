@@ -8,21 +8,22 @@
 
 int main(int ac, char *av[])
 {
-	t_dump_params 	params;
-	char			*ptr;
-	int             ret;
+	t_hd_opts 	opts;
+	char		*ptr;
+	int         ret;
 
 	LOG(WARNING, "Debug mode is enabled");
 	
-	memset(&params, 0, sizeof(params));
+	memset(&opts, 0, sizeof(opts));
 	while ((ptr = get_next_argument(&ac, &av))) {
-		if (!parse_single_option(ptr, &params, &ac, &av))
+		if (!parse_single_option(ptr, &opts, &ac, &av))
 			return (EXIT_FAILURE);
 	}
-	if (!params.file.filename)
+
+	if (!opts.file.name)
 		return (usage(), EXIT_SUCCESS);
-	ret = !_entry_(&params);
-	if (params.file.fd)
-		close(params.file.fd);
+	ret = !_entry_(&opts);
+	if (opts.file.fd > 0)
+		close(opts.file.fd);
 	return (ret);
 }

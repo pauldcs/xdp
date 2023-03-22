@@ -6,8 +6,9 @@
 #include <string.h>
 #include <stdbool.h>
 
-static bool parse_expr(const char *expr, size_t *dst)
+static bool parse_expr(const char *expr, void *dest)
 {
+    size_t    *dst = (size_t *)dest;
     t_token   *list = NULL;
     t_ast     *ast = NULL;
 
@@ -31,12 +32,12 @@ static bool parse_expr(const char *expr, size_t *dst)
 	
 	*dst = ast_solve(ast);
 
-	LOG(OTHER, "-> expression equals %d", *dst);
+	LOG(INFO, "-> expression equals %d", *dst);
 	lst_destroy(&list);
     return (true);
 }
 
-bool parse_single_option(const char *argument, t_dump_params *params, int *ac, char ***av)
+bool parse_single_option(const char *argument, t_hd_opts *opts, int *ac, char ***av)
 {
     char *arg;
 
@@ -45,14 +46,14 @@ bool parse_single_option(const char *argument, t_dump_params *params, int *ac, c
         if (*(argument + 6) == '=') {
             if (!parse_expr(
                     argument + 7,
-                    &params->file.range_size))
+                    &opts->file.data.range))
             return (report_error("'%s': %s\n", argument, "Invalid"),
                 false);
 
         } else if ((arg = get_next_argument(ac, av)) != NULL) {
             if (!parse_expr(
                 arg,
-                &params->file.range_size))
+                &opts->file.data.range))
                 return (report_error("'%s': %s\n", argument, "Invalid"),
                     false);
 
@@ -65,14 +66,14 @@ bool parse_single_option(const char *argument, t_dump_params *params, int *ac, c
         if (*(argument + 7) == '=') {
             if (!parse_expr(
                     argument + 8,
-                    &params->file.start_offset))
+                    &opts->file.data.start))
             return (report_error("'%s': %s\n", argument, "Invalid"),
                 false);
         
         } else if ((arg = get_next_argument(ac, av)) != NULL) {
             if (!parse_expr(
                 arg,
-                &params->file.start_offset))
+                &opts->file.data.start))
                 return (report_error("'%s': %s\n", argument, "Invalid"),
                     false);
         
@@ -115,8 +116,8 @@ bool parse_single_option(const char *argument, t_dump_params *params, int *ac, c
         usage();
         exit (0);
 
-    } else if (!params->file.filename) {
-        params->file.filename = argument;
+    } else if (!opts->file.name) {
+        opts->file.name = argument;
     
     } else {
         FATAL_ERROR("'%s': Could not be parsed", argument);

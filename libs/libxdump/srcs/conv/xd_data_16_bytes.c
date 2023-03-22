@@ -2,7 +2,7 @@
 #include <stdint.h>
 #include <stddef.h>
 
-size_t	xd_data_16_bytes(uint8_t *dst, const uint8_t *src, size_t n)
+size_t	inline xd_data_16_bytes(uint8_t *dst, const uint8_t *src, size_t n)
 {
 	if (n >= 16) {
 		/*-- 0 - 8 --*/
