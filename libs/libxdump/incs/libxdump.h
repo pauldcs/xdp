@@ -17,7 +17,7 @@ size_t	xd_pointer_p8_bytes(uint8_t *dst, const uintptr_t p);
 	/*-- Hexdump --*/
 # define N_LINES 512
 # define LINE_LEN (77 + 1)
-# define DUMP_BUFFER_SIZE ((LINE_LEN) * N_LINES)
+# define SCREEN_BUFFER_SIZE ((LINE_LEN) * N_LINES)
 
 ssize_t	xd_dump_lines(const uint8_t *addr, size_t n, size_t offset);
 

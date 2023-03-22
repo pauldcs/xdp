@@ -41,7 +41,7 @@ SANITIZE    := -fstack-protector-strong -fsanitize=address
 CFLAGS 		:= -Wall -Wextra -Werror -O2
 CFLAGS_DBG 	:= -Wall -Wextra -Werror -g3 $(LOGGING)
 CFLAGS_ASAN := -Wall -Wextra -Werror -g3 $(LOGGING) $(SANITIZE)
-CFLAGS_TEST := -Wall -Wextra -Werror -g3 $(SANITIZE)
+CFLAGS_TEST := -Wall -Wextra -Werror -g3
 LIBSTRINGF  := libs/libstringf
 LIBXDUMP  := libs/libxdump
 

@@ -30,54 +30,70 @@ ssize_t	xd_dump_lines(const uint8_t *addr, size_t n, size_t offset)
 {
 	uint8_t     *prev = NULL;
 	uint8_t     *ptr = (uint8_t *)addr;
-	uint8_t     *__scr__;
+	uint8_t     *__scr_ptr = NULL;
+	size_t      __scr_off = 0;
 	size_t      ret = 0;
-	size_t      i = 0;
 
 
-	__scr__ = malloc(DUMP_BUFFER_SIZE + 32);
-	if (!__scr__)
+	__scr_ptr = malloc(SCREEN_BUFFER_SIZE + 32);
+	if (!__scr_ptr)
 		return (-1);
 
-	memset(__scr__, ' ', DUMP_BUFFER_SIZE);
+	(void)memset(__scr_ptr, ' ', SCREEN_BUFFER_SIZE);
 
-	while (n > 0) {
-		if (n >= 16) {
-			if (i >= DUMP_BUFFER_SIZE) {
-				ret += write_all(1, __scr__, i);
-				i = 0;
-			}
+	bool dump_required = false;
+	size_t line_size;
 
-			if (prev && *prev == *ptr) {
-				if (i && *(uint64_t *)(    prev) == *(uint64_t *)(    ptr)  
-					  && *(uint64_t *)(prev + 8) == *(uint64_t *)(ptr + 8)) {
-					__scr__[i++] = '+';
-					__scr__[i++] = '\n';
-					ret += write_all(STDOUT_FILENO, __scr__, i);
-					i = 0;
+	while (n) {	
+
+		if (dump_required) {
+			ret += write_all(
+				STDOUT_FILENO,
+				__scr_ptr,
+				__scr_off);
+			__scr_off = 0;
+			dump_required = false;
+		}
+
+		if (n < 16) {
+			line_size = n;
+			n = 0;
+		
+		} else {
+			if (prev) {
+				if (*(uint64_t *)(    prev) == *(uint64_t *)(    ptr) && 
+					*(uint64_t *)(prev + 8) == *(uint64_t *)(ptr + 8)) {
+					if (__scr_off) {
+						*(__scr_ptr + __scr_off++) = '+';
+						*(__scr_ptr + __scr_off++) = '\n';
+						dump_required = true;
+					} 
+					offset += 16;
+					ptr += 16;
+					n -= 16;
+					continue;
 				}
-
-			} else { 
-				i += 2 + xd_pointer_p8_bytes(&__scr__[i], offset);
-				i += 2 + xd_data_16_bytes(&__scr__[i], ptr, 16);
-				i += xd_ascii_16_bytes(&__scr__[i], ptr, 16);
-				__scr__[i++] = '\n';
-				prev = ptr;
 			}
+			line_size = 16;
 			n -= 16;
 
-		} else {
-
-			i += 2 + xd_pointer_p8_bytes(&__scr__[i], offset);
-			i += 2 + xd_data_16_bytes(&__scr__[i], ptr, n);
-			i +=     xd_ascii_16_bytes(&__scr__[i], ptr, n);
-		
-			__scr__[i++] = '\n';
-			n = 0;
 		}
+
+		__scr_off += xd_pointer_p8_bytes(__scr_ptr + __scr_off, offset) + 2;
+		__scr_off += xd_data_16_bytes(__scr_ptr + __scr_off, ptr, line_size) + 2;
+		__scr_off += xd_ascii_16_bytes(__scr_ptr + __scr_off, ptr, line_size);
+		*(__scr_ptr + __scr_off++) = '\n';
+
+		if (__scr_off >= SCREEN_BUFFER_SIZE)
+			dump_required = true;
+
+		prev = ptr;
 		offset += 16;
 		ptr += 16;
 	}
-	ret += write_all(STDOUT_FILENO, __scr__, i);
-	return(free(__scr__), ret);
+
+	if (__scr_off)
+		ret += write_all(STDOUT_FILENO, __scr_ptr, __scr_off);
+	
+	return(free(__scr_ptr), ret);
 }

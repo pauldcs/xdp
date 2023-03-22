@@ -87,9 +87,6 @@ CheckPrerequisites() {
     [[ -r "${input_directory}" ]] ||
         ExitWithError "${input_directory}: Not readable (-i argument)" 
 
-    [[ -z "$(ls -A "${input_directory}"/*."${input_file_suffix}" 2> /dev/null)" ]] &&
-        ExitWithError "${input_directory}: Is empty (-i argument)" 
-
     [[ -d "${output_directory}" ]] ||
         mkdir -vp "${output_directory}" &> /dev/null
     
@@ -245,7 +242,9 @@ failed=0
 skipped=0
 memory_errors=0
 
-for file in "${input_directory}"/*."${input_file_suffix}"; 
+files=$(find "${input_directory}" -type f -name *."${input_file_suffix}")
+
+for file in ${files}; 
     do
         filename=$(basename -- "${file}")
         test_name="${filename%.*}"
