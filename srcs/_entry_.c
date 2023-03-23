@@ -69,27 +69,29 @@ bool _entry_(t_user_options *opts)
 
 	ssize_t ret = -1;
 
-	switch (opts->mode) {
+	switch (opts->mode)
+	{
 		case M_NORMAL:
 			if (opts->colors)
 				ret = xd_dump_lines_color(
 					file.data.ptr,
 					opts->range,
 					opts->start_offset
-				); 
+			); 
 			else
 				ret = xd_dump_lines(
 					file.data.ptr,
 					opts->range,
 					opts->start_offset
-				);
+			);
 			break ;
 		case M_STRING:
 			ret = xstring_dump(
 				file.data.ptr,
 				opts->range,
 				opts->string_size
-			); break ;
+			);
+			break ;
 		default: break;
 	}
 

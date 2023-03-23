@@ -20,8 +20,6 @@ size_t	xd_data_16_bytes_color(const uint8_t *addr, size_t n, uint8_t *buffer)
 				buffer += 2;
 				if (--n)
 					*(buffer++) = ' ';
-				if (n == 8)
-					*(buffer++) = ' ';
 			}
 		} else if (_CharColor[*ptr] == WHITE) {
 			*(uint64_t*)(buffer) = END_UINT64;
@@ -30,8 +28,6 @@ size_t	xd_data_16_bytes_color(const uint8_t *addr, size_t n, uint8_t *buffer)
 				*(uint32_t*)(buffer) = _B16Pair[*ptr++];
 				buffer += 2;
 				if (--n)
-					*(buffer++) = ' ';
-				if (n == 8)
 					*(buffer++) = ' ';
 			}
 		} else {
@@ -43,8 +39,6 @@ size_t	xd_data_16_bytes_color(const uint8_t *addr, size_t n, uint8_t *buffer)
 					buffer += 2;
 					if (--n)
 						*(buffer++) = ' ';
-					if (n == 8)
-					*(buffer++) = ' ';
 				}
 			}
 		}

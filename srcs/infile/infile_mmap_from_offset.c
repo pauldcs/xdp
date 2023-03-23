@@ -6,9 +6,6 @@
 #include <unistd.h>
 #include <sys/mman.h>
 
-/* Maps a portion of a file, aligned to the nearest page boundary,
- * and updates the input parameters accordingly.
- */
 bool infile_mmap_from_offset(t_infile *file, size_t range_size)
 {
 	size_t aligned_offset = file->data.start & ~(sysconf(_SC_PAGE_SIZE) - 1);
