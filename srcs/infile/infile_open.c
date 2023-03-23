@@ -7,7 +7,8 @@
 
 void infile_close(t_infile *file)
 {
-	if (file->open) {
+	if (file->open)
+	{
 		__log(Debug, "closing fd %d", file->fd);
 		close(file->fd);
 		file->open = false;
@@ -17,7 +18,8 @@ void infile_close(t_infile *file)
 bool infile_open(t_infile *file)
 {
 	file->fd = open(file->name, O_RDONLY);
-	if (file->fd == -1) {
+	if (file->fd == -1)
+	{
 		FATAL_ERROR("%s: %s", file->name, strerror(errno));
 		return (false);
 	}

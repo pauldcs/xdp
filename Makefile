@@ -8,7 +8,10 @@ SRCS := main.c \
 	utils/get_next_argument.c \
 	utils/usage.c             \
 	utils/str_to_uint64.c     \
-	utils/write_all.c         \
+	\
+	xstring/xstring_dump.c      \
+	xstring/xstrp_compare.c  \
+	xstring/xstrd_compare.c  \
 	\
 	infile/infile_read_from_offset.c      \
 	infile/infile_mmap_from_offset.c      \

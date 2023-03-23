@@ -2,6 +2,7 @@
 #include "options.h"
 #include "debug/logging.h"
 #include "libs/libxdump.h"
+#include "xstring.h"
 #include "infile.h"
 #include <stdbool.h>
 #include <string.h>
@@ -23,7 +24,8 @@ bool _entry_(t_user_options *opts)
     infile_struct_debug_print(&file);
 #endif /* if __LOGGING__ */
 
-	if (!options_within_range(opts, &file)) {
+	if (!options_within_range(opts, &file))
+	{
 		__log(Error, "options_is_ok()");
 		return (false);
 	}
@@ -33,37 +35,64 @@ bool _entry_(t_user_options *opts)
 	options_struct_debug_print(opts);
 #endif /* if __LOGGING__ */
 
-	if (!infile_open(&file)) {
+	if (!infile_open(&file))
+	{
 		__log(Error, "infile_open()");
 		return (false);
 	} else
 		__log(Debug, "opened '%s' to fd: %d", file.name, file.fd);
 	
-	if (infile_mmap_recommended(&file, opts->range)) {
-		__log(Info, "Mmap recommended");
-		if (!infile_mmap_from_offset(&file, opts->range)) {
+	if (infile_mmap_recommended(&file, opts->range))
+	{
+		__log(Info, "Mmap recommended - (%d bytes)", opts->range);
+		if (!infile_mmap_from_offset(&file, opts->range))
+		{
 			FATAL_ERROR("Failed to malloc the file");
 			infile_close(&file);
 			return (false);
 		}
 	} else {
-		__log(Info, "Malloc recommended");
-		if (!infile_read_from_offset(&file, opts->range, opts->start_offset)) {
+		__log(Info, "Malloc recommended - (%d bytes)", opts->range);
+		if (!infile_read_from_offset(&file, opts->range, opts->start_offset))
+		{
 			FATAL_ERROR("Failed to malloc the file");
 			return (false);
 		}
 	}
 
 #ifdef __LOGGING__
+	
 	__log(Warning, "Dumping final infile struct");
     infile_struct_debug_print(&file);
+
 #endif /* if __LOGGING__ */
 
-	ssize_t ret = xd_dump_lines(
-		file.data.ptr,
-		opts->range,
-		opts->start_offset
-	);
+	ssize_t ret = -1;
+
+	switch (opts->mode) {
+		case M_NORMAL:
+			if (opts->colors)
+				ret = xd_dump_lines_color(
+					file.data.ptr,
+					opts->range,
+					opts->start_offset
+				); 
+			else
+				ret = xd_dump_lines(
+					file.data.ptr,
+					opts->range,
+					opts->start_offset
+				);
+			break ;
+		case M_STRING:
+			ret = xstring_dump(
+				file.data.ptr,
+				opts->range,
+				opts->string_size
+			); break ;
+		default: break;
+	}
+
 
 	infile_destroy(&file);
 

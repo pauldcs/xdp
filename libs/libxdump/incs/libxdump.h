@@ -6,25 +6,49 @@
 # include <stdbool.h>
 # include <sys/types.h>
 
+#define BLK_UINT64 	*(uint64_t*)"\e[0;30m"
+#define RED_UINT64 	*(uint64_t*)"\e[0;31m"
+#define GRN_UINT64 	*(uint64_t*)"\e[0;32m"
+#define YEL_UINT64 	*(uint64_t*)"\e[0;33m"
+#define BLU_UINT64 	*(uint64_t*)"\e[0;34m"
+#define MAG_UINT64 	*(uint64_t*)"\e[0;35m"
+#define CYN_UINT64 	*(uint64_t*)"\e[0;36m"
+#define WHT_UINT64 	*(uint64_t*)"\e[0;37m"
+#define GRY_UINT64 	*(uint64_t*)"\x1b[2;37m"
+#define END_UINT64 	*(uint64_t*)"\e[0m"
+
 # define BASE16_ASCII_CHARS "0123456789abcdef"
- 
+
 	/*-- Convert --*/
 size_t	xd_ascii_16_bytes(uint8_t *dst, const uint8_t *src, size_t n);
 size_t	xd_data_16_bytes(uint8_t *dst, const uint8_t *src, size_t n);
+size_t	xd_data_16_bytes_color(const uint8_t *addr, size_t n, uint8_t *buffer);
 size_t	xd_pointer_8_bytes(uint8_t *dst, const uintptr_t p);
 size_t	xd_pointer_p8_bytes(uint8_t *dst, const uintptr_t p);
 
 	/*-- Hexdump --*/
 # define N_LINES 512
-# define LINE_LEN (77 + 1)
+# define LINE_LEN (78 + 1)
 # define SCREEN_BUFFER_SIZE ((LINE_LEN) * N_LINES)
 
 ssize_t	xd_dump_lines(const uint8_t *addr, size_t n, size_t offset);
+ssize_t	xd_dump_lines_color(const uint8_t *addr, size_t n, size_t offset);
 
 	/*-- Lookup --*/
+
+# define _RED 0x00000001
+# define GREEN 0x00000010
+# define YELLOW 0x00000100
+# define BLUE 0x00001000
+# define MAGENTA 0x00010000
+# define CYAN 0x00100000
+# define WHITE 0x01000000
+# define GREY 0x10000000
+
 extern const uint8_t  _PrintByte[256];
 extern const uint16_t _B16Pair[256];
 extern const uint16_t _CharType[256];
+extern const uint32_t _CharColor[256];
 extern const uint32_t _B16PairSpaced[256];
 
 	/*-- Ctypes --*/

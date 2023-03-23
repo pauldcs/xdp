@@ -5,7 +5,8 @@
 # include <stdlib.h>
 # include <string.h>
 
-static bool __option_is(const char *arg, const char *option_name) {
+static bool __option_is(const char *arg, const char *option_name)
+{
     return (!strcmp(arg, option_name) ? true : false);
 }
 
@@ -16,7 +17,6 @@ static bool parse_argument_expr(const char *arg, void *dst)
 	
 	return (true);
 }
-
 t_user_options *parse_user_options(int ac, char *av[])
 {
 	t_user_options *options = malloc(sizeof(t_user_options));
@@ -26,10 +26,12 @@ t_user_options *parse_user_options(int ac, char *av[])
 
 	memset(options, 0x00, sizeof(t_user_options));
 
-	while (ac && av) {
-		if (__option_is("-s", *av)
-		 	|| __option_is("--start", *av)) {
-			__log(Debug, "parsing start_offset");
+	while (ac && av)
+	{
+		if (__option_is("-s", *av) 
+			|| __option_is("--start", *av))
+		{
+			__log(Debug, "parsing '--start'");
 			if (!parse_argument_expr(
 					get_next_argument(&ac, &av),
 					&options->start_offset))
@@ -45,13 +47,13 @@ t_user_options *parse_user_options(int ac, char *av[])
 		
 		}
 		if (__option_is("-n", *av) 
-				|| __option_is("--size", *av)) {
-				__log(Debug, "parsing range");
+			|| __option_is("--size", *av))
+		{
+			__log(Debug, "parsing '--range'");
 			if (!parse_argument_expr(
 					get_next_argument(&ac, &av),
 					&options->range))
 				return (
-					putstr("2"),
 					free(options),
 					NULL);
 			else {
@@ -60,8 +62,34 @@ t_user_options *parse_user_options(int ac, char *av[])
 				continue ;
 			}
 		}
+		if (__option_is("-str", *av) 
+			|| __option_is("--string", *av))
+		{
+			__log(Debug, "parsing '--string'");
+			options->mode = M_STRING;
+			if (!parse_argument_expr(
+					get_next_argument(&ac, &av),
+					&options->string_size))
+				return (
+					free(options),
+					NULL);
+			else {
+				--ac;
+				++av;
+				continue ;
+			}
+		}
+		if (__option_is("-c", *av)
+            || __option_is("--color", *av))
+		{
+			options->colors = true;
+			--ac;
+			++av;
+			continue ;
+		}
 		if (__option_is("-h", *av)
-            	|| __option_is("--help", *av)) {
+            || __option_is("--help", *av))
+		{
 			free(options);
         	usage();
        		exit (0);

@@ -8,7 +8,6 @@ void infile_struct_debug_print(t_infile *file)
 	putstr("t_infile:     .size=%d\n", file->size);
 	putstr("t_infile:     .fd='%d'\n", file->fd);
 	putstr("t_infile:     .open='%s'\n", (file->open ? "true" : "false"));
-	putstr("t_infile:     .eof='%s'\n", (file->eof ? "true" : "false"));
 	putstr("t_infile:     .data\n");
 	putstr("t_infile:         .mapped='%s'\n", (file->data.mapped ? "true" : "false"));
 	putstr("t_infile:         .ptr=%p\n", file->data.ptr);

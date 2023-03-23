@@ -1,0 +1,15 @@
+#include <stddef.h>
+#include <stdint.h>
+#include <string.h>
+
+size_t xtrd_compare(const char *s1, const char *s2, size_t max)
+{
+    size_t dist = 0;
+
+    while (*s1 && *s2 && max > 0)
+    {
+        dist += __builtin_popcount(*s1++ ^ *s2++);
+        max--;
+    }
+    return (dist + ((strlen(s1) - strlen(s2)) << 3));
+}

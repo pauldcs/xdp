@@ -24,7 +24,8 @@ bool infile_mmap_from_offset(t_infile *file, size_t range_size)
 	 		file->fd,
 			aligned_offset);
 	
-	if (file->data.ptr == MAP_FAILED) {
+	if (file->data.ptr == MAP_FAILED)
+	{
 		FATAL_ERROR("mmap: %s", strerror(errno));
 		return (false);
 	}

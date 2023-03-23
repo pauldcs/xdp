@@ -4,7 +4,8 @@
 */
 const char *get_next_argument(int *ac, char ***av)
 {
-	if (*ac) {
+	if (*ac)
+	{
 		--(*ac);
 		return (*++*av);
 	}

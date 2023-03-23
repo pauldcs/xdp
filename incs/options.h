@@ -5,25 +5,21 @@
 # include <stdbool.h>
 # include "infile.h"
 
-typedef enum e_hdump_mode
+typedef enum e_xdp_mode
 {
 	M_NORMAL,
 	M_STRING,
 	M_STREAM,
-}	t_hdump_mode;
-
-typedef enum e_user_option_type {
-	START_OFFSET,
-	RANGE,
-	HELP
-}   t_user_option_type;
+}	t_xdp_mode;
 
 typedef struct s_user_options
 {
-	const char   *filename;
-	size_t       start_offset;
-	size_t       range;
-	t_hdump_mode mode;
+	const char    *filename;
+	t_xdp_mode    mode;
+	size_t        start_offset;
+	size_t        string_size;
+	bool          colors;
+	size_t        range;
 }	t_user_options;
 
 t_user_options 	*parse_user_options(int ac, char *av[]);

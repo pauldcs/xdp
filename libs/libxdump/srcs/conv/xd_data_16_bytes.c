@@ -15,16 +15,16 @@ size_t	inline xd_data_16_bytes(uint8_t *dst, const uint8_t *src, size_t n)
 			*(uint16_t*)(dst + 18) = _B16Pair[*(src + 6)];
 			*(uint16_t*)(dst + 21) = _B16Pair[*(src + 7)];
 		/*-- 8 - 16 --*/
-			*(uint16_t*)(dst + 24) = _B16Pair[*(src +  8)];
-			*(uint16_t*)(dst + 27) = _B16Pair[*(src +  9)];
-			*(uint16_t*)(dst + 30) = _B16Pair[*(src + 10)];
-			*(uint16_t*)(dst + 33) = _B16Pair[*(src + 11)];
-			*(uint16_t*)(dst + 36) = _B16Pair[*(src + 12)];
-			*(uint16_t*)(dst + 39) = _B16Pair[*(src + 13)];
-			*(uint16_t*)(dst + 42) = _B16Pair[*(src + 14)];
-			*(uint16_t*)(dst + 45) = _B16Pair[*(src + 15)];
+			*(uint16_t*)(dst + 25) = _B16Pair[*(src +  8)];
+			*(uint16_t*)(dst + 28) = _B16Pair[*(src +  9)];
+			*(uint16_t*)(dst + 31) = _B16Pair[*(src + 10)];
+			*(uint16_t*)(dst + 34) = _B16Pair[*(src + 11)];
+			*(uint16_t*)(dst + 37) = _B16Pair[*(src + 12)];
+			*(uint16_t*)(dst + 40) = _B16Pair[*(src + 13)];
+			*(uint16_t*)(dst + 43) = _B16Pair[*(src + 14)];
+			*(uint16_t*)(dst + 46) = _B16Pair[*(src + 15)];
 		/*------------*/
-		return (47);
+		return (48);
 
 	} else {
 
@@ -35,13 +35,17 @@ size_t	inline xd_data_16_bytes(uint8_t *dst, const uint8_t *src, size_t n)
 		while (n--) {
 			*(uint16_t*)(dst) = _B16Pair[*ptr++];
 			dst += 2;
-			dst++;
+			*(dst++) = ' ';
+			if (n == 7)
+				*(dst++) = ' ';
 		}
 
 		while (pad--) {
 			*(uint16_t*)(dst) = 0x2020;
 			dst += 2;
 			if (pad)
+				*(dst++) = ' ';
+			if (pad == 8)
 				*(dst++) = ' ';
 		}
 		return (dst - tmp);

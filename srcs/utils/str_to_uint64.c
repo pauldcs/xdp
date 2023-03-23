@@ -8,7 +8,8 @@ const char	*str_to_uint64(const char *str, size_t *result)
 	long tmp;
 
 	tmp = 0;
-    if (*str == '0' && *(str + 1) == 'x') {
+    if (*str == '0' && *(str + 1) == 'x')
+    {
         char *endptr;
         tmp = strtol(str, &endptr, 16);
         str = endptr;

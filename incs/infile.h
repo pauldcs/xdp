@@ -10,9 +10,8 @@ typedef struct s_infile
 {
 	const char   *name;
 	size_t       size;
-	int          fd;
 	bool         open;
-	bool         eof;
+	int          fd;
 	struct s_data
 	{
 		bool     mapped;
