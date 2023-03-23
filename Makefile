@@ -32,17 +32,17 @@ SRCS := main.c \
 	/expr/ast/ast_parser.c
 
 
-NAME		:= hdump
+NAME		:= xdp
 CC			:= clang
 SRCS_DIR	:= srcs
 OBJS_DIR	:= .objs
 INCS_DIR	:= incs
 LOGGING     := -D __LOGGING__
 SANITIZE    := -fstack-protector-strong -fsanitize=address
-CFLAGS 		:= -Wall -Wextra -Werror -g3 $(LOGGING)
+CFLAGS 		:= -Wall -Wextra -Werror $(LOGGING)
 CFLAGS_PROD := -Wall -Wextra -Werror -O3
 CFLAGS_ASAN := -Wall -Wextra -Werror -g3 $(LOGGING) $(SANITIZE)
-CFLAGS_TEST := -Wall -Wextra -Werror -g3
+CFLAGS_TEST := -Wall -Wextra -Werror
 LIBSTRINGF  := libs/libstringf
 LIBXDUMP    := libs/libxdump
 

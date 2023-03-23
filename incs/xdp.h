@@ -1,5 +1,5 @@
-#ifndef __HDUMP_H__
-# define __HDUMP_H__
+#ifndef __XDP_H__
+# define __XDP_H__
 
 # include "libs/libstringf.h"
 # include "options.h"

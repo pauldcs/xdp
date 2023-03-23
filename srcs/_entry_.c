@@ -1,4 +1,4 @@
-#include "hdump.h"
+#include "xdp.h"
 #include "options.h"
 #include "debug/logging.h"
 #include "libs/libxdump.h"
@@ -59,15 +59,15 @@ bool _entry_(t_user_options *opts)
     infile_struct_debug_print(&file);
 #endif /* if __LOGGING__ */
 
-	//ssize_t ret = xd_dump_lines(
-	//	file.data.ptr,
-	//	opts->range,
-	//	opts->start_offset
-	//);
+	ssize_t ret = xd_dump_lines(
+		file.data.ptr,
+		opts->range,
+		opts->start_offset
+	);
 
 	infile_destroy(&file);
 
-	//if (ret == -1)
-	//	return (false);
+	if (ret == -1)
+		return (false);
 	return (true);
 }

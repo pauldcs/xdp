@@ -3,7 +3,7 @@
 set -uo pipefail
 
 readonly PROG="$(basename ${0})"
-readonly DEFAULT_PROGRAM="../hdump"
+readonly DEFAULT_PROGRAM="../xdp"
 readonly DEFAULT_INPUT_SUFFIX="in"
 readonly DEFAULT_INPUT_DIRECTORY="infiles"
 readonly DEFAULT_OUTPUT_DIRECTORY="outfiles"

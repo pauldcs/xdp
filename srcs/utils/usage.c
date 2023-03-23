@@ -3,7 +3,7 @@
 void usage(void)
 {
 	fputstr(1,
-		"Usage: ./hdump [OPTIONS] FILE\n\n"
+		"Usage: ./xdp [OPTIONS] FILE\n\n"
 		"Description:\n"
 		"    Display the contents of a file in hexadecimal format.\n\n"
 		"Options:\n"
