@@ -6,13 +6,13 @@
 /*   By: pducos <pducos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 17:02:40 by pducos            #+#    #+#             */
-/*   Updated: 2023/03/21 00:29:54 by pducos           ###   ########.fr       */
+/*   Updated: 2023/03/23 11:22:17 by pducos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expr/expr_lexer.h"
 #include "expr/expr_parser.h"
-#include "libstringf.h"
+#include "libs/libstringf.h"
 #include <stdbool.h>
 #include <math.h>
 
@@ -65,7 +65,7 @@ static bool syntatic_check(t_token *list)
 	return (true);
 }
 
-t_ast	*parser(t_token *list)
+t_ast	*parse_list(t_token *list)
 {
 	t_ast	*ast;
 

@@ -5,7 +5,7 @@ Description:
   Display the contents of a file in hexadecimal format.
 
 Options:
-  --size=EXPR     Maximum number of bytes to read from the file (default: unlimited).
+  --range=EXPR    Maximum number of bytes to read from the file (default: unlimited).
   --start=EXPR    Starting byte offset to read from (default: 0).
   -h --help       Show this help message
 ```

@@ -11,8 +11,8 @@
 /* ************************************************************************** */
 
 #include "expr/expr_lexer.h"
-#include "logging.h"
-#include "libstringf.h"
+#include "debug/logging.h"
+#include "libs/libstringf.h"
 #include "utils.h"
 #include <ctype.h>
 #include <errno.h>

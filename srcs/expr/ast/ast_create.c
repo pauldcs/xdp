@@ -6,7 +6,7 @@
 /*   By: pducos <pducos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 17:25:41 by pducos            #+#    #+#             */
-/*   Updated: 2023/03/21 00:18:03 by pducos           ###   ########.fr       */
+/*   Updated: 2023/03/23 11:14:04 by pducos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include <stdio.h>
 #include <string.h>
 
-# define VSTACK_SIZE 1024
+# define VSTACK_SIZE 2048
 static const void	*__stack_a[VSTACK_SIZE];
 static const void	*__stack_b[VSTACK_SIZE];
 static size_t	top_a;

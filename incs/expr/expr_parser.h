@@ -6,7 +6,7 @@
 /*   By: pducos <pducos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 14:52:01 by pducos            #+#    #+#             */
-/*   Updated: 2023/03/20 15:47:28 by pducos           ###   ########.fr       */
+/*   Updated: 2023/03/22 20:12:54 by pducos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,9 @@ struct s_ast
 		}	binop;
 	};
 };
+bool 	expr_parse(const char *expr, void *dest);
 
-t_ast	*parser(t_token *list);
+t_ast	*parse_list(t_token *list);
 t_ast	*ast_create(t_token *tokenlist);
 t_ast	*ast_new_value(int value);
 t_ast	*ast_new_operator(t_token_kind kind);

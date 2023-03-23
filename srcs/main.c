@@ -1,29 +1,19 @@
 #include "hdump.h"
-#include "logging.h"
+#include "debug/logging.h"
 #include "options.h"
-#include "utils.h"
 #include <stdlib.h>
 #include <unistd.h>
-#include <string.h>
 
 int main(int ac, char *av[])
 {
-	t_hd_opts 	opts;
-	char		*ptr;
-	int         ret;
+	__log(Warning, "Debug mode is enabled");
 
-	LOG(WARNING, "Debug mode is enabled");
+	t_user_options *opts = parse_user_options(--ac, ++av);
+
+	if (opts == NULL)
+		return (EXIT_FAILURE);
 	
-	memset(&opts, 0, sizeof(opts));
-	while ((ptr = get_next_argument(&ac, &av))) {
-		if (!parse_single_option(ptr, &opts, &ac, &av))
-			return (EXIT_FAILURE);
-	}
+	bool success = _entry_(opts);
 
-	if (!opts.file.name)
-		return (usage(), EXIT_SUCCESS);
-	ret = !_entry_(&opts);
-	if (opts.file.fd > 0)
-		close(opts.file.fd);
-	return (ret);
+	return (free(opts), success == false);
 }

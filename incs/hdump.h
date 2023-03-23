@@ -1,8 +1,9 @@
 #ifndef __HDUMP_H__
 # define __HDUMP_H__
 
-# include "libstringf.h"
+# include "libs/libstringf.h"
 # include "options.h"
+# include "infile.h"
 # include <errno.h>
 # include <stddef.h>
 # include <stdbool.h>
@@ -32,12 +33,7 @@
 
 # define BASE16_ASCII_CHARS "0123456789abcdef"
 
-# define report_error(fmt, ...) \
-    fputstr(2, "hdump: " fmt "\n", ##__VA_ARGS__)
-
-bool    _entry_(t_hd_opts *opts);
-bool    partial_mmap(t_hd_opts *opts);
-bool    seek_and_read(t_hd_opts *opts);
+bool    _entry_(t_user_options *opts);
 void 	usage(void);
 
 #endif /* __HEXDUMP_H__ */

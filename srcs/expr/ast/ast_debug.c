@@ -6,12 +6,12 @@
 /*   By: pducos <pducos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/09 17:32:39 by pducos            #+#    #+#             */
-/*   Updated: 2023/03/21 00:18:19 by pducos           ###   ########.fr       */
+/*   Updated: 2023/03/23 11:22:17 by pducos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "logging.h"
-#include "libstringf.h"
+#include "debug/logging.h"
+#include "libs/libstringf.h"
 #include "expr/expr_parser.h"
 #include <stdio.h>
 
@@ -19,7 +19,7 @@ static void	inner(t_ast *ast, size_t depth);
 
 static const char	*g_ast_names[] = {
 	"lparen", "rparen", "val",
-	"operator='MUL'", "operator='ADD'", "operator='SUB'"
+	"operator='*'", "operator='+'", "operator='-'"
 };
 
 static void	put_binop(t_ast *ast, size_t depth)
@@ -34,6 +34,7 @@ static void	inner(t_ast *ast, size_t depth)
 	size_t	i;
 
 	i = 0;
+	putstr("t_ast:");
 	while (i++ < depth)
 		putstr("%4s", "");
 	if (ast->kind == EXP_VAL)
@@ -50,7 +51,6 @@ static void	inner(t_ast *ast, size_t depth)
 
 void	ast_debug(t_ast *ast)
 {
-	setbuf(stdout, NULL);
-	putstr(" . Root\n");
+	__log(Warning, "Dumping ast");
 	inner(ast, 0);
 }

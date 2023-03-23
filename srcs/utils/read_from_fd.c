@@ -1,4 +1,5 @@
-#include "reader.h"
+#include "infile/infile_reader.h"
+#include <stddef.h>
 
 ssize_t read_from_fd(int fd, char **data)
 {
@@ -10,8 +11,8 @@ ssize_t read_from_fd(int fd, char **data)
 		.max_size = 0x10000
 	};
 
-	ret = reader(data, &r, "");
-	reader_destroy(&r);
+	ret = infile_reader(data, &r, "");
+	infile_reader_destroy(&r);
 	
 	return (ret);
 }

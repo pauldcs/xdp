@@ -19,6 +19,7 @@ size_t	inline xd_pointer_p8_bytes(uint8_t *dst, const uintptr_t p)
 	*(dst + 1) = BASE16_ASCII_CHARS[(ptr >> 28) & 0xf];
 	*(dst + 0) = '0';
 
+	/* add '+' to the hex number */
 	int i = 0;
 	while ((ptr >>= 4))
 		i++;

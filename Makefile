@@ -1,23 +1,24 @@
 SRCS := main.c \
 	_entry_.c  \
 	\
-	options/parse_single_option.c \
-	options/sanitize.c            \
+	options/options_struct_debug_print.c \
+	options/options_within_range.c       \
+	options/parse_user_options.c         \
 	\
 	utils/get_next_argument.c \
 	utils/usage.c             \
 	utils/str_to_uint64.c     \
 	utils/write_all.c         \
 	\
-	file/file_read_from_offset.c \
-	file/file_mmap_from_offset.c \
-	file/file_mmap_recommended.c \
-	file/file_try_open.c         \
-	file/reader/reader.c         \
-	file/reader/reader_destroy.c \
-	file/reader/reader_init.c    \
-	file/reader/reader_utils.c   \
+	infile/infile_read_from_offset.c      \
+	infile/infile_mmap_from_offset.c      \
+	infile/infile_mmap_recommended.c      \
+	infile/infile_struct_debug_print.c    \
+	infile/infile_get_size.c              \
+	infile/infile_open.c                  \
+	infile/infile_destroy.c               \
 	\
+	/expr/expr_parse.c              \
 	/expr/lexer/token_list_create.c \
 	/expr/lexer/lst_destroy.c       \
 	/expr/lexer/lst_size.c          \
@@ -38,12 +39,12 @@ OBJS_DIR	:= .objs
 INCS_DIR	:= incs
 LOGGING     := -D __LOGGING__
 SANITIZE    := -fstack-protector-strong -fsanitize=address
-CFLAGS 		:= -Wall -Wextra -Werror -O2
-CFLAGS_DBG 	:= -Wall -Wextra -Werror -g3 $(LOGGING)
+CFLAGS 		:= -Wall -Wextra -Werror -g3 $(LOGGING)
+CFLAGS_PROD := -Wall -Wextra -Werror -O3
 CFLAGS_ASAN := -Wall -Wextra -Werror -g3 $(LOGGING) $(SANITIZE)
 CFLAGS_TEST := -Wall -Wextra -Werror -g3
 LIBSTRINGF  := libs/libstringf
-LIBXDUMP  := libs/libxdump
+LIBXDUMP    := libs/libxdump
 
 
 SRCS_OBJS := $(patsubst %.c,$(OBJS_DIR)/%.o,$(SRCS))
@@ -54,8 +55,8 @@ $(OBJS_DIR)/%.o:$(SRCS_DIR)/%.c
 
 all: $(NAME)
 
-dbg: CFLAGS=$(CFLAGS_DBG)
-dbg: fclean all
+prod: CFLAGS=$(CFLAGS_PROD)
+prod: fclean all
 asan: CFLAGS=$(CFLAGS_ASAN)
 asan: fclean all
 test: CFLAGS=$(CFLAGS_TEST)
