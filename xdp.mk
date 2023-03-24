@@ -23,9 +23,9 @@ SRCS := main.c \
 	utils/write_all.c         \
 	utils/str_to_uint64.c     \
 	\
-	strdump/str_dump.c      \
-	strdump/strp_compare.c  \
-	strdump/strd_compare.c  \
+	string/string_dump.c         \
+	string/string_pattern_cmp.c  \
+	string/string_distance_cmp.c \
 	\
 	infile/infile_read_from_offset.c   \
 	infile/infile_mmap_from_offset.c   \
@@ -48,14 +48,14 @@ SRCS := main.c \
 	/expr/ast/ast_debug.c           \
 	/expr/ast/ast_parser.c          \
 	\
-	hexdump/conv/xd_ascii_16_bytes.c      \
-	hexdump/conv/xd_data_16_bytes.c       \
-	hexdump/conv/xd_pointer_8_bytes.c     \
-	hexdump/conv/xd_pointer_p8_bytes.c    \
-	hexdump/dump/xd_dump_lines.c          \
-	hexdump/lookup/xd_B16Pair.c     \
-	hexdump/lookup/xd_B16PairSpaced.c     \
-	hexdump/lookup/xd_PrintByte.c         \
+	hex/conv/xd_ascii_16_bytes.c      \
+	hex/conv/xd_data_16_bytes.c       \
+	hex/conv/xd_pointer_8_bytes.c     \
+	hex/conv/xd_pointer_p8_bytes.c    \
+	hex/dump/xd_dump_lines.c          \
+	hex/lookup/xd_B16Pair.c     \
+	hex/lookup/xd_B16PairSpaced.c     \
+	hex/lookup/xd_PrintByte.c         \
 	\
 	xtypes/char/char_type.c             \
 	xtypes/string/xc_legal_identifier.c \

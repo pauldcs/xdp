@@ -1,6 +1,6 @@
 #include <stdbool.h>
 
-bool strp_compare(char *str, char *pattern)
+bool string_pattern_cmp(char *str, char *pattern)
 {
     if (*pattern == '\0')
         return *str == '\0';
@@ -11,7 +11,7 @@ bool strp_compare(char *str, char *pattern)
 		{
             do 
 			{
-                if (strp_compare(str, pattern + 1))
+                if (string_pattern_cmp(str, pattern + 1))
                 return (true);
             } while (*str++ != '\0');
             return (false);

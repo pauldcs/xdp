@@ -2,7 +2,7 @@
 #include "xtypes.h"
 #include "options.h"
 #include "debug/logging.h"
-#include "strdump.h"
+#include "string_dump.h"
 #include "hexdump.h"
 #include "infile.h"
 #include <stdbool.h>
@@ -85,7 +85,7 @@ bool _entry_(t_user_options *opts)
 		} */
 		break;
 	case M_STRING: /* dump ascii strings */
-		ret = str_dump(
+		ret = string_dump(
 			file.data.ptr,
 			opts->range,
 			opts->string_size);

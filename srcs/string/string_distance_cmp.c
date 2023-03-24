@@ -2,7 +2,7 @@
 #include <stdint.h>
 #include <string.h>
 
-size_t strd_compare(const char *s1, const char *s2)
+size_t string_distance_cmp(const char *s1, const char *s2)
 {
     size_t dist = 0;
 

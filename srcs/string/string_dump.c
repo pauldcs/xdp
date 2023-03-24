@@ -22,7 +22,7 @@ static inline void	write_offset(const uintptr_t p)
     write(STDOUT_FILENO, buffer, 10);
 }
 
-bool str_dump(const uint8_t* addr, size_t n, size_t len)
+bool string_dump(const uint8_t* addr, size_t n, size_t len)
 {
     const uint8_t   *ptr = addr;
     size_t          count;
