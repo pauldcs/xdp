@@ -6,13 +6,13 @@
 /*   By: pducos <pducos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/09 17:32:39 by pducos            #+#    #+#             */
-/*   Updated: 2023/03/23 11:22:17 by pducos           ###   ########.fr       */
+/*   Updated: 2023/03/24 15:28:41 by pducos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "debug/logging.h"
-#include "libs/libstringf.h"
 #include "expr/expr_parser.h"
+#include <stdio.h>
 #include <stdio.h>
 
 static void	inner(t_ast *ast, size_t depth);
@@ -24,7 +24,7 @@ static const char	*g_ast_names[] = {
 
 static void	put_binop(t_ast *ast, size_t depth)
 {
-	putstr("\n");
+	fprintf(stdout, "\n");
 	inner(ast->binop.left, depth + 1);
 	inner(ast->binop.right, depth + 1);
 }
@@ -34,13 +34,13 @@ static void	inner(t_ast *ast, size_t depth)
 	size_t	i;
 
 	i = 0;
-	putstr("t_ast:");
+	fprintf(stdout, "t_ast:");
 	while (i++ < depth)
-		putstr("%4s", "");
+		fprintf(stdout, "%4s", "");
 	if (ast->kind == EXP_VAL)
-		putstr(" - value='%d'\n", ast->value);
+		fprintf(stdout, " - value='%d'\n", ast->value);
 	else
-		putstr(" - %s", g_ast_names[ast->kind]);
+		fprintf(stdout, " - %s", g_ast_names[ast->kind]);
 	if (ast->kind == EXP_ADD
 		|| ast->kind == EXP_SUB
 		|| ast->kind == EXP_MUL

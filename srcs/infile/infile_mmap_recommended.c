@@ -12,7 +12,7 @@ bool infile_mmap_recommended(t_infile *file, size_t range_size)
     size_t 		page_size = sysconf(_SC_PAGE_SIZE);
 	struct stat file_info;
 
-    __log(Debug, "page_size: %d", page_size);
+    __log(Debug, "page_size: %zu", page_size);
 
     if (file->size < page_size)
         return (false);
@@ -25,7 +25,7 @@ bool infile_mmap_recommended(t_infile *file, size_t range_size)
 
     size_t block_size = file_info.st_blksize;
 
-    __log(Debug, "block_size: %d", block_size);
+    __log(Debug, "block_size: %zu", block_size);
 
     if (range_size < block_size)
         return (false);

@@ -36,7 +36,6 @@ t_user_options *parse_user_options(int ac, char *av[])
 					get_next_argument(&ac, &av),
 					&options->start_offset))
 				return (
-					putstr("1"),
 					free(options),
 					NULL);
 			else {
@@ -105,7 +104,6 @@ t_user_options *parse_user_options(int ac, char *av[])
 		
 		FATAL_ERROR("%s: Invalid argument", *av);
 		return (
-			putstr("3"),
 			free(options),
 			NULL);
 	}

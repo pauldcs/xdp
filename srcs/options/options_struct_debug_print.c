@@ -1,14 +1,14 @@
 #include "options.h"
-#include "libs/libstringf.h"
+#include <stdio.h>
 
 void options_struct_debug_print(t_user_options *opts)
 {
-	putstr("t_user_options: {\n");
-	putstr("t_user_options:    .filename='%s'\n", opts->filename);
-	putstr("t_user_options:    .start_offset=%d\n", opts->start_offset);
-	putstr("t_user_options:    .string_size=%d\n", opts->string_size);
-	putstr("t_user_options:    .colors=%d\n", opts->colors);
-	putstr("t_user_options:    .range=%d\n", opts->range);
-	putstr("t_user_options:    .mode=%d\n", opts->mode);
-	putstr("t_user_options: }\n");
+	fprintf(stdout, "t_user_options: {\n");
+	fprintf(stdout, "t_user_options:    .filename='%s'\n", opts->filename);
+	fprintf(stdout, "t_user_options:    .start_offset=%zu\n", opts->start_offset);
+	fprintf(stdout, "t_user_options:    .string_size=%zu\n", opts->string_size);
+	fprintf(stdout, "t_user_options:    .colors=%d\n", opts->colors);
+	fprintf(stdout, "t_user_options:    .range=%zu\n", opts->range);
+	fprintf(stdout, "t_user_options:    .mode=%d\n", opts->mode);
+	fprintf(stdout, "t_user_options: }\n");
 }

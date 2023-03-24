@@ -30,7 +30,7 @@ bool expr_parse(const char *expr, void *dest)
 
 	*dst = ast_solve(ast);
 
-	__log(Info, "-> expression equals %d", *dst);
+	__log(Info, "-> expression equals %zu", *dst);
     
 	lst_destroy(&list);
 

@@ -6,14 +6,14 @@
 /*   By: pducos <pducos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 17:02:40 by pducos            #+#    #+#             */
-/*   Updated: 2023/03/23 11:22:17 by pducos           ###   ########.fr       */
+/*   Updated: 2023/03/24 16:06:42 by pducos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expr/expr_lexer.h"
 #include "expr/expr_parser.h"
-#include "libs/libstringf.h"
 #include <stdbool.h>
+#include <stdio.h>
 #include <math.h>
 
 static bool syntatic_check(t_token *list)
@@ -70,9 +70,9 @@ t_ast	*parse_list(t_token *list)
 	t_ast	*ast;
 
 	if (!syntatic_check(list))
-		return (fputstr(2, "Syntax Error\n"), NULL);
+		return (fprintf(stderr, "Syntax Error\n"), NULL);
 	ast = ast_create(list);
 	if (!ast)
-		return (fputstr(2, "Failed to build AST\n"), NULL);
+		return (fprintf(stderr, "Failed to build AST\n"), NULL);
 	return (ast);
 }

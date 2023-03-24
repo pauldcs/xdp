@@ -1,8 +1,8 @@
-#include "libs/libstringf.h"
+#include <stdio.h>
 
 void usage(void)
 {
-	fputstr(1,
+	fprintf(stdout,
 		"Usage: ./xdp [OPTIONS] FILE\n\n"
 		"Description:\n"
 		"    Display the contents of a file in hexadecimal format.\n\n"

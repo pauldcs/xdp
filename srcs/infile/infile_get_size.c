@@ -13,7 +13,7 @@ bool infile_get_size(t_infile *file)
 	struct stat st;
 	
 	if (!file->name) {
-		FATAL_ERROR("Name is missing");
+		FATAL_ERROR("Missing name");
 		return (false);
 	}
 	
