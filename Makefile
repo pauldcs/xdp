@@ -17,14 +17,15 @@ asan: all
 -include  $(SRCS_OBJS:.o=.d)
 
 $(NAME): $(SRCS_OBJS)
-	$(CC) $(CFLAGS) $^ -o $(NAME)
+	mkdir -vp $(BUILD_DIR)
+	$(CC) $(CFLAGS) $^ -o $(BUILD_DIR)/$(NAME)
 	
 clean:
 	rm -rf $(OBJS_DIR)
 
 fclean: clean
 	rm -rf tests/outfiles
-	rm -f $(NAME)
+	rm -rf $(BUILD_DIR)
 	rm -rf $(OBJS_DIR)
 
 re: fclean all

@@ -3,6 +3,7 @@ CC			:= clang
 SRCS_DIR	:= srcs
 OBJS_DIR	:= .objs
 INCS_DIR	:= incs
+BUILD_DIR   := build
 LOGGING     := -D __LOGGING__
 SANITIZE    := -fstack-protector-strong -fsanitize=address
 CFLAGS 		:= -Wall -Wextra -Werror $(LOGGING)
