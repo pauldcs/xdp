@@ -14,7 +14,7 @@ CFLAGS_TEST := -Wall -Wextra -Werror
 SRCS := main.c \
 	_entry_.c  \
 	\
-	options/options_struct_debug_print.c \
+	options/options_debug_print.c \
 	options/options_within_range.c       \
 	options/parse_user_options.c         \
 	\
@@ -27,13 +27,19 @@ SRCS := main.c \
 	string/string_pattern_cmp.c  \
 	string/string_distance_cmp.c \
 	\
-	infile/infile_read_from_offset.c   \
-	infile/infile_mmap_from_offset.c   \
-	infile/infile_mmap_recommended.c   \
-	infile/infile_struct_debug_print.c \
-	infile/infile_get_size.c           \
-	infile/infile_open.c               \
-	infile/infile_destroy.c            \
+	file/manip/file_open_append.c   \
+	file/manip/file_open_write.c    \
+	file/manip/file_open_read.c     \
+	file/status/file_exists.c       \
+	file/status/file_is_directory.c \
+	file/status/file_is_regular.c   \
+	file/status/file_get_size.c     \
+	file/file_init.c                \
+	file/file_destroy.c             \
+	file/file_mmap_from_offset.c    \
+	file/file_mmap_recommended.c    \
+	file/file_read_from_offset.c    \
+	file/file_debug_print.c         \
 	\
 	/expr/expr_parse.c              \
 	/expr/lexer/token_list_create.c \

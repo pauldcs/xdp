@@ -7,7 +7,7 @@
 #include <errno.h>
 #include <stdlib.h>
 
-bool infile_mmap_recommended(t_infile *file, size_t range_size)
+bool file_mmap_recommended(t_file *file, size_t range_size)
 {
     size_t 		page_size = sysconf(_SC_PAGE_SIZE);
 	struct stat file_info;

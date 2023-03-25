@@ -1,12 +1,12 @@
 #include "xdp.h"
-#include "infile.h"
+#include "file.h"
 #include "options.h"
 #include "debug/logging.h"
 #include <unistd.h>
 #include <string.h>
 #include <stdlib.h>
 
-bool infile_read_from_offset(t_infile *file, size_t range, off_t start_offset)
+bool file_read_from_offset(t_file *file, size_t range, off_t start_offset)
 {
 	if (read(file->fd, 0, 0) == -1)
 	{

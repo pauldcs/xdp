@@ -2,7 +2,7 @@
 # define __XDP_H__
 
 # include "options.h"
-# include "infile.h"
+# include "file.h"
 # include <errno.h>
 # include <stddef.h>
 # include <stdbool.h>

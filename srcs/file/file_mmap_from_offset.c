@@ -5,7 +5,7 @@
 #include <unistd.h>
 #include <sys/mman.h>
 
-bool infile_mmap_from_offset(t_infile *file, size_t range_size)
+bool file_mmap_from_offset(t_file *file, size_t range_size)
 {
 	size_t aligned_offset = file->data.start & ~(sysconf(_SC_PAGE_SIZE) - 1);
 

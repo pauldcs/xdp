@@ -22,11 +22,13 @@ $(NAME): $(SRCS_OBJS)
 	
 clean:
 	rm -rf $(OBJS_DIR)
+	@true
 
 fclean: clean
 	rm -rf tests/outfiles
 	rm -rf $(BUILD_DIR)
 	rm -rf $(OBJS_DIR)
+	@true
 
 re: fclean all
 

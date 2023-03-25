@@ -1,13 +1,13 @@
 #include <sys/stat.h>
 #include <stdbool.h>
 
-bool file_is_directory(const char *str)
+bool file_is_directory(const char *filename)
 {
-	if (!str || !*str)
+	if (!filename || !*filename)
 		return (false);
 
 	struct stat sb = {0};
-	if (stat(str, &sb) != 0) {
+	if (stat(filename, &sb) != 0) {
 		return (false);
 	}
 	
