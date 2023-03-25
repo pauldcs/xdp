@@ -3,40 +3,40 @@
 #include <stdint.h>
 #include <stddef.h>
 
-size_t	xd_data_16_bytes_color(const uint8_t *addr, size_t n, uint8_t *buffer)
+size_t	xd_data_16_bytes_color(cut8 *addr, size_t n, ut8 *buffer)
 {
-	uint8_t 	*tmp = buffer;
-	uint8_t 	*ptr = (uint8_t *)addr;
-	size_t 		pad;
+	ut8 	*tmp = buffer;
+	ut8 	*ptr = (ut8 *)addr;
+	size_t 	pad;
 
 	n = (n < 16 ? 16 : n);
 	pad = 16 - n;
 
 	while (n) {
 		if (_CharColor[*ptr] == CYAN) { 
-			*(uint64_t*)(buffer) = *(uint64_t *)CYN;
+			*(ut64 *)(buffer) = *(ut64 *)CYN;
 			buffer += 8;
 			while (n && _CharColor[*ptr] == CYAN) {
-				*(uint16_t*)(buffer) = _B16Pair[*ptr++];
+				*(ut16 *)(buffer) = _B16Pair[*ptr++];
 				buffer += 2;
 				if (--n)
 					*(buffer++) = ' ';
 			}
 		} else if (_CharColor[*ptr] == WHITE) {
-			*(uint64_t*)(buffer) = *(uint64_t *)LGR;
+			*(ut64*)(buffer) = *(ut64 *)LGR;
 			buffer += 8;
 			while (n && _CharColor[*ptr] == WHITE) {
-				*(uint32_t*)(buffer) = _B16Pair[*ptr++];
+				*(ut32 *)(buffer) = _B16Pair[*ptr++];
 				buffer += 2;
 				if (--n)
 					*(buffer++) = ' ';
 			}
 		} else {
 			if (!*ptr) {
-				*(uint64_t*)(buffer) = *(uint64_t *)GRY;
+				*(ut64 *)(buffer) = *(ut64 *)GRY;
 				buffer += 6;
 				while (n && !*ptr) {
-					*(uint32_t*)(buffer) = _B16Pair[*ptr++];
+					*(ut32*)(buffer) = _B16Pair[*ptr++];
 					buffer += 2;
 					if (--n)
 						*(buffer++) = ' ';
@@ -44,10 +44,10 @@ size_t	xd_data_16_bytes_color(const uint8_t *addr, size_t n, uint8_t *buffer)
 			}
 		}
 	}
-	*(uint64_t*)(buffer) = END_UINT64;
+	*(ut64 *)(buffer) = END_UINT64;
 	buffer += 5;
 	while (pad--) {
-		*(uint32_t*)(buffer) = *(uint32_t*)"   ";
+		*(ut32 *)(buffer) = *(ut32 *)"   ";
 		buffer += 3;
 	}
 	return (buffer - tmp);

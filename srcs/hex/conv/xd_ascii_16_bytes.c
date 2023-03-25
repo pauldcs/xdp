@@ -5,9 +5,9 @@
 /* Writes 16 bytes of ascii into __screen__, non printable characters
  * are replaced by '.'
  */
-size_t	xd_ascii_16_bytes(uint8_t *dst, const uint8_t *src, size_t n)
+size_t	xd_ascii_16_bytes(ut8 *dst, cut8 *src, size_t n)
 {
-	size_t	ret = 0;
+	size_t ret = 0;
 
 	if (n >= 16) {
 		/*-- 0 - 8 --*/
@@ -32,7 +32,7 @@ size_t	xd_ascii_16_bytes(uint8_t *dst, const uint8_t *src, size_t n)
 		return (16);
 	
 	} else {
-		uint8_t *tmp = (uint8_t *)src;
+		ut8 *tmp = (ut8 *)src;
 		while (n--)
 			dst[ret++] = _PrintByte[*tmp++];
 	}

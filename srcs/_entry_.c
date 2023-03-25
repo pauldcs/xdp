@@ -17,10 +17,10 @@ bool _entry_(t_user_options *opts)
 	if (!file_init(opts->filename, &file))
 		return (false);
 
-#ifdef __LOGGING__
-	log_message(warning, "Dumping infile struct");
-	file_debug_print(&file);
-#endif /* if __LOGGING__ */
+// #ifdef __LOGGING__
+// 	log_message(warning, "Dumping infile struct");
+// 	file_debug_print(&file);
+// #endif /* if __LOGGING__ */
 
 	if (!options_within_range(opts, &file))
 	{
@@ -28,10 +28,10 @@ bool _entry_(t_user_options *opts)
 		return (false);
 	}
 
-#ifdef __LOGGING__
-	log_message(warning, "Dumping options struct");
-	options_debug_print(opts);
-#endif /* if __LOGGING__ */
+// #ifdef __LOGGING__
+// 	log_message(warning, "Dumping options struct");
+// 	options_debug_print(opts);
+// #endif /* if __LOGGING__ */
 
 	if (!file_open_read(opts->filename, &file.fd))
 	{
@@ -62,10 +62,10 @@ bool _entry_(t_user_options *opts)
 		}
 	}
 
-#ifdef __LOGGING__
-	log_message(warning, "Dumping final infile struct");
-	file_debug_print(&file);
-#endif /* if __LOGGING__ */
+// #ifdef __LOGGING__
+// 	log_message(warning, "Dumping final infile struct");
+// 	file_debug_print(&file);
+// #endif /* if __LOGGING__ */
 
 	ssize_t ret = -1;
 
@@ -98,7 +98,6 @@ bool _entry_(t_user_options *opts)
 	default:
 		break;
 	}
-
 
 	file_destroy(&file);
 
