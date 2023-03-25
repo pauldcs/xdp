@@ -10,6 +10,6 @@ bool file_exists(const char *filename)
     	return (true);
 	}
 
-	log_message(error, "File does not exist");
+	log_message(error, "'%s': File does not exist", filename);
 	return (false);
 }

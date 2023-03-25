@@ -42,8 +42,6 @@ static const char* log_level_colors[] = {
     [fatal]   = "\e[1;31m"
 };
 
-
-
 void log_message(t_log_level level, const char* format, ...);
 
 #endif /* __LOG_H__ */

@@ -1,9 +1,9 @@
 #include "xdp.h"
 #include "log.h"
-#include "options.h"
+#include "options/user_options.h"
 #include <stdbool.h>
 
-bool options_within_range(t_user_options *opts, t_file *file)
+bool user_options_within_range(t_user_options *opts, t_file *file)
 {
     if (opts->start_offset < file->size) {
         if (opts->start_offset + opts->range > file->size)

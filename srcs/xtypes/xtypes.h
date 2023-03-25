@@ -5,6 +5,7 @@
 # include <stdbool.h>
 
 # define cut8 	const uint8_t
+# define cst8 	 const int8_t
 # define ut64 	     uint64_t
 # define st64 	      int64_t
 # define ut32 	     uint32_t

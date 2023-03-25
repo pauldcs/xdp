@@ -1,7 +1,7 @@
-#include "options.h"
+#include "options/user_options.h"
 #include <stdio.h>
 
-void options_debug_print(t_user_options *opts)
+void user_options_debug_print(t_user_options *opts)
 {
 	fprintf(stdout, "t_user_options: {\n");
 	fprintf(stdout, "t_user_options:    .filename='%s'\n", opts->filename);

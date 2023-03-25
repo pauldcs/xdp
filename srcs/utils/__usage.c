@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-void usage(void)
+void __usage(void)
 {
 	fprintf(stdout,
 		"Usage: ./xdp [OPTIONS] FILE\n\n"

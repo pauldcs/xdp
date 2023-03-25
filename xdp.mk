@@ -14,12 +14,14 @@ CFLAGS_TEST := -Wall -Wextra -Werror
 SRCS := main.c \
 	_entry_.c  \
 	\
-	options/options_debug_print.c \
-	options/options_within_range.c       \
-	options/parse_user_options.c         \
+	options/user_options_debug_print.c  \
+	options/user_options_within_range.c \
+	options/user_options_parse.c        \
+	options/user_options_init.c         \
+	options/xgetopts/xgetopts_init.c    \
+	options/xgetopts/xgetopts_next.c    \
 	\
-	utils/get_next_argument.c \
-	utils/usage.c             \
+	utils/__usage.c           \
 	utils/write_all.c         \
 	utils/str_to_uint64.c     \
 	\
@@ -67,5 +69,10 @@ SRCS := main.c \
 	xtypes/string/xc_legal_identifier.c \
 	xtypes/string/xc_legal_number.c     \
 	\
-	log/log_message.c 
+	log/log_message.c \
+	\
+	memory/xmem_alloc.c   \
+	memory/xmem_free.c    \
+	memory/xmem_realloc.c \
+
 	

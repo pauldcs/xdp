@@ -1,5 +1,5 @@
-#ifndef __OPTIONS_H__
-# define __OPTIONS_H__
+#ifndef __USER_OPTIONS_H__
+# define __USER_OPTIONS_H__
 
 # include <stddef.h>
 # include <stdbool.h>
@@ -22,8 +22,9 @@ typedef struct s_user_options
 	size_t        range;
 }	t_user_options;
 
-t_user_options 	*parse_user_options(int ac, char *av[]);
-bool 			options_within_range(t_user_options *opts, t_file *file);
-void 			options_debug_print(t_user_options *opts);
+void 			user_options_init(t_user_options *opts);
+t_user_options 	*user_options_parse(int ac, char *av[]);
+bool 			user_options_within_range(t_user_options *opts, t_file *file);
+void 			user_options_debug_print(t_user_options *opts);
 
-#endif /* __OPTIONS_H__ */
+#endif /* __USER_OPTIONS_H__ */

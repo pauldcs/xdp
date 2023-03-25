@@ -1,10 +1,10 @@
 #include "xdp.h"
-#include "options.h"
+#include "options/user_options.h"
 #include <stdlib.h>
 
 int main(int ac, char *av[])
 {
-	t_user_options *opts = parse_user_options(--ac, ++av);
+	t_user_options *opts = user_options_parse(ac, av);
 
 	if (opts == NULL)
 		return (EXIT_FAILURE);

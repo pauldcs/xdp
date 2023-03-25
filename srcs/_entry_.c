@@ -1,7 +1,7 @@
 #include "xdp.h"
 #include "log.h"
 #include "xtypes.h"
-#include "options.h"
+#include "options/user_options.h"
 #include "log.h"
 #include "string_dump.h"
 #include "hex.h"
@@ -17,21 +17,16 @@ bool _entry_(t_user_options *opts)
 	if (!file_init(opts->filename, &file))
 		return (false);
 
-// #ifdef __LOGGING__
-// 	log_message(warning, "Dumping infile struct");
-// 	file_debug_print(&file);
-// #endif /* if __LOGGING__ */
-
-	if (!options_within_range(opts, &file))
+	if (!user_options_within_range(opts, &file))
 	{
 		log_message(error, "options_is_ok()");
 		return (false);
 	}
 
-// #ifdef __LOGGING__
-// 	log_message(warning, "Dumping options struct");
-// 	options_debug_print(opts);
-// #endif /* if __LOGGING__ */
+#ifdef __LOGGING__
+ 	log_message(warning, "Dumping options struct");
+ 	user_options_debug_print(opts);
+#endif
 
 	if (!file_open_read(opts->filename, &file.fd))
 	{
@@ -39,8 +34,8 @@ bool _entry_(t_user_options *opts)
 		file_destroy(&file);
 		return (false);
 	} else {
-		file.open = true;
 		log_message(debug, "opened '%s' to fd: %d", file.name, file.fd);
+		file.open = true;
 	}
 	
 	if (file_mmap_recommended(&file, opts->range))
@@ -61,14 +56,12 @@ bool _entry_(t_user_options *opts)
 			return (false);
 		}
 	}
-
-// #ifdef __LOGGING__
-// 	log_message(warning, "Dumping final infile struct");
-// 	file_debug_print(&file);
-// #endif /* if __LOGGING__ */
+#ifdef __LOGGING__
+ 	log_message(warning, "Dumping final infile struct");
+ 	file_debug_print(&file);
+#endif
 
 	ssize_t ret = -1;
-
 	switch (opts->mode) {
 	case M_NORMAL: /* regular hexdump */
 		if (!opts->colors) {
@@ -76,27 +69,9 @@ bool _entry_(t_user_options *opts)
 				file.data.ptr,
 				opts->range,
 				opts->start_offset);
-		} else {
-			log_message(fatal, "Colorized dump is not implemented");
-		break;
 		}
-		/* else {
-			ret = xd_dump_lines_color(
-				file.data.ptr,
-				opts->range,
-				opts->start_offset);
-		} */
-		break;
-	case M_STRING: /* dump ascii strings */
-		ret = string_dump(
-			file.data.ptr,
-			opts->range,
-			opts->string_size);
-		break;
-	case M_STREAM: /* not implemented */
-		break;
-	default:
-		break;
+	break;
+	default: break;
 	}
 
 	file_destroy(&file);

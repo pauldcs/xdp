@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include <stddef.h>
 
+#ifdef 0
 size_t	xd_data_16_bytes_color(cut8 *addr, size_t n, ut8 *buffer)
 {
 	ut8 	*tmp = buffer;
@@ -52,3 +53,4 @@ size_t	xd_data_16_bytes_color(cut8 *addr, size_t n, ut8 *buffer)
 	}
 	return (buffer - tmp);
 }
+#endif

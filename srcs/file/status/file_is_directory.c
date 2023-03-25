@@ -14,6 +14,6 @@ bool file_is_directory(const char *filename)
 		return (true);
 	}
 	
-	log_message(error, "%s: %s", filename, ERROR_MSG);
+	log_message(error, "'%s': %s", filename, ERROR_MSG);
 	return (false);
 }

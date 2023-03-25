@@ -14,12 +14,17 @@ static inline void get_current_time(char* buffer, size_t buffer_size)
 
     gettimeofday(&tv, NULL);
     localtime_r(&tv.tv_sec, &tm_time);
-    strftime(buffer, buffer_size, "%Y-%m-%d %H:%M:%S", &tm_time);
+    strftime(buffer, buffer_size, " %H:%M:%S", &tm_time);
     snprintf(buffer + 19, buffer_size - 19, ".%03d", (int)tv.tv_usec / 1000);
 }
 
 inline void log_message(t_log_level level, const char* format, ...)
 {
+
+#ifndef __LOGGING__
+    log_level = warning;
+#endif
+
 	if (level < log_level)
         return;
 
