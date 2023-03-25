@@ -1,6 +1,7 @@
 # include "options.h"
 # include "utils.h"
-# include "debug/logging.h"
+# include "log.h"
+# include "xdp.h"
 # include "expr/expr_parser.h"
 # include <stdlib.h>
 # include <string.h>
@@ -31,7 +32,7 @@ t_user_options *parse_user_options(int ac, char *av[])
 		if (__option_is("-s", *av) 
 			|| __option_is("--start", *av))
 		{
-			__log(Debug, "parsing '--start'");
+			log_message(debug, "parsing '--start'");
 			if (!parse_argument_expr(
 					get_next_argument(&ac, &av),
 					&options->start_offset))
@@ -48,7 +49,7 @@ t_user_options *parse_user_options(int ac, char *av[])
 		if (__option_is("-n", *av) 
 			|| __option_is("--size", *av))
 		{
-			__log(Debug, "parsing '--range'");
+			log_message(debug, "parsing '--range'");
 			if (!parse_argument_expr(
 					get_next_argument(&ac, &av),
 					&options->range))
@@ -64,7 +65,7 @@ t_user_options *parse_user_options(int ac, char *av[])
 		if (__option_is("-str", *av) 
 			|| __option_is("--string", *av))
 		{
-			__log(Debug, "parsing '--string'");
+			log_message(debug, "parsing '--string'");
 			options->mode = M_STRING;
 			if (!parse_argument_expr(
 					get_next_argument(&ac, &av),
@@ -102,7 +103,7 @@ t_user_options *parse_user_options(int ac, char *av[])
 			continue ;
 		}	
 		
-		FATAL_ERROR("%s: Invalid argument", *av);
+		log_message(fatal,  "%s: Invalid argument", *av);
 		return (
 			free(options),
 			NULL);

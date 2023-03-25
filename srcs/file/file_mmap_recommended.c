@@ -1,5 +1,5 @@
 #include "xdp.h"
-#include "debug/logging.h"
+#include "log.h"
 #include <sys/stat.h>
 #include <unistd.h>
 #include <stdbool.h>
@@ -12,20 +12,20 @@ bool file_mmap_recommended(t_file *file, size_t range_size)
     size_t 		page_size = sysconf(_SC_PAGE_SIZE);
 	struct stat file_info;
 
-    __log(Debug, "page_size: %zu", page_size);
+    log_message(debug, "page_size: %zu", page_size);
 
     if (file->size < page_size)
         return (false);
 
     if (fstat(file->fd, &file_info) != 0)
     {
-        FATAL_ERROR("fstat: failed");
+        log_message(fatal,  "fstat: failed");
 		return (false);
     }
 
     size_t block_size = file_info.st_blksize;
 
-    __log(Debug, "block_size: %zu", block_size);
+    log_message(debug, "block_size: %zu", block_size);
 
     if (range_size < block_size)
         return (false);
@@ -33,10 +33,10 @@ bool file_mmap_recommended(t_file *file, size_t range_size)
     if (range_size >= 2 * page_size
         && range_size >= block_size)
     {
-        __log(Debug, "The file should be mmapped");
+        log_message(debug, "The file should be mmapped");
         return (true);
     }
 
-    __log(Debug, "Malloc is sufficient for loading memory");
+    log_message(debug, "Malloc is sufficient for loading memory");
     return (false);
 }

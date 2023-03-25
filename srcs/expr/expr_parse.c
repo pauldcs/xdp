@@ -1,4 +1,4 @@
-#include "debug/logging.h"
+#include "log.h"
 #include "expr/expr_parser.h"
 #include "expr/expr_lexer.h"
 #include <stdbool.h>
@@ -10,14 +10,14 @@ bool expr_parse(const char *expr, void *dest)
     t_ast     *ast = NULL;
 
 	if (!token_list_create(&list, expr)) {   
-        __log(Error, "Failed to tokenize expression");   
+        log_message(error  , "Failed to tokenize expression");   
 		lst_destroy(&list);
         return(false);
     }
-    __log(Info, "Lexer: OK");
+    log_message(info, "Lexer: OK");
     
 	if (!(ast = parse_list(list))) {   
-        __log(Error, "Failed to create the ast");   
+        log_message(error  , "Failed to create the ast");   
 		lst_destroy(&list);
         return (false);
     }
@@ -26,11 +26,11 @@ bool expr_parse(const char *expr, void *dest)
     ast_debug(ast);
 #endif /* if __LOGGING__ */
 
-	__log(Info, "Parser: OK");
+	log_message(info, "Parser: OK");
 
 	*dst = ast_solve(ast);
 
-	__log(Info, "-> expression equals %zu", *dst);
+	log_message(info, "-> expression equals %zu", *dst);
     
 	lst_destroy(&list);
 

@@ -1,17 +1,21 @@
+#include "log.h"
+#include "file.h"
 #include <sys/stat.h>
 #include <stddef.h>
 #include <stdbool.h>
-#include <stdint.h>
 
 bool file_get_size(const char *filename, size_t *size)
 {
-	if (!filename || !*filename)
+	struct stat sb = {0};
+
+	if (!file_exists(filename))
 		return (false);
 	
-	struct stat sb = {0};
-	if (stat(filename, &sb) != 0)
-		return (false);
+	if (stat(filename, &sb) == 0) {
+		*size = sb.st_size;
+		return (true);
+	}
 
-	*size = sb.st_size;
-	return (true);
+	log_message(error, "%s: %s", filename, ERROR_MSG);
+	return (false);
 }

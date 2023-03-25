@@ -1,6 +1,6 @@
 #include "xtypes.h"
 #include "xdp.h"
-#include "hexdump.h"
+#include "hex.h"
 #include <stdint.h>
 #include <stddef.h>
 

@@ -1,4 +1,4 @@
-#include "hexdump.h"
+#include "hex.h"
 #include "xtypes.h"
 #include <stddef.h>
 #include <stdlib.h>

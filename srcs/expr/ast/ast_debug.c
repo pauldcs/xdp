@@ -6,11 +6,11 @@
 /*   By: pducos <pducos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/09 17:32:39 by pducos            #+#    #+#             */
-/*   Updated: 2023/03/24 15:28:41 by pducos           ###   ########.fr       */
+/*   Updated: 2023/03/25 17:51:25 by pducos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "debug/logging.h"
+#include "log.h"
 #include "expr/expr_parser.h"
 #include <stdio.h>
 #include <stdio.h>
@@ -51,6 +51,6 @@ static void	inner(t_ast *ast, size_t depth)
 
 void	ast_debug(t_ast *ast)
 {
-	__log(Warning, "Dumping ast");
+	log_message(warning, "Dumping ast");
 	inner(ast, 0);
 }

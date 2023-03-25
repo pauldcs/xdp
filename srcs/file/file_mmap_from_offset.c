@@ -1,5 +1,5 @@
 #include "options.h"
-#include "debug/logging.h"
+#include "log.h"
 #include "xdp.h"
 #include <string.h>
 #include <unistd.h>
@@ -22,7 +22,7 @@ bool file_mmap_from_offset(t_file *file, size_t range_size)
 	
 	if (file->data.ptr == MAP_FAILED)
 	{
-		FATAL_ERROR("mmap: %s", strerror(errno));
+		log_message(fatal,  "mmap: %s", strerror(errno));
 		return (false);
 	}
 	file->data.mapped = true;

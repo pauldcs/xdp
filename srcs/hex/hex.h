@@ -1,11 +1,10 @@
-#ifndef __HEXDUMP_H__
-# define __HEXDUMP_H__
+#ifndef __HEX_H__
+# define __HEX_H__
 
 # include <stdint.h>
 # include <stddef.h>
 # include <stdbool.h>
 # include <sys/types.h>
-
 
 	/*-- Convert --*/
 size_t	xd_ascii_16_bytes(uint8_t *dst, const uint8_t *src, size_t n);
@@ -33,4 +32,4 @@ ssize_t	xd_dump_lines_color(const uint8_t *addr, size_t n, size_t offset);
 # define WHITE   0x01000000
 # define GREY    0x10000000
 
-#endif /* __HEXDUMP__ */
+#endif /* __HEX_H__ */

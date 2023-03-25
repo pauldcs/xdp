@@ -66,4 +66,6 @@ SRCS := main.c \
 	xtypes/char/char_type.c             \
 	xtypes/string/xc_legal_identifier.c \
 	xtypes/string/xc_legal_number.c     \
+	\
+	log/log_message.c 
 	

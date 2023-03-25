@@ -1,5 +1,5 @@
 #include "file.h"
-#include "debug/logging.h"
+#include "log.h"
 #include <string.h>
 
 bool file_init(const char *filename, t_file *file)

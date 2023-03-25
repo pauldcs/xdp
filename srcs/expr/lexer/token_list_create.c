@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "expr/expr_lexer.h"
-#include "debug/logging.h"
+#include "log.h"
 #include "utils.h"
 #include <ctype.h>
 #include <errno.h>
@@ -122,7 +122,7 @@ bool token_list_create(t_token **list, const char *in)
 			continue ;
 
 		} else {
-			FATAL_ERROR("Unrecognized token: '%s'", ptr);
+			log_message(fatal,  "Unrecognized token: '%s'", ptr);
 			return (false);
 		}
 	}

@@ -1,11 +1,13 @@
 #include "xdp.h"
+#include "log.h"
 #include "xtypes.h"
 #include "options.h"
-#include "debug/logging.h"
+#include "log.h"
 #include "string_dump.h"
-#include "hexdump.h"
+#include "hex.h"
 #include "file.h"
 #include <stdbool.h>
+#include <stdio.h>
 #include <string.h>
 
 bool _entry_(t_user_options *opts)
@@ -16,50 +18,52 @@ bool _entry_(t_user_options *opts)
 		return (false);
 
 #ifdef __LOGGING__
-	__log(Warning, "Dumping infile struct");
+	log_message(warning, "Dumping infile struct");
 	file_debug_print(&file);
 #endif /* if __LOGGING__ */
 
 	if (!options_within_range(opts, &file))
 	{
-		__log(Error, "options_is_ok()");
+		log_message(error, "options_is_ok()");
 		return (false);
 	}
 
 #ifdef __LOGGING__
-	__log(Warning, "Dumping options struct");
+	log_message(warning, "Dumping options struct");
 	options_debug_print(opts);
 #endif /* if __LOGGING__ */
 
 	if (!file_open_read(opts->filename, &file.fd))
 	{
-		__log(Error, "infile_open()");
+		log_message(error, "infile_open()");
 		file_destroy(&file);
 		return (false);
-	} else
-		__log(Debug, "opened '%s' to fd: %d", file.name, file.fd);
+	} else {
+		file.open = true;
+		log_message(debug, "opened '%s' to fd: %d", file.name, file.fd);
+	}
 	
 	if (file_mmap_recommended(&file, opts->range))
 	{
-		__log(Info, "Mmap recommended - (%zu bytes)", opts->range);
+		log_message(info, "Mmap recommended - (%zu bytes)", opts->range);
 		if (!file_mmap_from_offset(&file, opts->range))
 		{
-			FATAL_ERROR("Failed to malloc the file");
+			log_message(fatal, "Failed to malloc the file");
 			file_destroy(&file);
 			return (false);
 		}
 	} else {
-		__log(Info, "Malloc recommended - (%zu bytes)", opts->range);
+		log_message(info,  "Malloc recommended - (%zu bytes)", opts->range);
 		if (!file_read_from_offset(&file, opts->range, opts->start_offset))
 		{
-			FATAL_ERROR("Failed to malloc the file");
+			log_message(fatal, "Failed to malloc the file");
 			file_destroy(&file);
 			return (false);
 		}
 	}
 
 #ifdef __LOGGING__
-	__log(Warning, "Dumping final infile struct");
+	log_message(warning, "Dumping final infile struct");
 	file_debug_print(&file);
 #endif /* if __LOGGING__ */
 
@@ -72,8 +76,10 @@ bool _entry_(t_user_options *opts)
 				file.data.ptr,
 				opts->range,
 				opts->start_offset);
-		} else
-			FATAL_ERROR("Colorized dump is not implemented"); break ;
+		} else {
+			log_message(fatal, "Colorized dump is not implemented");
+		break;
+		}
 		/* else {
 			ret = xd_dump_lines_color(
 				file.data.ptr,
