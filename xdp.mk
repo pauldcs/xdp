@@ -21,7 +21,6 @@ SRCS := main.c \
 	options/xgetopts/xgetopts_init.c    \
 	options/xgetopts/xgetopts_next.c    \
 	\
-	utils/__usage.c           \
 	utils/write_all.c         \
 	utils/str_to_uint64.c     \
 	\
@@ -71,8 +70,8 @@ SRCS := main.c \
 	\
 	log/log_message.c \
 	\
-	memory/xmem_alloc.c   \
-	memory/xmem_free.c    \
-	memory/xmem_realloc.c \
+	xmem/xmem_alloc.c   \
+	xmem/xmem_free.c    \
+	xmem/xmem_realloc.c \
 
 	

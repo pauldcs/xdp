@@ -1,4 +1,5 @@
-#include "memory.h"
+#include "xmem.h"
+#include "xtypes.h"
 #include "log.h"
 #include <stdlib.h>
 #include <stdbool.h>

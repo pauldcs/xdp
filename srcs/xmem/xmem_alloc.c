@@ -8,9 +8,9 @@
 bool	xmem_alloc(ptr_t *ptr, size_t size)
 {
 	*ptr = malloc(size);
-	if (!ptr)
+	if (ptr)
 		return (true);
 
 	log_message(fatal, "xmem_alloc: Failed to allocate %zu bytes", size);
-	return (true);
+	return (false);
 }
