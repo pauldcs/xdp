@@ -5,7 +5,7 @@
 # include "xtypes.h"
 
 bool	re_alloc(ptr_t *buf, size_t *cap, size_t len, size_t new_cap);
-bool	xmem_alloc(ptr_t *ptr, size_t size);
-void	xmem_free(ptr_t ptr);
+bool	xmem_alloc(ptr_t *addr, size_t size);
+void	xmem_free(ptr_t addr);
 
 #endif /* __XMEM_H__ */

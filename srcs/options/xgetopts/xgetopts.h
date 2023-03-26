@@ -7,6 +7,7 @@
 # define OPT_FAIL -1
 
 typedef struct s_xgetopts {
+	bool    fail;
 	ptr_t   arg;
 	size_t  ac;
 	ut8    	**av;

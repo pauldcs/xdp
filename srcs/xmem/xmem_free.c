@@ -2,12 +2,12 @@
 #include "xtypes.h"
 #include <stdlib.h>
 
-void	xmem_free(ptr_t *ptr)
+void	xmem_free(ptr_t addr)
 {
-	if (ptr)
+	if (addr)
 	{
-		free(*(ptr_t *)ptr);
-		*(ptr_t *)ptr = NULL;
+		free(*(void **)addr);
+		*(void **)addr = NULL;
 		return ;
 	}
 	log_message(debug, "xmem_free: Attempt to free null pointer");
