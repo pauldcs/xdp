@@ -8,12 +8,6 @@ $(OBJS_DIR)/%.o:$(SRCS_DIR)/%.c
 
 all: $(NAME)
 
-prod: CFLAGS=$(CFLAGS_PROD)
-prod: all
-
-asan: CFLAGS=$(CFLAGS_ASAN)
-asan: all
-
 -include  $(SRCS_OBJS:.o=.d)
 
 $(NAME): $(SRCS_OBJS)
@@ -32,4 +26,10 @@ fclean: clean
 
 re: fclean all
 
-.PHONY	: all clean fclean re asan test
+.PHONY	: all clean fclean re 
+
+g: CFLAGS += $(CFLAGS_DBG)
+g: all
+
+g2: CFLAGS += $(CFLAGS_DBG_2)
+g2: all

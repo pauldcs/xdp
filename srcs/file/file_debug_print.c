@@ -11,7 +11,11 @@ void file_debug_print(t_file *file)
 	fprintf(stdout, "t_file:     .data\n");
 	fprintf(stdout, "t_file:         .mapped='%s'\n", (file->data.mapped ? "true" : "false"));
 	fprintf(stdout, "t_file:         .ptr=%p\n", file->data.ptr);
+#ifdef __linux__
+	fprintf(stdout, "t_file:         .start=%ld\n", file->data.start);
+# else
 	fprintf(stdout, "t_file:         .start=%lld\n", file->data.start);
+#endif
 	fprintf(stdout, "t_file:         .capacity='%zu'\n", file->data.capacity);
 	fprintf(stdout, "t_file:  }\n");
 }

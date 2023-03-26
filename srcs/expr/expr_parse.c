@@ -1,6 +1,7 @@
 #include "log.h"
-#include "expr/expr_parser.h"
-#include "expr/expr_lexer.h"
+#include "expr.h"
+#include "expr.h"
+#include "xmem.h"
 #include <stdbool.h>
 
 bool expr_parse(const char *expr, void *dest)
@@ -30,5 +31,7 @@ bool expr_parse(const char *expr, void *dest)
 	*dst = ast_solve(ast);
 	log_message(info, "-> expression equals %zu", *dst);
 	lst_destroy(&list);
+    //ast_destroy(ast);
+    //__xfree__(ast);
     return (true);
 }

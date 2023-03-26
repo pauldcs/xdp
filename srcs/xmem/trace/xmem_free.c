@@ -27,14 +27,11 @@ static void xmem_trace_remove(ptr_t ptr)
 		prev->next = tmp->next;
 	else
 		mem_trace.list = tmp->next;
-
 	free(tmp);
 }
 
-void	xmem_free_trace(ptr_t addr)
+void	xmem_free(ptr_t addr)
 {
-	if (allocs_are_traced)
-		xmem_trace_remove(addr);
-
+	xmem_trace_remove(addr);
 	free(addr);
 }

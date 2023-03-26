@@ -6,13 +6,14 @@
 #include "log.h"
 #include "hex.h"
 #include "file.h"
+#include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
 
 static void __file_destroy(t_file *file)
 {
 	file_destroy(file);
-	xmem_free(file);
+	__xfree__(file);
 }
 
 bool _entry_(t_user_options *opts)

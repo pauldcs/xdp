@@ -115,5 +115,5 @@ ssize_t	xd_dump_lines_color(const uint8_t *addr, size_t n, size_t offset)
 	if (__scr_off)
 		ret += write_all(STDOUT_FILENO, __scr_ptr, __scr_off);
 	
-	return(xmem_free(__scr_ptr), ret);
+	return(__xfree__(__scr_ptr), ret);
 }

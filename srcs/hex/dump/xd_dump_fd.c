@@ -2,6 +2,7 @@
 #include "log.h"
 #include "file.h"
 #include "xmem.h"
+#include <stdlib.h>
 #include <stdbool.h>
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -25,7 +26,8 @@ bool	xd_dump_fd(int fd, size_t n, size_t offset)
 		bufsize = n;
 	}
 
-	if (!xmem_alloc((ptr_t *)&ptr, bufsize))
+	ptr = __xmalloc__(bufsize);
+	if (!ptr)
 		return (false);
 
 	if (offset)
@@ -75,12 +77,12 @@ bool	xd_dump_fd(int fd, size_t n, size_t offset)
 	}
 
 beach:
-	xmem_free((ptr_t)ptr);	
+	__xfree__((ptr_t)ptr);	
 	return (true);
 
 prison:
 	log_message(error, "xd_dump_fd() failed miserably");
-	xmem_free((ptr_t)ptr);
+	__xfree__((ptr_t)ptr);
 	return (false);
 }
 

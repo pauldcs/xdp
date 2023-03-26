@@ -4,18 +4,19 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <string.h>
+#include <stdlib.h>
 
-bool	xmem_realloc(ptr_t *buf, size_t *cap, size_t len, size_t new_cap)
+ptr_t	xmem_realloc(ptr_t *buf, size_t *cap, size_t len, size_t new_cap)
 {
-	void	*new_buf;
+	void	*new_buf = __xmalloc__(new_cap);
 
-	if (!xmem_alloc((ptr_t *)&new_buf, new_cap)) {
+	if (!new_buf) {
 		log_message(fatal, "xmem_realloc: Failed to allocate %zu bytes", new_cap);
-		return (false);
+		return (NULL);
 	}
 	memcpy(new_buf, *buf, len);
-	xmem_free(*buf);
+	__xfree__(*buf);
 	*buf = new_buf;
 	*cap = new_cap;
-	return (true);
+	return (new_buf);
 }

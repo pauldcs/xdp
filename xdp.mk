@@ -1,15 +1,14 @@
-NAME		:= xdp
-CC			:= clang
-SRCS_DIR	:= srcs
-OBJS_DIR	:= .objs
-INCS_DIR	:= incs
-BUILD_DIR   := build
-LOGGING     := -D __LOGGING__
-SANITIZE    := -fstack-protector-strong -fsanitize=address
-CFLAGS 		:= -Wall -Wextra -Werror $(LOGGING)
-CFLAGS_PROD := -Wall -Wextra -Werror -O3
-CFLAGS_ASAN := -Wall -Wextra -Werror -g3 $(LOGGING) $(SANITIZE)
-CFLAGS_TEST := -Wall -Wextra -Werror
+NAME		 := xdp
+CC			 := clang
+SRCS_DIR	 := srcs
+OBJS_DIR	 := .objs
+INCS_DIR	 := incs
+BUILD_DIR    := build
+LOGGING      := -D __LOGGING__
+MEM_CHECK    := -D __XMEM__
+CFLAGS 		 := -Wall -Wextra -Werror 
+CFLAGS_DBG   := -g3 $(LOGGING) $(MEM_CHECK) $(SANITIZE)
+CFLAGS_DBG_2 := -g3 $(LOGGING) $(MEM_CHECK) -fstack-protector-strong -fsanitize=address
 
 SRCS := main.c \
 	_entry_.c  \
@@ -52,6 +51,7 @@ SRCS := main.c \
 	expr/ast/ast_create.c          \
 	expr/ast/ast_new_value.c       \
 	expr/ast/ast_solve.c           \
+	expr/ast/ast_destroy.c           \
 	expr/ast/ast_debug.c           \
 	expr/ast/ast_parser.c          \
 	\
@@ -72,8 +72,8 @@ SRCS := main.c \
 	log/log_message.c \
 	\
 	xmem/xmem_realloc.c \
-	xmem/trace/xmem_alloc_trace.c   \
-	xmem/trace/xmem_free_trace.c    \
+	xmem/trace/xmem_malloc.c   \
+	xmem/trace/xmem_free.c    \
 	xmem/trace/xmem_trace_init.c    \
 	xmem/trace/xmem_trace_destroy.c \
 	xmem/trace/xmem_print_summary.c \

@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <sys/mman.h>
+#include <stdlib.h>
 
 void file_destroy(t_file *file)
 {
@@ -24,7 +25,7 @@ void file_destroy(t_file *file)
 
 		} else {
 			log_message(debug, "Freeing [%p]", file->data.ptr);
-			xmem_free(file->data.ptr);
+			__xfree__(file->data.ptr);
 		}
 	}
 	memset(file, 0x00, sizeof(t_file));

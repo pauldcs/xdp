@@ -6,11 +6,11 @@
 /*   By: pducos <pducos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/09 03:29:59 by pducos            #+#    #+#             */
-/*   Updated: 2023/03/21 00:17:36 by pducos           ###   ########.fr       */
+/*   Updated: 2023/03/26 20:08:20 by pducos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "expr/expr_lexer.h"
+#include "expr.h"
 #include <stddef.h>
 
 size_t	lst_size(t_token *lst)

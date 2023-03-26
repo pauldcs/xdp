@@ -17,8 +17,9 @@ static void xmem_trace_add_back(t_xmem_alloc *new_alloc)
 	}
 }
 
-static bool xmem_trace_new_block(ptr_t *ptr, size_t nbytes, str_t file, size_t line)
+static bool xmem_trace_new_block(ptr_t ptr, size_t nbytes, str_t file, size_t line)
 {
+	static ut64 i = 0;
 	t_xmem_alloc *new_alloc = malloc(sizeof(t_xmem_alloc));
 
 	if (!new_alloc) {
@@ -34,27 +35,26 @@ static bool xmem_trace_new_block(ptr_t *ptr, size_t nbytes, str_t file, size_t l
 	new_alloc->owner              = getpid();
 	new_alloc->origin.file        = file;
 	new_alloc->origin.line        = line;
-	new_alloc->block_ptr          = *ptr;
+	new_alloc->block_ptr          = ptr;
 	new_alloc->block_size         = nbytes;
+	new_alloc->id                 = ++i;
 
 	xmem_trace_add_back(new_alloc);
 	return (true);
 }
 
-bool	xmem_alloc_trace(ptr_t *addr, size_t size, str_t file, size_t line)
+ptr_t	xmem_malloc(size_t size, str_t file, size_t line)
 {
-	*addr = malloc(size);
+	ptr_t addr = malloc(size);
 	if (addr)
 	{
-		bzero(*addr, size);
-		if (!allocs_are_traced)
-			return (true);
+		bzero(addr, size);
 
 		if (xmem_trace_new_block(addr, size, file, line))
-			return (true);
-
-		free(*addr);
+			return (addr);
+		
+		free(addr);
 	}
 	log_message(fatal, "xmem_alloc_trace: Failed to allocate %zu bytes", size);
-	return (false);
+	return (NULL);
 }

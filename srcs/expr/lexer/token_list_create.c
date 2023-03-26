@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "expr/expr_lexer.h"
+#include "expr.h"
 #include "log.h"
 #include "utils.h"
 #include "xmem.h"
@@ -58,7 +58,7 @@ static bool tokenize_number(t_token **list, char **ptr)
 	if (!token)
 		return (false);
 	if (!__str_to_uint64(*ptr, &token->value))
-		return (xmem_free(token), false);
+		return (__xfree__(token), false);
 	while (isdigit(**ptr)
 		|| **ptr == 'x'
 		|| isxdigit(**ptr))

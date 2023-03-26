@@ -6,11 +6,11 @@
 /*   By: pducos <pducos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/05 21:29:25 by pducos            #+#    #+#             */
-/*   Updated: 2023/03/21 00:17:21 by pducos           ###   ########.fr       */
+/*   Updated: 2023/03/26 20:08:20 by pducos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "expr/expr_lexer.h"
+#include "expr.h"
 #include <stdint.h>
 
 void	lst_add_token(t_token **token_list, t_token *token, t_token_kind kind)

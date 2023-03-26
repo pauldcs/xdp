@@ -3,18 +3,20 @@
 #include "xmem.h"
 #include "xtypes.h"
 #include <stdbool.h>
+#include <stdlib.h>
 
 static void __file_destroy(t_file *file)
 {
 	file_destroy(file);
-	xmem_free(file);
+	__xfree__(file);
 }
 
 t_file *load_user_file(ct8 *filename)
 {
 	t_file *file = NULL;
 
-	if (!xmem_alloc((ptr_t *)&file, sizeof(t_file)))
+	file = __xmalloc__(sizeof(t_file));
+	if (!file)
 		return (NULL);
 	
 	file->name = filename;

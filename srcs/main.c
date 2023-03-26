@@ -5,7 +5,7 @@
 
 int main(int ac, char *av[])
 {
-#ifdef __LOGGING__
+#ifdef __XMEM__
 	xmem_trace_init();
 #endif
 	
@@ -15,10 +15,11 @@ int main(int ac, char *av[])
 		return (EXIT_FAILURE);
 	
 	bool success = _entry_(opts);
-	xmem_free(opts);
+	__xfree__(opts);
 
-#ifdef __LOGGING__
+#ifdef __XMEM__
 	xmem_print_summary();
+	xmem_trace_destroy();
 #endif
 
 	return (success == false);

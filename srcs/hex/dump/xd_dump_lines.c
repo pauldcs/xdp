@@ -2,6 +2,7 @@
 #include "xmem.h"
 #include "xtypes.h"
 #include <stddef.h>
+#include <stdlib.h>
 #include <stdint.h>
 #include <unistd.h>
 #include <string.h>
@@ -35,7 +36,8 @@ ssize_t	xd_dump_lines(const uint8_t *addr, size_t n, size_t offset)
 	size_t      __scr_off = 0;
 	size_t      ret = 0;
 
-	if (!xmem_alloc((ptr_t *)&__scr_ptr, SCREEN_BUFFER_SIZE))
+	__scr_ptr = __xmalloc__(SCREEN_BUFFER_SIZE);
+	if (!__scr_ptr)
 		return (-1);
 
 	(void)memset(__scr_ptr, ' ', SCREEN_BUFFER_SIZE);
@@ -93,5 +95,5 @@ ssize_t	xd_dump_lines(const uint8_t *addr, size_t n, size_t offset)
 	if (__scr_off)
 		ret += write_all(STDOUT_FILENO, __scr_ptr, __scr_off);
 	
-	return(xmem_free(__scr_ptr), ret);
+	return(__xfree__(__scr_ptr), ret);
 }
