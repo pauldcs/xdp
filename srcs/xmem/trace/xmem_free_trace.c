@@ -6,10 +6,10 @@
 
 static void xmem_trace_remove(ptr_t ptr)
 {
-	assert (user_trace.list != NULL && "Trace list is null ?");
+	assert (mem_trace.list != NULL && "Trace list is null ?");
 
-	t_xmem_alloc_node *tmp = user_trace.list;
-	t_xmem_alloc_node *prev = NULL;
+	t_xmem_alloc *tmp = mem_trace.list;
+	t_xmem_alloc *prev = NULL;
 
 	while (tmp && tmp->block_ptr != ptr)
 	{
@@ -19,24 +19,21 @@ static void xmem_trace_remove(ptr_t ptr)
 
 	assert(tmp != NULL && "The block was not in the trace list");
 
-	user_trace.cmalloc_n_frees += 1;
-	user_trace.in_use.nbytes -= tmp->block_size;
-	user_trace.in_use.nblocks -= 1;
+	mem_trace.cmalloc_n_frees += 1;
+	mem_trace.in_use.nblocks  -= 1;
+	mem_trace.in_use.nbytes   -= tmp->block_size;
 
 	if (prev)
 		prev->next = tmp->next;
 	else
-		user_trace.list = tmp->next;
+		mem_trace.list = tmp->next;
 
 	free(tmp);
 }
 
-void	xmem_free_trace(ptr_t addr, str_t file, size_t line)
+void	xmem_free_trace(ptr_t addr)
 {
-	(void)file;
-	(void)line;
-	
-	if (being_traced)
+	if (allocs_are_traced)
 		xmem_trace_remove(addr);
 
 	free(addr);

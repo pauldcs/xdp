@@ -5,48 +5,49 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-static void xmem_trace_add_back(t_xmem_alloc_node *node)
+static void xmem_trace_add_back(t_xmem_alloc *new_alloc)
 {
-	if (!user_trace.list)
-		user_trace.list = node;
+	if (!mem_trace.list)
+		mem_trace.list = new_alloc;
 	else {
-		t_xmem_alloc_node *tmp = user_trace.list;
+		t_xmem_alloc *tmp = mem_trace.list;
 		while (tmp->next)
 			tmp = tmp->next;
-		tmp->next = node;
+		tmp->next = new_alloc;
 	}
 }
 
 static bool xmem_trace_new_block(ptr_t *ptr, size_t nbytes, str_t file, size_t line)
 {
-	t_xmem_alloc_node *node = malloc(sizeof(t_xmem_alloc_node));
+	t_xmem_alloc *new_alloc = malloc(sizeof(t_xmem_alloc));
 
-	if (!node) {
+	if (!new_alloc) {
 		log_message(fatal, "xmem_trace_new_block: Failed to allocate new block");
 		return (false);
 	}
-	bzero(node, sizeof(t_xmem_alloc_node));
+	bzero(new_alloc, sizeof(t_xmem_alloc));
 
-	user_trace.cmalloc_n_mallocs += 1;
-	user_trace.cmalloc_bs_mallocd += nbytes;
-	user_trace.in_use.nbytes += nbytes;
-	user_trace.in_use.nblocks += 1;
-	node->block_ptr = *ptr;
-	node->owner = getpid();
-	node->block_size = nbytes;
-	node->origin.file = file;
-	node->origin.line = line;
+	mem_trace.in_use.nblocks     += 1;
+	mem_trace.in_use.nbytes      += nbytes;
+	mem_trace.cmalloc_bs_mallocd += nbytes;
+	mem_trace.cmalloc_n_mallocs  += 1;
+	new_alloc->owner              = getpid();
+	new_alloc->origin.file        = file;
+	new_alloc->origin.line        = line;
+	new_alloc->block_ptr          = *ptr;
+	new_alloc->block_size         = nbytes;
 
-	xmem_trace_add_back(node);
+	xmem_trace_add_back(new_alloc);
 	return (true);
 }
 
 bool	xmem_alloc_trace(ptr_t *addr, size_t size, str_t file, size_t line)
 {
-	if ((*addr = malloc(size)))
+	*addr = malloc(size);
+	if (addr)
 	{
 		bzero(*addr, size);
-		if (!being_traced)
+		if (!allocs_are_traced)
 			return (true);
 
 		if (xmem_trace_new_block(addr, size, file, line))

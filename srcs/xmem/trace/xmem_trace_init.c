@@ -3,11 +3,12 @@
 #include <string.h>
 #include <assert.h>
 
-t_xmem_trace user_trace;
-bool         being_traced = false;
+t_xmem_trace mem_trace;
+bool         allocs_are_traced = false;
 
 void xmem_trace_init(void)
 {
-	being_traced = true;
-	memset(&user_trace, 0, sizeof(user_trace));
+	allocs_are_traced = true;
+	log_message(warning, "Memory tracing enabled");
+	memset(&mem_trace, 0, sizeof(mem_trace));
 }

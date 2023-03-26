@@ -76,7 +76,7 @@ SRCS := main.c \
 	xmem/trace/xmem_free_trace.c    \
 	xmem/trace/xmem_trace_init.c    \
 	xmem/trace/xmem_trace_destroy.c \
-	xmem/trace/xmem_trace_summary.c \
+	xmem/trace/xmem_print_summary.c \
 
 
 	

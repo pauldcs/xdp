@@ -18,7 +18,7 @@ int main(int ac, char *av[])
 	xmem_free(opts);
 
 #ifdef __LOGGING__
-	xmem_trace_summary();
+	xmem_print_summary();
 #endif
 
 	return (success == false);
