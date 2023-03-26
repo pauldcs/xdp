@@ -45,11 +45,12 @@ bool _entry_(t_user_options *opts)
 		}
 	} else {
 		log_message(info,  "Malloc recommended - (%zu bytes)", opts->range);
-		if (!file_read_from_offset(file, opts->range, opts->start_offset))
+		if (!xd_dump_fd(file->fd, opts->range, opts->start_offset))
 		{
 			__file_destroy(file);
 			return (false);
 		}
+		return (true);
 	}
 
 #ifdef __LOGGING__

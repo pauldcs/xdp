@@ -1,7 +1,9 @@
 #include "hex.h"
 #include "log.h"
+#include "file.h"
 #include "xmem.h"
 #include <stdbool.h>
+#include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
 
@@ -10,43 +12,76 @@
 bool	xd_dump_fd(int fd, size_t n, size_t offset)
 {
 	cut8    *ptr = NULL;
-	size_t  buffer_size;
+	size_t  bufsize;
+	ssize_t ret;
 	bool    inf;
 
 	if (n == 0) {
-		buffer_size = 32768;
 		inf = true;
+		bufsize = 1 << 15;
+
 	} else {
-		buffer_size = n;
 		inf = false;
+		bufsize = n;
 	}
 
-	if (!xmem_alloc((void **)&ptr, buffer_size))
+	if (!xmem_alloc((ptr_t *)&ptr, bufsize))
 		return (false);
 
-	ssize_t ret = read(fd, (ptr_t)ptr, offset);
-	if (ret < (ssize_t)offset) {
-		xmem_free(&ptr);
-		return (false);
-	}
-	
-	while (true)
+	if (offset)
 	{
-		if (!inf && !n)
-			break ;
-		
-		ret = read(fd, (ptr_t)ptr, buffer_size);
-		if (ret == -1) {
-			log_message(fatal, "failed to read from fd");
-			xmem_free(&ptr);
-			return (false);
+		struct stat st;
+
+		if (fstat(fd, &st) < 0)
+        	goto prison;
+
+		if (S_ISREG(st.st_mode))
+		{
+			ret = lseek(fd, offset, SEEK_CUR);
+			if (ret == -1) 
+				goto prison;
+	
+		} else {
+			ssize_t ret;
+			char 	buf[1024];
+			size_t  i = offset;
+	
+			while (i)
+			{
+				size_t rd_size = i < 1024 ? i : 1024;
+				ret = read(fd, buf, rd_size);
+				if (ret == -1) 
+					goto prison;
+				i -= ret;
+			}
 		}
-		if (ret == 0)
-			break ;
-		n -= (ret > (ssize_t)n ? n : ret);
+	}
+
+	while (666)
+	{
+		if (!inf && !n) break ;
+	
+		ret = read(fd, (ptr_t)ptr, bufsize);
+		switch (ret)
+		{
+			case -1: goto prison;
+			case  0: goto beach;
+		}
 		xd_dump_lines(ptr, ret, offset);
 		offset += ret;
+
+		if (!inf)
+			n -= ret;
 	}
+
+beach:
 	xmem_free(&ptr);
 	return (true);
+
+prison:
+	log_message(error, "xd_dump_fd() failed miserably");
+	xmem_free(&ptr);
+	return (false);
 }
+
+

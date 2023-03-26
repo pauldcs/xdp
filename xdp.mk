@@ -39,7 +39,6 @@ SRCS := main.c \
 	file/file_destroy.c             \
 	file/file_mmap_from_offset.c    \
 	file/file_mmap_recommended.c    \
-	file/file_read_from_offset.c    \
 	file/file_debug_print.c         \
 	file/load_user_file.c           \
 	\

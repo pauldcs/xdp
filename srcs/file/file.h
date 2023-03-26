@@ -39,7 +39,6 @@ bool file_get_size(const char *filename, size_t *size);
 void file_debug_print(t_file *file);
 bool file_mmap_recommended(t_file *file, size_t range_size);
 bool file_mmap_from_offset(t_file *file, size_t range_size);
-bool file_read_from_offset(t_file *file, size_t range, off_t start_offset);
 void file_destroy(t_file *file);
 
 #endif /* __FILE_H__ */
