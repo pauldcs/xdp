@@ -71,11 +71,4 @@ t_user_options *user_options_parse(int ac, char *av[])
 	}
 
 	return (options);
-	if (!options->filename)
-	{
-		log_message(fatal, "No input file");
-		xmem_free(&options);
-		return (NULL);
-	}
-	return (options);
 }

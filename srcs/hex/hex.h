@@ -20,6 +20,7 @@ size_t	xd_pointer_p8_bytes(ut8 *dst, const uintptr_t p);
 # define SCREEN_BUFFER_SIZE ((LINE_LEN) * N_LINES)
 # define BASE16_ASCII_CHARS "0123456789abcdef"
 
+bool	xd_dump_fd(int fd, size_t n, size_t offset);
 ssize_t	xd_dump_lines(const ut8 *addr, size_t n, size_t offset);
 ssize_t	xd_dump_lines_color(const ut8 *addr, size_t n, size_t offset);
 

@@ -41,6 +41,7 @@ SRCS := main.c \
 	file/file_mmap_recommended.c    \
 	file/file_read_from_offset.c    \
 	file/file_debug_print.c         \
+	file/load_user_file.c           \
 	\
 	/expr/expr_parse.c              \
 	/expr/lexer/token_list_create.c \
@@ -60,6 +61,7 @@ SRCS := main.c \
 	hex/conv/xd_pointer_8_bytes.c     \
 	hex/conv/xd_pointer_p8_bytes.c    \
 	hex/dump/xd_dump_lines.c          \
+	hex/dump/xd_dump_fd.c             \
 	hex/lookup/xd_B16Pair.c     \
 	hex/lookup/xd_B16PairSpaced.c     \
 	hex/lookup/xd_PrintByte.c         \

@@ -1,6 +1,7 @@
 #ifndef __FILE_H__
 # define __FILE_H__
 
+# include "xtypes.h"
 # include <stddef.h>
 # include <stdbool.h>
 # include <sys/types.h>
@@ -21,6 +22,8 @@ typedef struct s_file
 		size_t   capacity;
 	} data;
 } t_file;
+
+t_file *load_user_file(ct8 *filename);
 
 bool file_open_read(const char *filename, int *fd);
 bool file_open_write(const char *filename, int *fd);

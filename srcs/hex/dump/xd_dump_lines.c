@@ -88,7 +88,7 @@ ssize_t	xd_dump_lines(const uint8_t *addr, size_t n, size_t offset)
 		prev = ptr;
 		offset += 16;
 		ptr += 16;
-	}
+	}	
 
 	if (__scr_off)
 		ret += write_all(STDOUT_FILENO, __scr_ptr, __scr_off);
