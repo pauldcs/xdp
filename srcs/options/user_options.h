@@ -5,20 +5,11 @@
 # include <stdbool.h>
 # include "file.h"
 
-typedef enum e_xdp_mode
-{
-	M_NORMAL,
-	M_STRING,
-	M_STREAM,
-}	t_xdp_mode;
-
 typedef struct s_user_options
 {
 	const char    *filename;
-	t_xdp_mode    mode;
 	size_t        start_offset;
 	size_t        string_size;
-	bool          colors;
 	size_t        range;
 }	t_user_options;
 

@@ -4,8 +4,6 @@
 # include "xtypes.h"
 # include <stddef.h>
 
-# define OPT_FAIL -1
-
 typedef struct s_xgetopts {
 	bool    fail;
 	ptr_t   arg;
