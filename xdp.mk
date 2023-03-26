@@ -42,18 +42,18 @@ SRCS := main.c \
 	file/file_debug_print.c         \
 	file/load_user_file.c           \
 	\
-	/expr/expr_parse.c              \
-	/expr/lexer/token_list_create.c \
-	/expr/lexer/lst_destroy.c       \
-	/expr/lexer/lst_size.c          \
-	/expr/lexer/lst_new_token.c     \
-	/expr/lexer/lst_add_token.c     \
-	/expr/ast/ast_new_operator.c    \
-	/expr/ast/ast_create.c          \
-	/expr/ast/ast_new_value.c       \
-	/expr/ast/ast_solve.c           \
-	/expr/ast/ast_debug.c           \
-	/expr/ast/ast_parser.c          \
+	expr/expr_parse.c              \
+	expr/lexer/token_list_create.c \
+	expr/lexer/lst_destroy.c       \
+	expr/lexer/lst_size.c          \
+	expr/lexer/lst_new_token.c     \
+	expr/lexer/lst_add_token.c     \
+	expr/ast/ast_new_operator.c    \
+	expr/ast/ast_create.c          \
+	expr/ast/ast_new_value.c       \
+	expr/ast/ast_solve.c           \
+	expr/ast/ast_debug.c           \
+	expr/ast/ast_parser.c          \
 	\
 	hex/conv/xd_ascii_16_bytes.c      \
 	hex/conv/xd_data_16_bytes.c       \
@@ -71,8 +71,12 @@ SRCS := main.c \
 	\
 	log/log_message.c \
 	\
-	xmem/xmem_alloc.c   \
-	xmem/xmem_free.c    \
 	xmem/xmem_realloc.c \
+	xmem/trace/xmem_alloc_trace.c   \
+	xmem/trace/xmem_free_trace.c    \
+	xmem/trace/xmem_trace_init.c    \
+	xmem/trace/xmem_trace_destroy.c \
+	xmem/trace/xmem_trace_summary.c \
+
 
 	

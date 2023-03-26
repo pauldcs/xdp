@@ -1,7 +1,7 @@
 #include "file.h"
 #include "log.h"
+#include "xmem.h"
 #include <stdbool.h>
-#include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
 #include <sys/mman.h>
@@ -24,7 +24,7 @@ void file_destroy(t_file *file)
 
 		} else {
 			log_message(debug, "Freeing [%p]", file->data.ptr);
-			free(file->data.ptr);
+			xmem_free(file->data.ptr);
 		}
 	}
 	memset(file, 0x00, sizeof(t_file));

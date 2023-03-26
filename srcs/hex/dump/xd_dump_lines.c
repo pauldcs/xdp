@@ -35,7 +35,7 @@ ssize_t	xd_dump_lines(const uint8_t *addr, size_t n, size_t offset)
 	size_t      __scr_off = 0;
 	size_t      ret = 0;
 
-	if (!xmem_alloc((void **)&__scr_ptr, SCREEN_BUFFER_SIZE))
+	if (!xmem_alloc((ptr_t *)&__scr_ptr, SCREEN_BUFFER_SIZE))
 		return (-1);
 
 	(void)memset(__scr_ptr, ' ', SCREEN_BUFFER_SIZE);
@@ -93,5 +93,5 @@ ssize_t	xd_dump_lines(const uint8_t *addr, size_t n, size_t offset)
 	if (__scr_off)
 		ret += write_all(STDOUT_FILENO, __scr_ptr, __scr_off);
 	
-	return(xmem_free(&__scr_ptr), ret);
+	return(xmem_free(__scr_ptr), ret);
 }

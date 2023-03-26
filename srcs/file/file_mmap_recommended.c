@@ -5,7 +5,6 @@
 #include <stdbool.h>
 #include <string.h>
 #include <errno.h>
-#include <stdlib.h>
 
 bool file_mmap_recommended(t_file *file, size_t range_size)
 {

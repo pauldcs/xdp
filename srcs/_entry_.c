@@ -12,7 +12,7 @@
 static void __file_destroy(t_file *file)
 {
 	file_destroy(file);
-	xmem_free(&file);
+	xmem_free(file);
 }
 
 bool _entry_(t_user_options *opts)
@@ -50,6 +50,7 @@ bool _entry_(t_user_options *opts)
 			__file_destroy(file);
 			return (false);
 		}
+		__file_destroy(file);
 		return (true);
 	}
 
@@ -63,7 +64,7 @@ bool _entry_(t_user_options *opts)
 				opts->range,
 				opts->start_offset);
 
-	file_destroy(file);
+	__file_destroy(file);
 
 	if (ret == -1)
 		return (false);

@@ -6,8 +6,8 @@
 #include "log.h"
 #include "xtypes.h"
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
+#include <stdlib.h>
 
 t_user_options *user_options_parse(int ac, char *av[])
 {
@@ -16,7 +16,7 @@ t_user_options *user_options_parse(int ac, char *av[])
 	const char     *exec_name = av[0];
 	char           c;
 	
-	if (!xmem_alloc((void **)&options, sizeof(t_user_options)))
+	if (!xmem_alloc((ptr_t *)&options, sizeof(t_user_options)))
 		return (NULL);
 		
 	user_options_init(options);
@@ -29,14 +29,14 @@ t_user_options *user_options_parse(int ac, char *av[])
 			case 's':
 				if (!expr_parse(opts.arg,
 						&options->start_offset)) {
-					return (xmem_free(&options), NULL);
+					return (xmem_free(options), NULL);
 				}
 			break ;
  
 			case 'r':
 				if (!expr_parse(opts.arg,
 						&options->range)) {
-					return (xmem_free(&options), NULL);
+					return (xmem_free(options), NULL);
 				}
 			break ;
 			
@@ -57,7 +57,7 @@ t_user_options *user_options_parse(int ac, char *av[])
 						"    -h         Show this help message\n\n",
 					exec_name
 				);
-				xmem_free(&options);
+				xmem_free(options);
 				exit(0);
 			__builtin_unreachable();
 		}
@@ -66,7 +66,7 @@ t_user_options *user_options_parse(int ac, char *av[])
 	if (opts.fail)
 	{
 		log_message(fatal, "incorrect arguments");
-		xmem_free(&options);
+		xmem_free(options);
 		return (NULL);
 	}
 

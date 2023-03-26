@@ -7,7 +7,7 @@
 static void __file_destroy(t_file *file)
 {
 	file_destroy(file);
-	xmem_free(&file);
+	xmem_free(file);
 }
 
 t_file *load_user_file(ct8 *filename)

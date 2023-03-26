@@ -13,11 +13,12 @@
 #include "expr/expr_lexer.h"
 #include "log.h"
 #include "utils.h"
+#include "xmem.h"
 #include <ctype.h>
 #include <errno.h>
-#include <stdlib.h>
 #include <stdint.h>
 #include <stdbool.h>
+#include <stdlib.h>
 #include <limits.h>
 #include <stdio.h>
 
@@ -57,7 +58,7 @@ static bool tokenize_number(t_token **list, char **ptr)
 	if (!token)
 		return (false);
 	if (!__str_to_uint64(*ptr, &token->value))
-		return (free(token), false);
+		return (xmem_free(token), false);
 	while (isdigit(**ptr)
 		|| **ptr == 'x'
 		|| isxdigit(**ptr))

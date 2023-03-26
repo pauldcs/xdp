@@ -1,7 +1,6 @@
 #include "xgetopts.h"
 #include "xtypes.h"
 #include <string.h>
-#include <stdlib.h>
 
 void xgetopts_init(t_xgetopts *opt, size_t ac, cut8 *av[], cstr_t ostr)
 {

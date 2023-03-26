@@ -22,7 +22,8 @@
 
 # define C_BLACK     "\e[0;30m"
 # define C_RED       "\e[0;31m"
-# define C_GREENN    "\e[0;32m"
+# define C_BRED      "\e[1;31m"
+# define C_GREEN     "\e[0;32m"
 # define C_YELLOW    "\e[0;33m"
 # define C_BLUE      "\e[0;34m"
 # define C_MAGENTA   "\e[0;35m"

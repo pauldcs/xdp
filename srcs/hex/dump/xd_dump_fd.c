@@ -75,12 +75,12 @@ bool	xd_dump_fd(int fd, size_t n, size_t offset)
 	}
 
 beach:
-	xmem_free(&ptr);
+	xmem_free((ptr_t)ptr);	
 	return (true);
 
 prison:
 	log_message(error, "xd_dump_fd() failed miserably");
-	xmem_free(&ptr);
+	xmem_free((ptr_t)ptr);
 	return (false);
 }
 

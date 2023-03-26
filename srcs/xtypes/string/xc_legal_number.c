@@ -5,8 +5,7 @@
 #include <inttypes.h>
 
 /* Return non-zero if the characters pointed to by `str` constitute a
- * valid number.  Stuff the converted number into RESULT if RESULT is
- * not null.
+ * valid number.
  */
 bool xc_legal_number (const char *str, intmax_t *result)
 {

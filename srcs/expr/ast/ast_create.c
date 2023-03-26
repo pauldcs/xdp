@@ -6,14 +6,13 @@
 /*   By: pducos <pducos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 17:25:41 by pducos            #+#    #+#             */
-/*   Updated: 2023/03/23 11:14:04 by pducos           ###   ########.fr       */
+/*   Updated: 2023/03/26 16:51:33 by pducos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expr/expr_parser.h"
 #include "expr/expr_lexer.h"
 #include <stdbool.h>
-#include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 

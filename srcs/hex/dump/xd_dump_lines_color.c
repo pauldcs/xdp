@@ -1,6 +1,7 @@
 #include "hex.h"
 #include "xmem.h"
 #include "xdp.h"
+#include "xtypes.h"
 #include <stddef.h>
 #include <stdint.h>
 #include <unistd.h>
@@ -37,7 +38,7 @@ ssize_t	xd_dump_lines_color(const uint8_t *addr, size_t n, size_t offset)
 	size_t size = SCREEN_BUFFER_SIZE + (16 * 8 + 16 * 5) + 32;
 
 
-	if (!xmem_alloc(&__scr_ptr, size))
+	if (!xmem_alloc((ptr_t *)&__scr_ptr, size))
 		return (-1);
 
 	(void)memset(__scr_ptr, ' ', SCREEN_BUFFER_SIZE);
@@ -114,5 +115,5 @@ ssize_t	xd_dump_lines_color(const uint8_t *addr, size_t n, size_t offset)
 	if (__scr_off)
 		ret += write_all(STDOUT_FILENO, __scr_ptr, __scr_off);
 	
-	return(xmem_free(&__scr_ptr), ret);
+	return(xmem_free(__scr_ptr), ret);
 }

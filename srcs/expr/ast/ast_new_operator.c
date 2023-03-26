@@ -6,20 +6,20 @@
 /*   By: pducos <pducos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 15:12:14 by pducos            #+#    #+#             */
-/*   Updated: 2023/03/21 00:18:23 by pducos           ###   ########.fr       */
+/*   Updated: 2023/03/26 16:57:02 by pducos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expr/expr_parser.h"
+#include "xmem.h"
+#include "xtypes.h"
 #include <string.h>
-#include <stdlib.h>
 
 t_ast	*ast_new_operator(t_token_kind kind)
 {
 	t_ast	*node;
 
-	node = malloc(sizeof(t_ast));
-	if (!node)
+	if (!xmem_alloc((ptr_t *)&node, sizeof(t_ast)))
 		return (NULL);
 	memset(node, 0, sizeof(t_ast));
 
