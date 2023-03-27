@@ -1,4 +1,5 @@
 #include "log.h"
+#include "xleaks.h"
 #include <stdbool.h>
 #include <fcntl.h>
 #include <string.h>
@@ -6,7 +7,7 @@
 
 bool file_open_write(const char *filename, int *fd)
 {
-	*fd = open(filename, O_CREAT | O_TRUNC | O_WRONLY, 0666);
+	*fd = __xopen__(filename, O_CREAT | O_TRUNC | O_WRONLY, 0666);
 	if (*fd != -1)
 		return (true);
 

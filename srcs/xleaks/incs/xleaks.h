@@ -39,8 +39,8 @@
 #  define __xmmap__(a,b,c,d,e,f)   mmap(a,b,c,d,e,f)   /* todo */
 #  define __xmunmap__(addr, len)   munmap(addr, len)   /* todo */
 //#  define __xasprintf__          asprintf()          /* todo */
-//#  define __xopen__()            open()              /* todo */
-#  define __xclose__(fd)           close(fd)           /* todo */
+#  define __xopen__(p, o, m)       open_wrapper(p, o, m, __FILE__, __LINE__)
+#  define __xclose__(fd)           close_wrapper(fd, __FILE__, __LINE__)
 #  define __xdup__(fd)             dup(fd)             /* todo */
 #  define __xdup2__(fd_1, fd_2)    dup2(fd_1, fd_2);   /* todo */
 #  define __xopendir__(name)       opendir(name)       /* todo */
@@ -72,7 +72,8 @@ void xleaks_summary(void);
 /*-- Wrappers --*/
 void *malloc_wrapper(size_t size, const char *file, size_t line);
 void free_wrapper(void *ptr, const char *file, size_t line);
-
+int open_wrapper(const char *path, int oflag, mode_t mode, const char *file, size_t line);
+int close_wrapper(int fildes, const char *file, size_t line);
 
 /*-- Ressource list --*/
 typedef enum e_rss_type {

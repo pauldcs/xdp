@@ -23,7 +23,7 @@ bool active_rss_delete(void *scent, t_rss_type type)
 		return (false);
 	case FILDES:
 		while (active) {
-			if ((size_t)scent == (size_t)active->rss.fd) {
+			if (*(int *)scent == active->rss.fd) {
 				xleak_trace.in_use.n_fds--;
 				goto hell;
 			}

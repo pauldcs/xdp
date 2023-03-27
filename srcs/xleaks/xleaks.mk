@@ -14,6 +14,8 @@ SRCS := \
 	\
 	wrap/malloc_wrapper.c \
 	wrap/free_wrapper.c \
+	wrap/open_wrapper.c \
+	wrap/close_wrapper.c \
 	\
 	list/active_rss_add.c     \
 	list/active_rss_clear.c   \

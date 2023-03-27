@@ -1,18 +1,15 @@
 #include "file.h"
 #include "log.h"
 #include "xleaks.h"
-#include <stdbool.h>
-#include <unistd.h>
 #include <string.h>
 #include <sys/mman.h>
-#include <stdlib.h>
 
 void file_destroy(t_file *file)
 {
 	if (file->open)
 	{
 		__log__(debug, "Closing file [%d]", file->fd);
-		close(file->fd);
+		__xclose__(file->fd);
 	}
 	if (file->data.ptr)
 	{
