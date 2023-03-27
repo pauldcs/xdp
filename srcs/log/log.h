@@ -42,6 +42,18 @@ static const char* log_level_colors[] = {
     [fatal]   = "\e[1;31m"
 };
 
-void log_message(t_log_level level, const char* format, ...);
+/**
+ * @brief Prints a log into stderr.
+ * 
+ * The function logs the string only if the given level
+ * is equal or above the global `log_level`.
+ * Note: the `ERROR_MSG` macros is available and equals
+ * `strerror(errno)`
+ * 
+ * @param level debug | info | warning | error | fatal 
+ * @param format format string
+ * @param ... 
+ */
+void __log__(t_log_level level, const char* format, ...);
 
 #endif /* __LOG_H__ */
