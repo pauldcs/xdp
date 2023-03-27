@@ -28,8 +28,10 @@ re: fclean all
 
 .PHONY	: all clean fclean re 
 
+#enable debug flags
 g: CFLAGS += $(CFLAGS_DBG)
 g: all
 
+#enable debug flags + ASAN
 g2: CFLAGS += $(CFLAGS_DBG_2)
 g2: all

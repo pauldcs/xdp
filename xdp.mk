@@ -10,8 +10,9 @@ CFLAGS 		 := -Wall -Wextra -Werror
 CFLAGS_DBG   := -g3 $(LOGGING) $(MEM_CHECK) $(SANITIZE)
 CFLAGS_DBG_2 := -g3 $(LOGGING) $(MEM_CHECK) -fstack-protector-strong -fsanitize=address
 
-SRCS := main.c \
-	_entry_.c  \
+SRCS := main.c  \
+	__entry__.c \
+	\
 	\
 	options/user_options_debug_print.c  \
 	options/user_options_within_range.c \
@@ -20,12 +21,15 @@ SRCS := main.c \
 	options/xgetopts/xgetopts_init.c    \
 	options/xgetopts/xgetopts_next.c    \
 	\
-	utils/write_all.c         \
-	utils/str_to_uint64.c     \
+	\
+	utils/write_all.c     \
+	utils/str_to_uint64.c \
+	\
 	\
 	string/string_dump.c         \
 	string/string_pattern_cmp.c  \
 	string/string_distance_cmp.c \
+	\
 	\
 	file/manip/file_open_append.c   \
 	file/manip/file_open_write.c    \
@@ -41,6 +45,7 @@ SRCS := main.c \
 	file/file_debug_print.c         \
 	file/load_user_file.c           \
 	\
+	\
 	expr/expr_parse.c              \
 	expr/lexer/token_list_create.c \
 	expr/lexer/lst_destroy.c       \
@@ -51,29 +56,33 @@ SRCS := main.c \
 	expr/ast/ast_create.c          \
 	expr/ast/ast_new_value.c       \
 	expr/ast/ast_solve.c           \
-	expr/ast/ast_destroy.c           \
+	expr/ast/ast_destroy.c         \
 	expr/ast/ast_debug.c           \
 	expr/ast/ast_parser.c          \
 	\
-	hex/conv/xd_ascii_16_bytes.c      \
-	hex/conv/xd_data_16_bytes.c       \
-	hex/conv/xd_pointer_8_bytes.c     \
-	hex/conv/xd_pointer_p8_bytes.c    \
-	hex/dump/xd_dump_lines.c          \
-	hex/dump/xd_dump_fd.c             \
-	hex/lookup/xd_B16Pair.c     \
-	hex/lookup/xd_B16PairSpaced.c     \
-	hex/lookup/xd_PrintByte.c         \
+	\
+	hex/conv/xd_ascii_16_bytes.c   \
+	hex/conv/xd_data_16_bytes.c    \
+	hex/conv/xd_pointer_8_bytes.c  \
+	hex/conv/xd_pointer_p8_bytes.c \
+	hex/dump/xd_dump_lines.c       \
+	hex/dump/xd_dump_fd.c          \
+	hex/lookup/xd_B16Pair.c        \
+	hex/lookup/xd_B16PairSpaced.c  \
+	hex/lookup/xd_PrintByte.c      \
+	\
 	\
 	xtypes/char/char_type.c             \
 	xtypes/string/xc_legal_identifier.c \
 	xtypes/string/xc_legal_number.c     \
 	\
-	log/log_message.c \
 	\
-	xmem/xmem_realloc.c \
-	xmem/trace/xmem_malloc.c   \
-	xmem/trace/xmem_free.c    \
+	log/__log__.c \
+	\
+	\
+	xmem/xmem_realloc.c             \
+	xmem/trace/xmem_malloc.c        \
+	xmem/trace/xmem_free.c          \
 	xmem/trace/xmem_trace_init.c    \
 	xmem/trace/xmem_trace_destroy.c \
 	xmem/trace/xmem_print_summary.c \

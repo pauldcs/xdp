@@ -11,14 +11,14 @@ bool expr_parse(const char *expr, void *dest)
     t_ast     *ast = NULL;
 
 	if (!token_list_create(&list, expr)) {   
-        log_message(error, "Failed to tokenize expression");   
+        __log__(error, "Failed to tokenize expression");   
 		lst_destroy(&list);
         return(false);
     }
-    log_message(info, "Lexer: OK");
+    __log__(info, "Lexer: OK");
     
 	if (!(ast = parse_list(list))) {   
-        log_message(error, "Failed to create the ast");   
+        __log__(error, "Failed to create the ast");   
 		lst_destroy(&list);
         return (false);
     }
@@ -27,11 +27,10 @@ bool expr_parse(const char *expr, void *dest)
     ast_debug(ast);
 #endif
 
-	log_message(info, "Parser: OK");
+	__log__(info, "Parser: OK");
 	*dst = ast_solve(ast);
-	log_message(info, "-> expression equals %zu", *dst);
+	__log__(info, "-> expression equals %zu", *dst);
 	lst_destroy(&list);
-    //ast_destroy(ast);
-    //__xfree__(ast);
+    ast_destroy(ast);
     return (true);
 }

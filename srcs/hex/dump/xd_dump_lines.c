@@ -36,11 +36,11 @@ ssize_t	xd_dump_lines(const uint8_t *addr, size_t n, size_t offset)
 	size_t      __scr_off = 0;
 	size_t      ret = 0;
 
-	__scr_ptr = __xmalloc__(SCREEN_BUFFER_SIZE);
+	__scr_ptr = __xmalloc__(SCREEN_BUFFER_SIZE + 32);
 	if (!__scr_ptr)
 		return (-1);
 
-	(void)memset(__scr_ptr, ' ', SCREEN_BUFFER_SIZE);
+	memset(__scr_ptr, ' ', SCREEN_BUFFER_SIZE);
 
 	bool dump_required = false;
 	size_t line_size;

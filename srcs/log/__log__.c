@@ -18,7 +18,7 @@ static inline void get_current_time(char* buffer, size_t buffer_size)
     snprintf(buffer + 19, buffer_size - 19, ".%03d", (int)tv.tv_usec / 1000);
 }
 
-inline void log_message(t_log_level level, const char* format, ...)
+inline void __log__(t_log_level level, const char* format, ...)
 {
 
 #ifndef __LOGGING__

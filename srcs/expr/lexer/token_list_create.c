@@ -123,7 +123,7 @@ bool token_list_create(t_token **list, const char *in)
 			continue ;
 
 		} else {
-			log_message(fatal,  "Unrecognized token: '%s'", ptr);
+			__log__(fatal,  "Unrecognized token: '%s'", ptr);
 			return (false);
 		}
 	}

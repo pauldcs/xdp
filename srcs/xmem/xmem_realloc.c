@@ -11,7 +11,7 @@ ptr_t	xmem_realloc(ptr_t *buf, size_t *cap, size_t len, size_t new_cap)
 	void	*new_buf = __xmalloc__(new_cap);
 
 	if (!new_buf) {
-		log_message(fatal, "xmem_realloc: Failed to allocate %zu bytes", new_cap);
+		__log__(fatal, "xmem_realloc: Failed to allocate %zu bytes", new_cap);
 		return (NULL);
 	}
 	memcpy(new_buf, *buf, len);

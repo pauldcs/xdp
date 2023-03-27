@@ -32,7 +32,7 @@ st32 xgetopts_next(t_xgetopts *opts)
     if (*ptr == '-' && *(ptr + 1) && !*(ptr + 2)) {
         char *ch = strchr(opts->ostr, *(ptr + 1));
         if (!ch) {
-            log_message(warning, "illegal option -- %c", *(ptr + 1));
+            __log__(warning, "illegal option -- %c", *(ptr + 1));
             ++opts->av;
 			--opts->ac;
             return ((st32)'?');
@@ -42,7 +42,7 @@ st32 xgetopts_next(t_xgetopts *opts)
         if (*(ch + 1) == ':') {
             opts->arg = next_arg(&opts->ac, &opts->av);
             if (!opts->arg) {
-                log_message(error, "option requires an argument -- %c", ret);
+                __log__(error, "option requires an argument -- %c", ret);
 				opts->fail = true;
                 return (-1);
             }

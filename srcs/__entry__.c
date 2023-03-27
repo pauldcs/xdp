@@ -10,19 +10,19 @@
 #include <stdbool.h>
 #include <string.h>
 
-static void __file_destroy(t_file *file)
+static void file_cleanup(t_file *file)
 {
 	file_destroy(file);
 	__xfree__(file);
 }
 
-bool _entry_(t_user_options *opts)
+bool __entry__(t_user_options *opts)
 {	
 	t_file   *file;
 	size_t   file_size;
 
 #ifdef __LOGGING__
- 	log_message(warning, "Displaying t_user_options struct");
+ 	__log__(warning, "Displaying t_user_options struct");
  	user_options_debug_print(opts);
 #endif
 
@@ -38,25 +38,25 @@ bool _entry_(t_user_options *opts)
 	
 	if (file_mmap_recommended(file, opts->range))
 	{
-		log_message(info, "Mmap recommended - (%zu bytes)", opts->range);
+		__log__(info, "Mmap recommended - (%zu bytes)", opts->range);
 		if (!file_mmap_from_offset(file, opts->range))
 		{
-			__file_destroy(file);
+			file_cleanup(file);
 			return (false);
 		}
 	} else {
-		log_message(info,  "Malloc recommended - (%zu bytes)", opts->range);
+		__log__(info,  "Malloc recommended - (%zu bytes)", opts->range);
 		if (!xd_dump_fd(file->fd, opts->range, opts->start_offset))
 		{
-			__file_destroy(file);
+			file_cleanup(file);
 			return (false);
 		}
-		__file_destroy(file);
+		file_cleanup(file);
 		return (true);
 	}
 
 #ifdef __LOGGING__
- 	log_message(warning, "Displaying t_file struct");
+ 	__log__(warning, "Displaying t_file struct");
  	file_debug_print(file);
 #endif
 
@@ -65,7 +65,7 @@ bool _entry_(t_user_options *opts)
 				opts->range,
 				opts->start_offset);
 
-	__file_destroy(file);
+	file_cleanup(file);
 
 	if (ret == -1)
 		return (false);

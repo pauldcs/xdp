@@ -1,4 +1,5 @@
 #include "xdp.h"
+#include "log.h"
 #include "xmem.h"
 #include "options/user_options.h"
 #include <stdlib.h>
@@ -14,13 +15,17 @@ int main(int ac, char *av[])
 	if (opts == NULL)
 		return (EXIT_FAILURE);
 	
-	bool success = _entry_(opts);
+	bool success = __entry__(opts);
+	int ret = success == false;
+
 	__xfree__(opts);
+
+	__log__(info, " - Returning %d -", ret);
 
 #ifdef __XMEM__
 	xmem_print_summary();
 	xmem_trace_destroy();
 #endif
 
-	return (success == false);
+	return (ret);
 }

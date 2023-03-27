@@ -1,0 +1,50 @@
+ 10:55:16 [[0;35mwarning[0m] Memory tracing enabled
+ 10:55:16 [[0;34minfo[0m] Lexer: OK
+ 10:55:16 [[0;35mwarning[0m] Dumping ast
+ 10:55:16 [[0;34minfo[0m] Parser: OK
+ 10:55:16 [[0;34minfo[0m] -> expression equals 11
+ 10:55:16 [[0;34minfo[0m] Lexer: OK
+ 10:55:16 [[0;35mwarning[0m] Dumping ast
+ 10:55:16 [[0;34minfo[0m] Parser: OK
+ 10:55:16 [[0;34minfo[0m] -> expression equals 4519
+ 10:55:16 [[0;35mwarning[0m] Displaying t_user_options struct
+ 10:55:16 [[1;31mfatal[0m] range exceeds the maximum offset (11a9)
+ 10:55:16 [[0;34minfo[0m]  - Returning 1 -
+t_ast: - operator='+'
+t_ast:     - operator='+'
+t_ast:         - operator='+'
+t_ast:             - operator='+'
+t_ast:                 - operator='+'
+t_ast:                     - operator='+'
+t_ast:                         - operator='+'
+t_ast:                             - operator='+'
+t_ast:                                 - operator='+'
+t_ast:                                     - operator='+'
+t_ast:                                         - value='1'
+t_ast:                                         - value='1'
+t_ast:                                     - value='1'
+t_ast:                                 - value='1'
+t_ast:                             - value='1'
+t_ast:                         - value='1'
+t_ast:                     - value='1'
+t_ast:                 - value='1'
+t_ast:             - value='1'
+t_ast:         - value='1'
+t_ast:     - value='1'
+t_ast: - value='4519'
+t_user_options: {
+t_user_options:    .filename='assets/random_4521b'
+t_user_options:    .start_offset=4519
+t_user_options:    .string_size=0
+t_user_options:    .range=11
+t_user_options: }
+
+MEMORY TRACE:
+
+  [[1;31m+[0m] 45:52433 -- 24 bytes at 0x107002c20 [srcs/expr/ast/ast_new_operator.c:21]
+  [[1;31m+[0m] 49:52433 -- 24 bytes at 0x107002b60 [srcs/expr/ast/ast_new_operator.c:21]
+
+HEAP SUMMARY:
+    in use at exit: 48 bytes in 2 blocks
+  total heap usage: 49 allocs, 47 frees, 1184 bytes allocated
+

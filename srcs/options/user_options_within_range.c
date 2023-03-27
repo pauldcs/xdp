@@ -8,7 +8,7 @@ bool user_options_within_range(t_user_options *opts, size_t file_size)
     if (opts->start_offset < file_size) {
         if (opts->start_offset + opts->range > file_size)
         {
-            log_message(fatal,  "range exceeds the maximum offset (%zx)", file_size);
+            __log__(fatal,  "range exceeds the maximum offset (%zx)", file_size);
             return (false);
         }
         if (!opts->range)
@@ -16,7 +16,7 @@ bool user_options_within_range(t_user_options *opts, size_t file_size)
         return (true);
     }
 
-    log_message(fatal,  
+    __log__(fatal,  
         "start offset (%zx) exceeds the maximum offset (%zx)",
         opts->start_offset,
         file_size

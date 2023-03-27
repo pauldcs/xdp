@@ -8,7 +8,7 @@
 # include <stdbool.h>
 # include <stdint.h>
 
-bool    _entry_(t_user_options *opts);
+bool    __entry__(t_user_options *opts);
 void 	usage(void);
 
 #endif /* __XDP_H__ */

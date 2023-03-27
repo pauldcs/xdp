@@ -33,18 +33,15 @@ t_user_options *user_options_parse(int ac, char *av[])
 					return (__xfree__(options), NULL);
 				}
 			break ;
- 
 			case 'r':
 				if (!expr_parse(opts.arg,
 						&options->range)) {
 					return (__xfree__(options), NULL);
 				}
 			break ;
-			
 			case '*':
 				options->filename = opts.arg;
 			break ;
-	
 			case 'h':
 			case '?':
 				fprintf(
@@ -53,7 +50,7 @@ t_user_options *user_options_parse(int ac, char *av[])
 						"Description:\n"
 						"    Display the contents of a file in hexadecimal format.\n\n"
 						"Options:\n"
-						"    -r   EXPR  Maximum number of bytes to read from the file (default: unlimited).\n"
+						"    -r   EXPR  The range of bytes to read from the file (default: unlimited).\n"
 						"    -s   EXPR  Starting byte offset to read from (default: 0).\n"
 						"    -h         Show this help message\n\n",
 					exec_name
@@ -66,7 +63,7 @@ t_user_options *user_options_parse(int ac, char *av[])
 	
 	if (opts.fail)
 	{
-		log_message(fatal, "incorrect arguments");
+		__log__(fatal, "Invalid arguments");
 		__xfree__(options);
 		return (NULL);
 	}

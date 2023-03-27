@@ -4,15 +4,12 @@
 
 void ast_destroy(t_ast *ast)
 {
-	if (ast->kind == EXP_VAL)
-		return ;
-
-	if (ast->binop.left) {
+	if (ast == NULL)
+		return;
+	if (ast->kind != EXP_VAL)
+	{
 		ast_destroy(ast->binop.left);
-		__xfree__(ast->binop.left);
-	}
-	if (ast->binop.right) {
 		ast_destroy(ast->binop.right);
-		__xfree__(ast->binop.right);
 	}
+	__xfree__(ast);
 }

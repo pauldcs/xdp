@@ -11,7 +11,7 @@
 /* Forces to write the buffer fully if write() failes, 
  * it's ok if this ends up looping endlessly.
  */
-static size_t	write_all(int fd, const void *buf, size_t s)
+size_t	write_all(int fd, const void *buf, size_t s)
 {
 	ssize_t	c;
 	size_t	ret;
@@ -28,6 +28,7 @@ static size_t	write_all(int fd, const void *buf, size_t s)
 	return (ret);
 }
 
+#if 0
 ssize_t	xd_dump_lines_color(const uint8_t *addr, size_t n, size_t offset)
 {
 	uint8_t     *prev = NULL;
@@ -117,3 +118,4 @@ ssize_t	xd_dump_lines_color(const uint8_t *addr, size_t n, size_t offset)
 	
 	return(__xfree__(__scr_ptr), ret);
 }
+#endif

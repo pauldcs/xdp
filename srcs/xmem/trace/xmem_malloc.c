@@ -23,7 +23,7 @@ static bool xmem_trace_new_block(ptr_t ptr, size_t nbytes, str_t file, size_t li
 	t_xmem_alloc *new_alloc = malloc(sizeof(t_xmem_alloc));
 
 	if (!new_alloc) {
-		log_message(fatal, "xmem_trace_new_block: Failed to allocate new block");
+		__log__(fatal, "xmem_trace_new_block: Failed to allocate new block");
 		return (false);
 	}
 	bzero(new_alloc, sizeof(t_xmem_alloc));
@@ -55,6 +55,6 @@ ptr_t	xmem_malloc(size_t size, str_t file, size_t line)
 		
 		free(addr);
 	}
-	log_message(fatal, "xmem_alloc_trace: Failed to allocate %zu bytes", size);
+	__log__(fatal, "xmem_alloc_trace: Failed to allocate %zu bytes", size);
 	return (NULL);
 }

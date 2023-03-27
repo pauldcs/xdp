@@ -81,7 +81,7 @@ beach:
 	return (true);
 
 prison:
-	log_message(error, "xd_dump_fd() failed miserably");
+	__log__(error, "xd_dump_fd() failed miserably");
 	__xfree__((ptr_t)ptr);
 	return (false);
 }

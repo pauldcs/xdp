@@ -7,6 +7,6 @@ t_xmem_trace mem_trace;
 
 void xmem_trace_init(void)
 {
-	log_message(warning, "Memory tracing enabled");
+	__log__(warning, "Memory tracing enabled");
 	memset(&mem_trace, 0, sizeof(mem_trace));
 }

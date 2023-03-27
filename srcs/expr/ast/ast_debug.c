@@ -6,7 +6,7 @@
 /*   By: pducos <pducos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/09 17:32:39 by pducos            #+#    #+#             */
-/*   Updated: 2023/03/26 20:08:28 by pducos           ###   ########.fr       */
+/*   Updated: 2023/03/27 00:10:04 by pducos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,6 @@ static void	inner(t_ast *ast, size_t depth)
 
 void	ast_debug(t_ast *ast)
 {
-	log_message(warning, "Dumping ast");
+	__log__(warning, "Dumping ast");
 	inner(ast, 0);
 }
