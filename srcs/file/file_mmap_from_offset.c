@@ -22,7 +22,7 @@ bool file_mmap_from_offset(t_file *file, size_t range_size)
 	
 	if (file->data.ptr == MAP_FAILED)
 	{
-		log_message(fatal,  "mmap: %s", strerror(errno));
+		__log__(fatal,  "mmap: %s", strerror(errno));
 		return (false);
 	}
 	file->data.mapped = true;

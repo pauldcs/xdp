@@ -14,6 +14,6 @@ bool file_is_regular(const char *filename)
 		return (true);
 	}
 	
-	log_message(error, "'%s': %s", filename, ERROR_MSG);
+	__log__(error, "'%s': %s", filename, ERROR_MSG);
 	return ((S_IFREG & sb.st_mode) == S_IFREG);
 }

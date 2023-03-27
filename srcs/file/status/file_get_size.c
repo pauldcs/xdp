@@ -16,6 +16,6 @@ bool file_get_size(const char *filename, size_t *size)
 		return (true);
 	}
 
-	log_message(error, "'%s': %s", filename, ERROR_MSG);
+	__log__(error, "'%s': %s", filename, ERROR_MSG);
 	return (false);
 }

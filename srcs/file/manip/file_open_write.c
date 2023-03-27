@@ -10,6 +10,6 @@ bool file_open_write(const char *filename, int *fd)
 	if (*fd != -1)
 		return (true);
 
-	log_message(error, "%s: %s", filename, ERROR_MSG);
+	__log__(error, "%s: %s", filename, ERROR_MSG);
 	return (false);
 }
