@@ -1,7 +1,7 @@
 #include "xdp.h"
 #include "log.h"
 #include "xtypes.h"
-#include "xmem.h"
+#include "xleaks.h"
 #include "options/user_options.h"
 #include "log.h"
 #include "hex.h"

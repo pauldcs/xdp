@@ -5,10 +5,12 @@ OBJS_DIR	 := .objs
 INCS_DIR	 := incs
 BUILD_DIR    := build
 LOGGING      := -D __LOGGING__
-MEM_CHECK    := -D __XMEM__
-CFLAGS 		 := -Wall -Wextra -Werror 
-CFLAGS_DBG   := -g3 $(LOGGING) $(MEM_CHECK) $(SANITIZE)
-CFLAGS_DBG_2 := -g3 $(LOGGING) $(MEM_CHECK) -fstack-protector-strong -fsanitize=address
+LEAK_CHECK   := -D __LEAK_CHECK__
+XLEAKS_DIR   := srcs/xleaks
+XLEAKS_DL    := 
+CFLAGS 		 := -Wall -Wextra -Werror $(LEAK_CHECK)
+CFLAGS_DBG   := -g3 $(LOGGING) $(LEAK_CHECK) $(SANITIZE)
+CFLAGS_DBG_2 := -g3 $(LOGGING) $(LEAK_CHECK) -fstack-protector-strong -fsanitize=address
 
 SRCS := main.c  \
 	__entry__.c \
@@ -77,15 +79,6 @@ SRCS := main.c  \
 	xtypes/string/xc_legal_number.c     \
 	\
 	\
-	log/__log__.c \
-	\
-	\
-	xmem/xmem_realloc.c             \
-	xmem/trace/xmem_malloc.c        \
-	xmem/trace/xmem_free.c          \
-	xmem/trace/xmem_trace_init.c    \
-	xmem/trace/xmem_trace_destroy.c \
-	xmem/trace/xmem_print_summary.c \
-
+	log/__log__.c 
 
 	

@@ -1,5 +1,5 @@
 #include "hex.h"
-#include "xmem.h"
+#include "xleaks.h"
 #include "xdp.h"
 #include "xtypes.h"
 #include <stddef.h>

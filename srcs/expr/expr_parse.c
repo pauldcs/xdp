@@ -1,7 +1,7 @@
 #include "log.h"
 #include "expr.h"
 #include "expr.h"
-#include "xmem.h"
+#include "xleaks.h"
 #include <stdbool.h>
 
 bool expr_parse(const char *expr, void *dest)

@@ -1,7 +1,7 @@
 #include "hex.h"
 #include "log.h"
 #include "file.h"
-#include "xmem.h"
+#include "xleaks.h"
 #include <stdlib.h>
 #include <stdbool.h>
 #include <sys/stat.h>

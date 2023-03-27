@@ -1,6 +1,6 @@
 #include "file.h"
 #include "log.h"
-#include "xmem.h"
+#include "xleaks.h"
 #include "xtypes.h"
 #include <stdbool.h>
 #include <stdlib.h>

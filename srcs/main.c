@@ -1,15 +1,11 @@
 #include "xdp.h"
 #include "log.h"
-#include "xmem.h"
+#include "xleaks.h"
 #include "options/user_options.h"
 #include <stdlib.h>
 
 int main(int ac, char *av[])
-{
-#ifdef __XMEM__
-	xmem_trace_init();
-#endif
-	
+{	
 	t_user_options *opts = user_options_parse(ac, av);
 
 	if (opts == NULL)
@@ -21,11 +17,6 @@ int main(int ac, char *av[])
 	__xfree__(opts);
 
 	__log__(info, " - Returning %d -", ret);
-
-#ifdef __XMEM__
-	xmem_print_summary();
-	xmem_trace_destroy();
-#endif
 
 	return (ret);
 }

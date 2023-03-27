@@ -13,7 +13,7 @@
 #include "expr.h"
 #include "log.h"
 #include "utils.h"
-#include "xmem.h"
+#include "xleaks.h"
 #include <ctype.h>
 #include <errno.h>
 #include <stdint.h>

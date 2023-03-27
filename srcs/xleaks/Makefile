@@ -1,4 +1,4 @@
-include xdp.mk
+include xleaks.mk
 
 SRCS_OBJS := $(patsubst %.c,$(OBJS_DIR)/%.o,$(SRCS))
 
@@ -11,28 +11,18 @@ all: $(NAME)
 -include  $(SRCS_OBJS:.o=.d)
 
 $(NAME): $(SRCS_OBJS)
-	$(MAKE) -C $(XLEAKS_DIR)
-	$(CC) $(CFLAGS) $^ -o $(NAME) -L . -lxleaks
-	
+	@mkdir -vp $(BUILD_DIR)
+	$(CC) $(CFLAGS) -dynamiclib $(SRCS_OBJS) -o $(NAME)
+
 clean:
 	rm -rf $(OBJS_DIR)
 	@true
 
 fclean: clean
-	rm -rf tests/outfiles
-	$(MAKE) clean -C $(XLEAKS_DIR)
-	rm -rf $(BUILD_DIR)
+	rm -rf $(NAME)
 	rm -rf $(OBJS_DIR)
 	@true
 
 re: fclean all
 
 .PHONY	: all clean fclean re 
-
-#enable debug flags
-g: CFLAGS += $(CFLAGS_DBG)
-g: all
-
-#enable debug flags + ASAN
-g2: CFLAGS += $(CFLAGS_DBG_2)
-g2: all

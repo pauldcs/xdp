@@ -1,7 +1,7 @@
 #include "options/user_options.h"
 #include "options/xgetopts.h"
 #include "expr.h"
-#include "xmem.h"
+#include "xleaks.h"
 #include "utils.h"
 #include "log.h"
 #include "xtypes.h"
