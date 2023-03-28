@@ -1,25 +1,32 @@
 # Listen well, young hunter
 
-To unlock the enigmas concealed within a file's essence,
-wield the `xdp` command, and bestow upon it the name of the file.
+With the `xdp` command, unlock the secrets that lie dormant
+within the heart of a file. Speak its name, and behold the
+hidden knowledge that awaits.
 
-Should you yearn to gaze upon a specific range of bytes therein,
-unfurl the `-r` option with an expression of your desire.
-The command shall reveal all that lies within the specified range,
-as precise as your calculation may require.
+Should you wish to peer into a specific range of bytes,
+unfurl the `-r` option, and behold the treasures that lie within.
+Let your calculations guide you,
+for the command shall reveal all that you desire.
 
-If perchance you seek to embark on your journey from a certain byte,
-call forth the `-s` option, and behold the offset expressed.
+And should you seek to embark on your journey from a certain
+byte, call forth the `-s` option, and behold the offset expressed.
 The starting point is, by default, at naught.
 
-Behold, hunter, that the `-r` and `-s` options can accept arithmetic
-expressions as arguments, allowing you to navigate the file's realm
-with great finesse.
+But beware, traveler, for the `-r` and `-s` options can also
+accept the power of arithmetic expressions. Let your calculations
+flow like a river, and the command shall follow your every whim.
+And for your convenience, the values provided for byte offsets
+and ranges can be expressed in the sacred tongue of hexadecimal
+notation.
 
-Moreover, for your convenience,
-the values provided for byte offsets and ranges can be expressed in
-the sacred tongue of hexadecimal notation.
+But that is not all, noble explorer! The command also possesses
+the power of memory usage tracking. Its secrets can guide you on
+your journey, aiding you in your quest to improve the command's
+performance and bring glory to your name.
+And should you wish to contribute to its further development,
+let the memory usage tracking system, `xleaks` be your guide.
 
-To recall guidance, summon the `-h` option.
-May the revelations bestowed by this command illuminate your path
-as you tread through the enigmatic depths of the file.
+Invoke the `-h` option at any time to summon guidance,
+and let the command's revelations illuminate your path as you
+delve into the enigmatic depths of the file.
