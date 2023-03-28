@@ -1,6 +1,5 @@
-# Usage
+# Listen well, young hunter
 
-Listen well, young hunter!
 To unlock the enigmas concealed within a file's essence,
 wield the `xdp` command, and bestow upon it the name of the file.
 
