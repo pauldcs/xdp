@@ -1,4 +1,3 @@
-```
 Listen well, young hunter!
 To unlock the enigmas concealed within a file's essence,
 wield the `xdp` command, and bestow upon it the name of the file.
@@ -23,4 +22,3 @@ the sacred tongue of hexadecimal notation.
 To recall guidance, summon the `-h` option.
 May the revelations bestowed by this command illuminate your path
 as you tread through the enigmatic depths of the file.
-```
