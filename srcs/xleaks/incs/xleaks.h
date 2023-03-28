@@ -29,7 +29,7 @@
  * the macros will extend into the wrapper functions
  * instead of the actual ones
  */
-# ifdef __LEAK_CHECK__
+# if defined (__LEAK_CHECK__)
 #  define __xfree__(ptr)           free_wrapper(ptr, __FILE__, __LINE__)
 #  define __xmalloc__(size)        malloc_wrapper(size, __FILE__, __LINE__)
 #  define __xrealloc__(ptr, size)  realloc(ptr, size)  /* todo */
@@ -66,14 +66,25 @@
 void xleaks_init(void)    __attribute__((constructor));
 void xleaks_destroy(void) __attribute__((destructor));
 
+/**
+ * @brief prints all the currently active ressources to stdout.
+ * This function gets automatically called before the program
+ * exits.
+ */
 void xleaks_state(void);
+
+/**
+ * @brief prints a summary of the program's memory usage to stdout. 
+ * This function gets automatically called before the program
+ * exits.
+ */
 void xleaks_summary(void);
 
 /*-- Wrappers --*/
 void *malloc_wrapper(size_t size, const char *file, size_t line);
 void free_wrapper(void *ptr, const char *file, size_t line);
-int open_wrapper(const char *path, int oflag, mode_t mode, const char *file, size_t line);
-int close_wrapper(int fildes, const char *file, size_t line);
+int  open_wrapper(const char *path, int oflag, mode_t mode, const char *file, size_t line);
+int  close_wrapper(int fildes, const char *file, size_t line);
 
 /*-- Ressource list --*/
 typedef enum e_rss_type {
@@ -86,8 +97,8 @@ typedef struct s_active_rss {
 	const char *file; /* file where the rss was created */
 	size_t     line;  /* line where the rss was created */
 	t_rss_type type;  /* the type of the rss */
-	char       **backtrace;
-	size_t     bt_size;
+	char       **backtrace; /* holds a backtrace of the last 5 function calls */
+	size_t     bt_size;     /* the size of the backtrace */
 	union {
 		int    fd; /* the opened fd */
 		struct s_mem_block {
@@ -113,9 +124,39 @@ typedef struct s_xleak_trace {
 
 extern t_xleak_trace xleak_trace;
 
+/**
+ * @brief Adds a newly created active rss to the list.
+ * 
+ * This function also generates a `backtrace` of the last
+ * function 5 calls that lead to the creation of the rss
+ * 
+ * @param rss 
+ */
 void active_rss_add(t_active_rss *rss);
+
+/**
+ * @brief Clears the content of xleaks_trace->list
+ * 
+ */
 void active_rss_clear(void);
+
+/**
+ * @brief Displays a single active rss to stdout
+ * 
+ * @param rss 
+ */
 void active_rss_print(t_active_rss *rss);
+
+/**
+ * @brief Deletes a active ressource from the list
+ * 
+ * This function returns false if the user tries to delete
+ * a ressource that was not in the list. 
+ * 
+ * @param scent the data to delete (fd or pointer)
+ * @param type the type of the rss
+ * @return bool
+ */
 bool active_rss_delete(void *scent, t_rss_type type);
 
 t_active_rss *active_rss_new_fd(int fd, const char *file, size_t line);

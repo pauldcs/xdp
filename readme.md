@@ -1,11 +1,13 @@
-```bash
-Usage: xdp [OPTIONS] FILE
+```
+Hearken, bold hunter! To unlock the mysteries shrouded in the depths of a file, wield the xdp command, and bestow upon it the name of the file.
 
-Description:
-    Display the contents of a file in hexadecimal format.
+Should you yearn to gaze upon a specific range of bytes therein, unfurl the -r option with an expression of your desire. The command shall reveal all that lies within the specified range, as precise as your calculation may require.
 
-Options:
-    -r   EXPR  The range of bytes to read from the file (default: unlimited).
-    -s   EXPR  Starting byte offset to read from (default: 0).
-    -h         Show this help message
+If perchance you seek to embark on your journey from a certain byte, call forth the -s option, and behold the offset expressed. The starting point is, by default, at naught.
+
+Behold, hunter, that the -r and -s options can accept arithmetic expressions as arguments, allowing you to navigate the file's realm with great finesse.
+
+Moreover, for your convenience, the values provided for byte offsets and ranges can be expressed in the sacred tongue of hexadecimal notation.
+
+To recall this message at any time, summon the -h option. May the revelations bestowed by this command illuminate your path as you tread through the enigmatic depths of the file.
 ```

@@ -22,7 +22,7 @@ bool __entry__(t_user_options *opts)
 	t_file   *file;
 	size_t   file_size;
 
-#ifdef __LOGGING__
+#if defined (__LOGGING__)
  	__log__(warning, "Displaying t_user_options struct");
  	user_options_debug_print(opts);
 #endif
@@ -41,22 +41,17 @@ bool __entry__(t_user_options *opts)
 	{
 		__log__(info, "Mmap recommended - (%zu bytes)", opts->range);
 		if (!file_mmap_from_offset(file, opts->range))
-		{
-			file_cleanup(file);
-			return (false);
-		}
+			goto boundless_obscurity;
+
 	} else {
 		__log__(info,  "Malloc recommended - (%zu bytes)", opts->range);
 		if (!xd_dump_fd(file->fd, opts->range, opts->start_offset))
-		{
-			file_cleanup(file);
-			return (false);
-		}
-		file_cleanup(file);
-		return (true);
+			goto boundless_obscurity;
+
+		goto the_waking_world;
 	}
 
-#ifdef __LOGGING__
+#if defined (__LOGGING__)
  	__log__(warning, "Displaying t_file struct");
  	file_debug_print(file);
 #endif
@@ -66,9 +61,27 @@ bool __entry__(t_user_options *opts)
 				opts->range,
 				opts->start_offset);
 
-	file_cleanup(file);
-
 	if (ret == -1)
-		return (false);
+		goto boundless_obscurity;
+
+
+the_waking_world:
+	file_cleanup(file);
+	/* You have shown great courage in the face of the unknown.
+	 * Your accomplishment today is a tribute to the bravery
+	 * and tenacity that defines the greatest a.out's.
+	 * Wear your success with pride. But remember,
+	 * there is always more to discover.
+	 * */
 	return (true);
+
+boundless_obscurity:
+	file_cleanup(file);
+	/* "the __entry__ function is a symphony of pain and glory,
+	 * and in your actions, you have struck a discordant note.
+	 * But do not despair.
+	 * There is still time to find the harmony within."
+	 * */
+	return (false);
+
 }

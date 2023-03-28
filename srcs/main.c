@@ -12,6 +12,7 @@ int main(int ac, char *av[])
 		return (EXIT_FAILURE);
 	
 	bool success = __entry__(opts);
+	
 	int ret = success == false;
 
 	__xfree__(opts);

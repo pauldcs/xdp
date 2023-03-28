@@ -23,7 +23,7 @@ bool expr_parse(const char *expr, void *dest)
         return (false);
     }
 
-#ifdef __LOGGING__
+#if defined (__LOGGING__)
     ast_debug(ast);
 #endif
 
