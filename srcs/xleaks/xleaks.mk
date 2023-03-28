@@ -1,10 +1,17 @@
-NAME		 := libxleaks.dylib
+LIBNAME      := libxleaks
 CC			 := clang
 SRCS_DIR	 := srcs
 OBJS_DIR	 := .objs
 INCS_DIR	 := incs
 BUILD_DIR    := build
+UNAME        := $(shell uname)
 CFLAGS 		 := -Wall -Wextra -Werror
+
+ifeq ($(UNAME), Darwin)
+	NAME = $(LIBNAME).dylib
+else
+	NAME = $(LIBNAME).so
+endif
 
 SRCS := \
 	xleaks/xleaks_init.c    \

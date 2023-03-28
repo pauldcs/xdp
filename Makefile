@@ -12,7 +12,7 @@ all: $(NAME)
 
 $(NAME): $(SRCS_OBJS)
 	$(MAKE) -C $(XLEAKS_DIR)
-	$(CC) $(CFLAGS) $^ -o $(NAME) -L . -lxleaks
+	$(CC) $(CFLAGS) $^ -o $(NAME) -Wl,-rpath,'$$ORIGIN' -L $(XLEAKS_DIR) -lxleaks
 	
 clean:
 	rm -rf $(OBJS_DIR)
@@ -20,7 +20,7 @@ clean:
 
 fclean: clean
 	rm -rf tests/outfiles
-	$(MAKE) clean -C $(XLEAKS_DIR)
+	$(MAKE) fclean -C $(XLEAKS_DIR)
 	rm -rf $(BUILD_DIR)
 	rm -rf $(OBJS_DIR)
 	@true
