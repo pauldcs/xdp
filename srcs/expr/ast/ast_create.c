@@ -6,7 +6,7 @@
 /*   By: pducos <pducos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 17:25:41 by pducos            #+#    #+#             */
-/*   Updated: 2023/03/27 23:08:10 by pducos           ###   ########.fr       */
+/*   Updated: 2023/03/28 04:35:28 by pducos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,12 @@ __pop_a(void)
 }
 static void *
 __pop_b(void)
-{ if (top_b > 0)
+{ if (top_b > 0) 
 		return ((void *)__stack_b[top_b--]);
 	return ((void *)0);
 }
 
-static int get_token_precedence(t_token *token)
+static int token_precedence(t_token *token)
 {
 	switch (token->kind) {
 		case TOKEN_LPAREN: return (0);
@@ -57,7 +57,7 @@ static int get_token_precedence(t_token *token)
 	}
 }
 
-static int get_node_precedence(t_ast *ast)
+static int node_precedence(t_ast *ast)
 {
 	switch (ast->kind) {
 		case EXP_LPAREN: return (0);
@@ -85,32 +85,41 @@ t_ast *ast_create(t_token *list)
 	t = list;
 	top_a = 0;
 	top_b = 0;
-	memset(__stack_a, 0, VSTACK_SIZE * sizeof(void *));
-	memset(__stack_b, 0, VSTACK_SIZE * sizeof(void *));
+
+	bzero(__stack_a, VSTACK_SIZE * sizeof(void *));
+	bzero(__stack_b, VSTACK_SIZE * sizeof(void *));
+
 	while (t)
 	{
 		if (t->kind == TOKEN_LPAREN) {
 			__push_a(ast_new_operator(t->kind));
+
 		} else if (t->kind == TOKEN_VAL) {
 			__push_b(ast_new_value(t->value));
-		} else if (t->kind == TOKEN_RPAREN)
-		{
+
+		} else if (t->kind == TOKEN_RPAREN) {
+	
 			while (top_a
-				&& (((t_ast *)__stack_a[top_a])->kind != EXP_LPAREN))
+				&& (((t_ast *)__stack_a[top_a])->kind != EXP_LPAREN)) {
 				ast_merge_top();
+			}
+
 			__pop_a();
 			__xfree__((void *)__stack_a[top_a + 1]);
 		}
 		else
 		{
 			while (top_a
-				&& get_node_precedence((t_ast *)__stack_a[top_a]) >= get_token_precedence(t))
+				&& node_precedence((t_ast *)__stack_a[top_a]) >= token_precedence(t)) {
 				ast_merge_top();
+			}
 			__push_a(ast_new_operator(t->kind));
 		}
 		t = t->next;
 	}
 	while (top_b > 1)
 		ast_merge_top();
+	
+	__xfree__((void *)__stack_a[top_a]);
 	return ((t_ast *)__stack_b[top_b]);
 }

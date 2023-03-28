@@ -12,6 +12,7 @@
 
 static void file_cleanup(t_file *file)
 {
+	(void)file;
 	file_destroy(file);
 	__xfree__(file);
 }

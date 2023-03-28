@@ -1,4 +1,5 @@
 #include "xleaks.h"
+#include <execinfo.h>
 #include <stdlib.h>
 #include <stddef.h>
 

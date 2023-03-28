@@ -55,7 +55,7 @@
 #  define __xmmap__(a,b,c,d,e,f)   mmap(a,b,c,d,e,f)
 #  define __xmunmap__(addr, len)   munmap(addr, len)
 //#  define __xasprintf__          asprintf()
-//#  define __xopen__()            open()
+#  define __xopen__(p, o, m)       open(p, o, m)
 #  define __xclose__(fd)           close(fd)
 #  define __xdup__(fd)             dup(fd)
 #  define __xdup2__(fd_1, fd_2)    dup2(fd_1, fd_2);
@@ -86,6 +86,8 @@ typedef struct s_active_rss {
 	const char *file; /* file where the rss was created */
 	size_t     line;  /* line where the rss was created */
 	t_rss_type type;  /* the type of the rss */
+	char       **backtrace;
+	size_t     bt_size;
 	union {
 		int    fd; /* the opened fd */
 		struct s_mem_block {
@@ -100,7 +102,7 @@ typedef struct s_active_rss {
 typedef struct s_xleak_trace {
 	size_t n_allocs;    /* total number of allocations */
 	size_t n_frees;     /* total number of frees */
-	size_t n_bytes;     /* total number of bytes allocated */
+	size_t n_bytes;     /* total number of bytes allocate	d */
 	t_active_rss *list; /* the list of currently used rss */
 	struct s_in_use {
 		size_t n_bytes;  /* number of bytes not freed yet */

@@ -4,7 +4,7 @@
 void xleaks_summary(void)
 {
 	fprintf(stdout,
-			"\nSUMMARY:\n"
+			"\nHEAP SUMMARY:\n"
 			"    in use at exit: %zu bytes in %zu blocks\n"
 			"  total heap usage: %zu allocs, %zu frees, %zu bytes allocated\n"
 			"\n",

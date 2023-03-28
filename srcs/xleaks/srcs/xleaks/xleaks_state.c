@@ -8,7 +8,7 @@ void xleaks_state(void)
 	if (xleak_trace.list == NULL)
 		return;
 
-	fprintf(stdout, "\n[%sleaks%s]\n", C_BRED, C_RESET);
+	fprintf(stdout, "\n[active]\n\n");
 	while (tmp)
 	{
 		active_rss_print(tmp);

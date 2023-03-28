@@ -1,12 +1,16 @@
 #include "xleaks.h"
 #include <stdlib.h>
 #include <stdbool.h>
-
-#include <stdio.h>
+#include <execinfo.h>
 
 void active_rss_add(t_active_rss *rss)
 {
+	void *trace[10];
+
 	t_active_rss *tmp = xleak_trace.list;
+
+	rss->bt_size = backtrace(trace, 10);
+	rss->backtrace = backtrace_symbols(trace, rss->bt_size);
 
 	switch (rss->type)
 	{
