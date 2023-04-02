@@ -11,8 +11,6 @@
 /* Forces to write the buffer fully if write() failes, 
  * it's ok if this ends up looping endlessly.
  */
-
-
 static size_t	write_all(int fd, const void *buf, size_t s)
 {
 	ssize_t	c;
@@ -30,14 +28,19 @@ static size_t	write_all(int fd, const void *buf, size_t s)
 	return (ret);
 }
 
-ssize_t	xd_dump_lines(const ut8 *addr, size_t n, size_t offset, ut8 *__scr_ptr, size_t scr_size)
+ssize_t	xd_dump_lines(
+		const ut8 *addr,
+		size_t n,
+		size_t offset,
+		ut8 *scr_ptr,
+		size_t scr_size)
 {
 	ut8 *prev = NULL;
 	ut8 *ptr = (ut8 *)addr;
-	size_t __scr_off = 0;
+	size_t scr_off = 0;
 	size_t ret = 0;
 
-	memset(__scr_ptr, ' ', scr_size);
+	memset(scr_ptr, ' ', scr_size);
 
 	bool dump_required = false;
 	size_t line_size;
@@ -47,9 +50,9 @@ ssize_t	xd_dump_lines(const ut8 *addr, size_t n, size_t offset, ut8 *__scr_ptr, 
 		if (dump_required) {
 			ret += write_all(
 				STDOUT_FILENO,
-				__scr_ptr,
-				__scr_off);
-			__scr_off = 0;
+				scr_ptr,
+				scr_off);
+			scr_off = 0;
 			dump_required = false;
 		}
 
@@ -59,11 +62,11 @@ ssize_t	xd_dump_lines(const ut8 *addr, size_t n, size_t offset, ut8 *__scr_ptr, 
 		
 		} else {
 			if (prev) {
-				if (*(uint64_t *)(    prev) == *(uint64_t *)(    ptr) && 
+				if (*(uint64_t *)(prev) == *(uint64_t *)(ptr) && 
 					*(uint64_t *)(prev + 8) == *(uint64_t *)(ptr + 8)) {
-					if (__scr_off) {
-						*(__scr_ptr + __scr_off++) = '+';
-						*(__scr_ptr + __scr_off++) = '\n';
+					if (scr_off) {
+						*(scr_ptr + scr_off++) = '+';
+						*(scr_ptr + scr_off++) = '\n';
 						dump_required = true;
 					} 
 					offset += 16;
@@ -76,12 +79,12 @@ ssize_t	xd_dump_lines(const ut8 *addr, size_t n, size_t offset, ut8 *__scr_ptr, 
 			n -= 16;
 		}
 
-		__scr_off += xd_pointer_p8_bytes(__scr_ptr + __scr_off, offset) + 2;
-		__scr_off += xd_data_16_bytes(__scr_ptr + __scr_off, ptr, line_size) + 2;
-		__scr_off += xd_ascii_16_bytes(__scr_ptr + __scr_off, ptr, line_size);
-		*(__scr_ptr + __scr_off++) = '\n';
+		scr_off += xd_pointer_p8_bytes(scr_ptr + scr_off, offset) + 2;
+		scr_off += xd_data_16_bytes(scr_ptr + scr_off, ptr, line_size) + 2;
+		scr_off += xd_ascii_16_bytes(scr_ptr + scr_off, ptr, line_size);
+		*(scr_ptr + scr_off++) = '\n';
 
-		if (__scr_off >= scr_size)
+		if (scr_off >= scr_size)
 			dump_required = true;
 
 		prev = ptr;
@@ -89,8 +92,8 @@ ssize_t	xd_dump_lines(const ut8 *addr, size_t n, size_t offset, ut8 *__scr_ptr, 
 		ptr += 16;
 	}	
 
-	if (__scr_off)
-		ret += write_all(STDOUT_FILENO, __scr_ptr, __scr_off);
+	if (scr_off)
+		ret += write_all(STDOUT_FILENO, scr_ptr, scr_off);
 	
 	return(ret);
 }

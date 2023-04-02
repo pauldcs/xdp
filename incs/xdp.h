@@ -12,5 +12,6 @@
 bool    __entry__(t_user_options *opts);
 void 	usage(void);
 ssize_t	xd_dump_lines(const uint8_t *addr, size_t n, size_t offset, ut8 *__scr_ptr, size_t scr_size);
+bool	xd_dump_fd(int fd, t_hexxer *hexxer);
 
 #endif /* __XDP_H__ */

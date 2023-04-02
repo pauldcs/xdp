@@ -10,6 +10,8 @@
 #include <unistd.h>
 #include <sys/mman.h>
 
+#include <stdio.h>
+
 static  bool options_within_file_size(t_user_options *opts, size_t file_size)
 {
     if (opts->start_offset < file_size) {
@@ -65,7 +67,6 @@ static bool file_mmap_from_offset(int fd, t_hexxer *hexxer)
 	 		fd,
 			aligned_offset);
 	
-
 	if (hexxer->data.ptr == MAP_FAILED)
 	{
 		__log__(fatal,  "mmap: %s", strerror(errno));
@@ -77,20 +78,30 @@ static bool file_mmap_from_offset(int fd, t_hexxer *hexxer)
 
 static bool init_screen(t_file *file, t_hexxer *hexxer)
 {
-	size_t best_size = file->st.st_blksize / 16 * (16 * 3 + 28);
+	size_t best_size;
+	size_t round_size = ((file->size + 15) / 16) * 16;
+
+	if (file->size < (size_t)file->st.st_blksize) 
+		best_size = round_size / 16 * ((16 * 3 + 28));
+	else 
+		best_size = file->st.st_blksize / 16 * (16 * 3 + 28) * 8;
 	
-	hexxer->screen.ptr = __xmalloc__(best_size * 8);
+	hexxer->screen.ptr = __xmalloc__(best_size);
 	if (!hexxer->screen.ptr)
 		return (false);
 	
-	hexxer->screen.size = best_size * 8;
+	hexxer->screen.size = best_size;
 	return (true);
 }
 
-static bool init_special_file_hexxer(t_user_options *opts, t_hexxer *hexxer)
+static bool init_special_file_hexxer(t_file *file, t_user_options *opts, t_hexxer *hexxer)
 {
 	hexxer->start_offset = opts->start_offset;
 	hexxer->max_size = opts->range;
+	hexxer->data.ptr = __xmalloc__(file->st.st_blksize);
+	if (hexxer->data.ptr == NULL)
+		return (false);
+	hexxer->data.cap = file->st.st_blksize;
 	return (true);
 }
 
@@ -106,6 +117,11 @@ static bool init_regular_file_hexxer(int fd, t_file *file, t_user_options *opts,
 	{
 		if (!file_mmap_from_offset(fd, hexxer))
 			return (false);
+	} else {
+		hexxer->data.ptr = __xmalloc__(file->st.st_blksize);
+		if (hexxer->data.ptr == NULL)
+			return (false);
+		hexxer->data.cap = file->st.st_blksize;
 	}
 	return (true);
 }
@@ -138,7 +154,7 @@ t_hexxer *hexxer_init(int fd, t_file *file, t_user_options *opts)
 		case FILE_TYPE_BLOCK_DEVICE:
 		case FILE_TYPE_CHARACTER_DEVICE:
 			hexxer->read_size = file->st.st_blksize;
-			if (!init_special_file_hexxer(opts, hexxer))
+			if (!init_special_file_hexxer(file, opts, hexxer))
 				goto prison;
 			break;
 	}

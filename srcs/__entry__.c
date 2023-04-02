@@ -41,6 +41,8 @@ bool __entry__(t_user_options *opts)
 			hexxer->screen.ptr,
 			hexxer->screen.size
 		);
+	else
+		(void)xd_dump_fd(fd, hexxer);
 
 	clean(fd, file, hexxer);
  	return (true);
