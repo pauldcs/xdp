@@ -33,7 +33,14 @@ bool __entry__(t_user_options *opts)
 	file_db_print(file);
 	hexxer_db_print(hexxer);
 
-	//hexdump(fd, 0, 0);
+	if (hexxer->mapped)
+		(void)xd_dump_lines(
+			hexxer->data.ptr,
+			hexxer->max_size,
+			hexxer->start_offset,
+			hexxer->screen.ptr,
+			hexxer->screen.size
+		);
 
 	clean(fd, file, hexxer);
  	return (true);

@@ -161,6 +161,7 @@ bool	xd_dump_lines(const uint8_t *addr, size_t size, size_t offset)
 			line_size = size;
 			size = 0;
 		
+		
 		} else {
 			if (prev) {
 				if (*(uint64_t *)(    prev) == *(uint64_t *)(    ptr) && 

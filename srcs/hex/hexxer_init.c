@@ -61,7 +61,7 @@ static bool file_mmap_from_offset(int fd, t_hexxer *hexxer)
 			NULL,
 			hexxer->max_size,
 	 		PROT_READ,
-	 		MAP_PRIVATE | MAP_FILE,
+	 		MAP_PRIVATE,
 	 		fd,
 			aligned_offset);
 	
@@ -75,45 +75,15 @@ static bool file_mmap_from_offset(int fd, t_hexxer *hexxer)
 	return (true);
 }
 
-static bool file_read_from_offset(int fd, t_hexxer *hexxer)
-{
-	if (read(fd, 0, 0) == -1)
-	{
-	 	__log__(error, "%s: read() failed", __FILE__);
-	 	return (false);
-	}
-
-	hexxer->data.ptr = __xmalloc__(hexxer->max_size);
-	if (!hexxer->data.ptr)
-		return (false);
-
-	hexxer->data.cap = hexxer->max_size;
-
-	if (lseek(fd, hexxer->start_offset, SEEK_SET) == -1)
-	{
-		__log__(error, "%s: lseek() failed", __FILE__);
-		__xfree__(hexxer->data.ptr);
-		return (false);
-	}
-	
-	if (read(fd, hexxer->data.ptr, hexxer->max_size) == -1)
-	{
-		__log__(error, "%s: read() failed", __FILE__);
-		__xfree__(hexxer->data.ptr);
-		return (false);
-	}
-	return (true);
-}
-
 static bool init_screen(t_file *file, t_hexxer *hexxer)
 {
 	size_t best_size = file->st.st_blksize / 16 * (16 * 3 + 28);
 	
-	hexxer->screen.ptr = __xmalloc__(best_size);
+	hexxer->screen.ptr = __xmalloc__(best_size * 8);
 	if (!hexxer->screen.ptr)
 		return (false);
 	
-	hexxer->screen.size = best_size;
+	hexxer->screen.size = best_size * 8;
 	return (true);
 }
 
@@ -135,10 +105,6 @@ static bool init_regular_file_hexxer(int fd, t_file *file, t_user_options *opts,
 	if (file_mmap_recommended(file, hexxer->max_size))
 	{
 		if (!file_mmap_from_offset(fd, hexxer))
-			return (false);
-	}
-	else {
-		if (!file_read_from_offset(fd, hexxer))
 			return (false);
 	}
 	return (true);
@@ -171,6 +137,7 @@ t_hexxer *hexxer_init(int fd, t_file *file, t_user_options *opts)
 		case FILE_TYPE_PIPE:
 		case FILE_TYPE_BLOCK_DEVICE:
 		case FILE_TYPE_CHARACTER_DEVICE:
+			hexxer->read_size = file->st.st_blksize;
 			if (!init_special_file_hexxer(opts, hexxer))
 				goto prison;
 			break;

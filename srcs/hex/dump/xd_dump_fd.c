@@ -10,9 +10,10 @@
 
 #define BUFFER_SIZE 32768
 
-bool	xd_dump_fd(int fd, size_t n, size_t offset)
+bool	xd_dump_fd(int fd, t_hexxer *hexer)
 {
 	cut8    *ptr = NULL;
+	char    *buf = __xmalloc__();
 	size_t  bufsize;
 	ssize_t ret;
 	bool    inf;
@@ -32,30 +33,17 @@ bool	xd_dump_fd(int fd, size_t n, size_t offset)
 
 	if (offset)
 	{
-		struct stat st;
-
-		if (fstat(fd, &st) < 0)
-        	goto prison;
-
-		if (S_ISREG(st.st_mode))
+		ssize_t ret;
+		char 	buf[1024];
+		size_t  i = offset;
+	
+		while (i)
 		{
-			ret = lseek(fd, offset, SEEK_CUR);
+			size_t rd_size = i < 1024 ? i : 1024;
+			ret = read(fd, buf, rd_size);
 			if (ret == -1) 
 				goto prison;
-	
-		} else {
-			ssize_t ret;
-			char 	buf[1024];
-			size_t  i = offset;
-	
-			while (i)
-			{
-				size_t rd_size = i < 1024 ? i : 1024;
-				ret = read(fd, buf, rd_size);
-				if (ret == -1) 
-					goto prison;
-				i -= ret;
-			}
+			i -= ret;
 		}
 	}
 

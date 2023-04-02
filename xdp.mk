@@ -13,7 +13,7 @@ CFLAGS_DBG_2 := -g3 $(LOGGING) $(LEAK_CHECK) -fstack-protector-strong -fsanitize
 
 SRCS := main.c  \
 	__entry__.c \
-	hexdump.c   \
+	xd_dump_lines.c   \
 	\
 	\
 	options/user_options_debug_print.c  \

@@ -6,7 +6,11 @@ void file_db_print(t_file *file)
 	fprintf(stdout, "t_file: {\n");
 	fprintf(stdout, "t_file:     .path='%s'\n", file->path);
 	fprintf(stdout, "t_file:     .size=%zu\n", file->size);
+#ifdef __linux__
+	fprintf(stdout, "t_file:     .blksize=%ld\n", file->st.st_blksize);
+# else
 	fprintf(stdout, "t_file:     .blksize=%d\n", file->st.st_blksize);
+#endif
 	switch(file->type)
 	{
 		case FILE_TYPE_REGULAR:          fprintf(stdout, "t_file:     .type=REGULAR\n"); break;
