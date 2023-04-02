@@ -1,5 +1,6 @@
 #include "xleaks.h"	
 #include <stdio.h>
+#include <unistd.h>
 
 void xleaks_state(void)
 {
@@ -8,7 +9,7 @@ void xleaks_state(void)
 	if (xleak_trace.list == NULL)
 		return;
 
-	fprintf(stdout, "\n[active]\n\n");
+	write(1,"\n",1);
 	while (tmp)
 	{
 		active_rss_print(tmp);

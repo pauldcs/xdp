@@ -17,7 +17,5 @@ int main(int ac, char *av[])
 
 	__xfree__(opts);
 
-	__log__(info, " - Returning %d -", ret);
-
 	return (ret);
 }

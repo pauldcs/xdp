@@ -22,7 +22,7 @@ clean:
 	@true
 
 fclean: clean
-	rm -f $(NAME)
+	rm -f $(LIBNAME).*
 	rm -rf $(OBJS_DIR)
 	@true
 

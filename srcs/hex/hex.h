@@ -2,6 +2,8 @@
 # define __HEX_H__
 
 # include "xtypes.h"
+# include "file.h"
+# include "options/user_options.h"
 # include <stdint.h>
 # include <stddef.h>
 # include <stdbool.h>
@@ -21,8 +23,27 @@ size_t	xd_pointer_p8_bytes(ut8 *dst, const uintptr_t p);
 # define BASE16_ASCII_CHARS "0123456789abcdef"
 
 bool	xd_dump_fd(int fd, size_t n, size_t offset);
-ssize_t	xd_dump_lines(const ut8 *addr, size_t n, size_t offset);
+bool	xd_dump_lines(const uint8_t *addr, size_t n, size_t offset);
 ssize_t	xd_dump_lines_color(const ut8 *addr, size_t n, size_t offset);
+
+typedef struct s_hexxer {
+	size_t max_size; /* if > 0: should be used as the size of the file */
+	size_t start_offset; /* where to start reading the file */
+	bool mapped; /* the file is mmapped */
+	struct s_screen {
+		ptr_t ptr; /* pointer to the screen for the hexdump */
+		size_t size; /* the size of the screen (==st_blksize) */
+	} screen;
+	struct s_data {
+		ptr_t ptr; /* pointer to `start_offset` in the file */
+		size_t size; /* the size of the data */
+		size_t cap; /* the size of the allocated memory */
+	} data;
+}	t_hexxer;
+
+t_hexxer *hexxer_init(int fd, t_file *file, t_user_options *opts);
+void hexxer_destroy(t_hexxer *hexxer);
+void hexxer_db_print(t_hexxer *hexxer);
 
 	/*-- Lookup --*/
 # define _RED    0x00000001

@@ -10,7 +10,6 @@ typedef struct s_user_options
 {
 	ct8     *filename;
 	size_t  start_offset;
-	size_t  string_size;
 	size_t  range;
 }	t_user_options;
 

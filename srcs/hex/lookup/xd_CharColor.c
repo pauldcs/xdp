@@ -1,6 +1,15 @@
 #include "libxdump.h"
 #include <stdint.h>
 
+# define _RED    0x00000001
+# define GREEN   0x00000010
+# define YELLOW  0x00000100
+# define BLUE    0x00001000
+# define MAGENTA 0x00010000
+# define CYAN    0x00100000
+# define WHITE   0x01000000
+# define GREY    0x10000000
+
 const uint32_t _CharColor[256] = {
 	/* null */
 	GREY,

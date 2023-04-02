@@ -57,7 +57,6 @@ t_user_options *user_options_parse(int ac, char *av[])
 				);
 				__xfree__(options);
 				exit(0);
-			__builtin_unreachable();
 		}
 	}
 	
