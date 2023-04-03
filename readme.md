@@ -20,17 +20,17 @@ And for your convenience, the values provided for byte offsets
 and ranges can be expressed in the sacred tongue of hexadecimal
 notation.
 
+Invoke the `-h` option to seek guidance, and let the command's
+revelations illuminate your path as you delve into the enigmatic
+depths of the file, cloaked in the shadows of obscurity.
+Yet fear not, for with the aid of `xdp`, the veil may be lifted,
+and the arcane knowledge within may be revealed.
+
 But that is not all, noble explorer! For within its very core lies
 the ancient ability to track the memory usage of your journey,
 guiding you ever closer to the truth.
 And should your heart yearn to contribute to its eternal expansion,
 the memory usage tracking system `xleaks` shall be your ally. 
-
-Invoke the `-h` option at any time to seek guidance,
-and let the command's revelations illuminate your path as you
-delve into the enigmatic depths of the file, cloaked in the shadows
-of obscurity. Yet fear not, for with the aid of `xdp`, the veil may
-be lifted, and the arcane knowledge within may be revealed.
 
 But heed this warning, oh seeker of truth: the secrets that lie hidden
 within may be too great for mere mortals to bear, and the power that

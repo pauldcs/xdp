@@ -29,25 +29,36 @@ st32 xgetopts_next(t_xgetopts *opts)
     while (isspace(*ptr))
         ++ptr;
 
-    if (*ptr == '-' && *(ptr + 1) && !*(ptr + 2)) {
+    if (*ptr == '-' && *(ptr + 1) && !*(ptr + 2))
+    {
         char *ch = strchr(opts->ostr, *(ptr + 1));
-        if (!ch) {
-            __log__(warning, "illegal option -- %c", *(ptr + 1));
+        if (!ch)
+        {
+            __log__(
+                error,
+                "illegal option -- %c", *(ptr + 1)
+            );
             ++opts->av;
 			--opts->ac;
             return ((st32)'?');
         }
 
         ret = *ch;
-        if (*(ch + 1) == ':') {
+        if (*(ch + 1) == ':')
+        {
             opts->arg = next_arg(&opts->ac, &opts->av);
-            if (!opts->arg) {
-                __log__(error, "option requires an argument -- %c", ret);
+            if (!opts->arg)
+            {
+                __log__(
+                    error,
+                    "option requires an argument -- %c", ret
+                );
 				opts->fail = true;
                 return (-1);
             }
         }
         ++opts->av;
+
     } else {
         opts->arg = ptr;
         ++opts->av;
