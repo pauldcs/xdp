@@ -10,8 +10,8 @@
 #include <unistd.h>
 #include <sys/mman.h>
 
-#include <stdio.h>
-
+/* Checks that the options provided by the user are not problematic
+*/
 static  bool options_within_file_size(t_user_options *opts, size_t file_size)
 {
     if (opts->start_offset < file_size) {
@@ -33,6 +33,8 @@ static  bool options_within_file_size(t_user_options *opts, size_t file_size)
     return (false);
 }
 
+/* Set of rules to determine if a file should be mmapped
+*/
 static bool file_mmap_recommended(t_file *file, size_t range_size)
 {
     size_t page_size = sysconf(_SC_PAGE_SIZE);
@@ -76,15 +78,12 @@ static bool file_mmap_from_offset(int fd, t_hexxer *hexxer)
 	return (true);
 }
 
+/* Init a 'screen'. it is used as a buffer to writes to hexxed data into.
+ * This is what is actually written to the console. 
+*/
 static bool init_screen(t_file *file, t_hexxer *hexxer)
 {
-	size_t best_size;
-	size_t round_size = ((file->size + 15) / 16) * 16;
-
-	if (file->size < (size_t)file->st.st_blksize) 
-		best_size = round_size / 16 * ((16 * 3 + 28));
-	else 
-		best_size = file->st.st_blksize / 16 * (16 * 3 + 28) * 8;
+	size_t best_size = file->st.st_blksize / 16 * (16 * 3 + 28) * 8;
 	
 	hexxer->screen.ptr = __xmalloc__(best_size);
 	if (!hexxer->screen.ptr)
@@ -94,6 +93,9 @@ static bool init_screen(t_file *file, t_hexxer *hexxer)
 	return (true);
 }
 
+/* If the file is not a regular file and has no size, we cannot read it at once so we just
+ * note the blksize for later reading and allocate a screen.
+ */
 static bool init_special_file_hexxer(t_file *file, t_user_options *opts, t_hexxer *hexxer)
 {
 	hexxer->start_offset = opts->start_offset;
@@ -105,6 +107,10 @@ static bool init_special_file_hexxer(t_file *file, t_user_options *opts, t_hexxe
 	return (true);
 }
 
+/* If the file has a known size, we determine if it should be mmapped or not. 
+ * If it is mmappable, we mmap it, if not we handle it in the same way as a special file, as it
+ * must be small in size and we don't need to bother optimizing the read.
+ */
 static bool init_regular_file_hexxer(int fd, t_file *file, t_user_options *opts, t_hexxer *hexxer)
 {
 	if (!options_within_file_size(opts, file->size))
@@ -126,6 +132,8 @@ static bool init_regular_file_hexxer(int fd, t_file *file, t_user_options *opts,
 	return (true);
 }
 
+/* Create a 'hexxer' which is a sort of reader only for the purpose of hexdumping.
+*/
 t_hexxer *hexxer_init(int fd, t_file *file, t_user_options *opts)
 {
 	t_hexxer *hexxer = __xmalloc__(sizeof(t_hexxer));

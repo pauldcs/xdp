@@ -12,8 +12,8 @@
 bool	xd_dump_fd(int fd, t_hexxer *hexxer)
 {
 	ssize_t ret;
-	bool    inf;
-	size_t  n = hexxer->max_size;
+	bool inf;
+	size_t n = hexxer->max_size;
 	size_t offset = hexxer->start_offset;
 
 	if (n == 0)
@@ -28,6 +28,11 @@ bool	xd_dump_fd(int fd, t_hexxer *hexxer)
 		if (fstat(fd, &st) < 0)
         	goto prison;
 
+		/* If the file is regular we can just
+		 * lseek to the desired offset, if not, we 
+		 * move the cursor by reading and discarding 
+		 * data until the offset is met
+		*/
 		if (S_ISREG(st.st_mode))
 		{
 			ret = lseek(fd, offset, SEEK_CUR);

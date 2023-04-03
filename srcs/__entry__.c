@@ -30,8 +30,10 @@ bool __entry__(t_user_options *opts)
 	if (hexxer == NULL)
 		goto boundless_obscurity;
 
+#ifdef __LOGGING__
 	file_db_print(file);
 	hexxer_db_print(hexxer);
+#endif
 
 	if (hexxer->mapped)
 		(void)xd_dump_lines(

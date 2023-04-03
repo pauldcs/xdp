@@ -14,8 +14,8 @@ void hexxer_destroy(t_hexxer *hexxer)
 		hexxer->data.ptr = NULL;
 
 	} else {
-		__xfree__(hexxer->screen.ptr);
-		hexxer->screen.ptr = NULL;
+		__xfree__(hexxer->data.ptr);
+		hexxer->data.ptr = NULL;
 	}
 	
 	if (hexxer->screen.ptr) {

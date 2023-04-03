@@ -3,6 +3,7 @@
 #include "hex.h"
 #include <stdint.h>
 #include <stddef.h>
+#include <string.h>
 
 size_t xd_data_16_bytes(cut8 *dst, cut8 *src, size_t n)
 {
@@ -41,7 +42,7 @@ size_t xd_data_16_bytes(cut8 *dst, cut8 *src, size_t n)
 			*(ut16 *)(dst) = _B16Pair[*ptr++];
 			dst += 3;
 		}
+		memset((void *)dst, ' ', pad * 3);
 		return (dst - tmp + pad);
 	}
-	return (0);
 }
