@@ -1,20 +1,46 @@
+#include "xtypes.h"
 #include <stdbool.h>
+#include <unistd.h>
+#include <stddef.h>
 
-
-bool xd_dump_hex_stream(const void *addr, size_t size)
+static size_t	write_all(int fd, const void *buf, size_t s)
 {
-	uint8_t	*ptr = (uint8_t *)addr;
+	ssize_t	c;
+	size_t	ret;
 
-	if ((__screen__ = (uint8_t *)malloc((size << 1) + 1)) == 0)
-		return (false);
+	ret = 0;
+	while (s)
+	{
+		c = write(fd, buf + ret, s);
+		if (c == -1)
+			break ;
+		ret += c;
+		s -= c;
+	}
+	return (ret);
+}
+
+bool xd_dump_hex_stream(cut8 *addr, size_t size, size_t offset, ut8 *scr_ptr, size_t scr_size)
+{
+	ut8	*ptr = (ut8 *)addr;
+    bool dump_required = false;
+    size_t i = 0;
+
+    (void)offset;
 	while (size--)
 	{
-		*(__screen__ + (__screen_offset__++)) = "0123456789abcdef"[(*ptr >> 4) & 0xf];
-		*(__screen__ + (__screen_offset__++)) = "0123456789abcdef"[*ptr & 0xf];
+        if (dump_required)
+        {
+			write_all(1, scr_ptr, scr_size);
+			dump_required = false;
+			i = 0;
+		}
+        *(scr_ptr + (i++)) = "0123456789abcdef"[(*ptr >> 4) & 0xf];
+		*(scr_ptr + (i++)) = "0123456789abcdef"[*ptr & 0xf];
 		ptr++;
+		if (i >= scr_size)
+			dump_required = true;
 	}
-	*(__screen__ + (__screen_offset__++)) = '\n';
-	__dump_screen();
-	free(__screen__);
+	write_all(1, scr_ptr, i);
 	return (true);
 }

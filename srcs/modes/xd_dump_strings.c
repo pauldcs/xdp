@@ -22,10 +22,11 @@ static inline void	write_offset(const uintptr_t p)
     write(STDOUT_FILENO, buffer, 10);
 }
 
-bool xd_string_dump(const uint8_t* addr, size_t n, size_t len)
+bool xd_string_dump(cut8 *addr, size_t n, size_t len)
 {
-    const uint8_t   *ptr = addr;
-    size_t          count;
+    cut8 *ptr = addr;
+    bool dump_required = false;
+    size_t count;
     
     while (n)
     {

@@ -7,6 +7,7 @@
 #include "hexxer.h"
 #include "file.h"
 #include <stdbool.h>
+#include <unistd.h>
 
 static void clean(int fd, t_file *file, t_hexxer *hexxer)
 {
@@ -35,13 +36,13 @@ bool __entry__(t_user_options *opts)
 	user_options_db_print(opts);
 	file_db_print(file);
 	hexxer_db_print(hexxer);
-#endif
-
+#endif	
 	if (hexxer->mapped)
 		(void)dump_normal(hexxer, opts->mode);
 	else
 		(void)dump_live(fd, hexxer, opts->mode);
-
+	
+	write(1, "\n", 1);
 	clean(fd, file, hexxer);
  	return (true);
 

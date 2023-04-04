@@ -52,6 +52,7 @@ SRCS := main.c    \
 	modes/lookup/xd_B16PairSpaced.c  \
 	modes/lookup/xd_PrintByte.c      \
 	modes/xd_dump_lines.c            \
+	modes/xd_dump_hex_stream.c       \
 	\
 	\
 	hexxer/hexxer_init.c              \
