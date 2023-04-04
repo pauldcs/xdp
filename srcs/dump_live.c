@@ -10,9 +10,12 @@
 #include <fcntl.h>
 #include <unistd.h>
 
+#include <stdio.h>
+
 bool dump_live(int fd, t_hexxer *hexxer, t_modes mode)
 {
     (void)mode;
+
 	
     ssize_t ret;
 	bool inf;
@@ -81,13 +84,27 @@ bool dump_live(int fd, t_hexxer *hexxer, t_modes mode)
 			case  0: goto beach;
 		}
 		
-		xd_dump_lines(
-			hexxer->data.ptr,
-			ret,
-			offset,
-			hexxer->screen.ptr,
-			hexxer->screen.size
-		);
+    	switch (mode)
+    	{
+    	    case XDP_REGULAR:
+    	        xd_dump_lines(
+			 	       hexxer->data.ptr,
+			 	       ret,
+			 	       hexxer->start_offset,
+			 	       hexxer->screen.ptr,
+			 	       hexxer->screen.size
+    	            ); break;
+    	    case XDP_STREAM:
+    	        xd_dump_hex_stream(
+			 	       hexxer->data.ptr,
+			 	       ret,
+			 	       hexxer->start_offset,
+			 	       hexxer->screen.ptr,
+			 	       hexxer->screen.size
+    	            ); break;
+    	    default:
+    	        break;
+    	}
 		offset += ret;
 
 		if (!inf)
