@@ -34,8 +34,7 @@ ssize_t	xd_dump_lines(const ut8 *addr, size_t n, size_t offset, ut8 *scr_ptr, si
 	ut8 *ptr = (ut8 *)addr;
 	size_t scr_off = 0;
 	size_t ret = 0;
-	size_t tmp_size = n;
-
+	
 	memset(scr_ptr, ' ', scr_size);
 
 	bool dump_required = false;
@@ -88,7 +87,6 @@ ssize_t	xd_dump_lines(const ut8 *addr, size_t n, size_t offset, ut8 *scr_ptr, si
 		ptr += 16;
 	}	
 
-	scr_off += xd_pointer_p8_bytes(scr_ptr + scr_off, tmp_size) + 2;
 	if (scr_off)
 		ret += write_all(STDOUT_FILENO, scr_ptr, scr_off);
 	
