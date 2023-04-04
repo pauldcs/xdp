@@ -10,9 +10,11 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-bool	dump_fd(int fd, t_hexxer *hexxer)
+bool dump_live(int fd, t_hexxer *hexxer, t_modes mode)
 {
-	ssize_t ret;
+    (void)mode;
+	
+    ssize_t ret;
 	bool inf;
 	size_t n = hexxer->max_size;
 	size_t offset = hexxer->start_offset;
@@ -96,6 +98,6 @@ beach:
 	return (true);
 
 prison:
-	__log__(error, "xd_dump_fd() failed miserably");
+	__log__(error, "dump_fd(): failed miserably");
 	return (false);
 }

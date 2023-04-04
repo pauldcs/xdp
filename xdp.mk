@@ -11,12 +11,13 @@ CFLAGS 		 := -Wall -Wextra -Werror
 CFLAGS_DBG   := -g3 $(LOGGING) $(LEAK_CHECK) 
 CFLAGS_DBG_2 := -g3 $(LOGGING) $(LEAK_CHECK) -fstack-protector-strong -fsanitize=address
 
-SRCS := main.c  \
-	__entry__.c \
-	dump_fd.c   \
+SRCS := main.c    \
+	__entry__.c   \
+	dump_live.c   \
+	dump_normal.c \
 	\
 	\
-	options/user_options_debug_print.c  \
+	options/user_options_db_print.c     \
 	options/user_options_within_range.c \
 	options/user_options_parse.c        \
 	options/user_options_init.c         \

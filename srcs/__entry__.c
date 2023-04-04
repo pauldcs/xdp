@@ -32,20 +32,15 @@ bool __entry__(t_user_options *opts)
 		goto boundless_obscurity;
 
 #ifdef __LOGGING__
+	user_options_db_print(opts);
 	file_db_print(file);
 	hexxer_db_print(hexxer);
 #endif
 
 	if (hexxer->mapped)
-		(void)xd_dump_lines(
-			hexxer->data.ptr,
-			hexxer->max_size,
-			hexxer->start_offset,
-			hexxer->screen.ptr,
-			hexxer->screen.size
-		);
+		(void)dump_normal(hexxer, opts->mode);
 	else
-		(void)dump_fd(fd, hexxer);
+		(void)dump_live(fd, hexxer, opts->mode);
 
 	clean(fd, file, hexxer);
  	return (true);

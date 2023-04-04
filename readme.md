@@ -6,14 +6,14 @@ With a whisper of a filename, the command shall stir,
 its arcane might unleashed to reveal the secrets buried within.
 
 Should you seek to embark on your journey from a certain
-byte, call forth the `-s` option, and behold the offset expressed.
+byte, call forth the `-o` option, and behold the offset expressed.
 The starting point is, by default, at naught.
 
 Let not the sheer volume of information intimidate you, for with
-the power of the `-r` option, you shall control the very boundaries
+the power of the `-n` option, you shall control the very boundaries
 of what is revealed. 
 
-Beware, traveler, for the `-r` and `-s` options can also
+Beware, traveler, for the `-n` and `-o` options can also
 accept the power of arithmetic expressions. Let your calculations
 flow like a river, and the command shall follow your every whim.
 And for your convenience, the values provided for byte offsets

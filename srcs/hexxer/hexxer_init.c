@@ -161,7 +161,6 @@ t_hexxer *hexxer_init(int fd, t_file *file, t_user_options *opts)
 		case FILE_TYPE_PIPE:
 		case FILE_TYPE_BLOCK_DEVICE:
 		case FILE_TYPE_CHARACTER_DEVICE:
-			hexxer->read_size = file->st.st_blksize;
 			if (!init_special_file_hexxer(file, opts, hexxer))
 				goto prison;
 			break;

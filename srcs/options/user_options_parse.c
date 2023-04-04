@@ -21,27 +21,36 @@ t_user_options *user_options_parse(int ac, char *av[])
 		return (NULL);
 		
 	user_options_init(options);
-	xgetopts_init(&opts, ac, (cut8 **)av, "s:r:h");
+	xgetopts_init(&opts, ac, (cut8 **)av, "o:n:s:rh");
 
 	while ((c = xgetopts_next(&opts)) != (char)-1)
 	{
 		switch (c)
 		{
-			case 's':
+			case 'o':
 				if (!expr_parse(opts.arg,
 						&options->start_offset)) {
 					return (__xfree__(options), NULL);
-				}
-			break ;
-			case 'r':
+				} break ;
+			
+			case 'n':
 				if (!expr_parse(opts.arg,
 						&options->range)) {
 					return (__xfree__(options), NULL);
-				}
-			break ;
+				} break ;
+			
+			case 'r':
+				options->mode = XDP_STREAM;
+				break ;
+			
+			case 's':
+				options->mode = XDP_STRINGS;
+				break ;
+			
 			case '*':
 				options->filename = opts.arg;
-			break ;
+				break ;
+			
 			case 'h':
 			case '?':
 				fprintf(
@@ -50,8 +59,8 @@ t_user_options *user_options_parse(int ac, char *av[])
 						"Description:\n"
 						"    Display the contents of a file in hexadecimal format.\n\n"
 						"Options:\n"
-						"    -r   EXPR  The range of bytes to read from the file (default: unlimited).\n"
-						"    -s   EXPR  Starting byte offset to read from (default: 0).\n"
+						"    -n   EXPR  The range of bytes to read from the file (default: unlimited).\n"
+						"    -o   EXPR  Starting byte offset to read from (default: 0).\n"
 						"    -h         Show this help message\n\n",
 					exec_name
 				);

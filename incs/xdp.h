@@ -10,8 +10,10 @@
 # include <stdint.h>
 
 bool    __entry__(t_user_options *opts);
-bool	dump_fd(int fd, t_hexxer *hexxer);
 void 	usage(void);
+
+bool dump_live(int fd, t_hexxer *hexxer, t_modes mode);
+bool dump_normal(t_hexxer *hexxer, t_modes mode);
 
 
 #endif /* __XDP_H__ */

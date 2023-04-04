@@ -28,12 +28,7 @@ static size_t	write_all(int fd, const void *buf, size_t s)
 	return (ret);
 }
 
-ssize_t	xd_dump_lines(
-		const ut8 *addr,
-		size_t n,
-		size_t offset,
-		ut8 *scr_ptr,
-		size_t scr_size)
+ssize_t	xd_dump_lines(const ut8 *addr, size_t n, size_t offset, ut8 *scr_ptr, size_t scr_size)
 {
 	ut8 *prev = NULL;
 	ut8 *ptr = (ut8 *)addr;
