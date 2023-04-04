@@ -13,8 +13,7 @@ CFLAGS_DBG_2 := -g3 $(LOGGING) $(LEAK_CHECK) -fstack-protector-strong -fsanitize
 
 SRCS := main.c  \
 	__entry__.c \
-	xd_dump_lines.c   \
-	xd_dump_fd.c   \
+	dump_fd.c   \
 	\
 	\
 	options/user_options_debug_print.c  \
@@ -25,13 +24,9 @@ SRCS := main.c  \
 	options/xgetopts/xgetopts_next.c    \
 	\
 	\
-	string/string_dump.c         \
-	string/string_pattern_cmp.c  \
-	string/string_distance_cmp.c \
-	\
 	file/file_init.c     \
 	file/file_db_print.c \
-	file/file_open.c \
+	file/file_open.c     \
 	\
 	expr/expr_parse.c              \
 	expr/lexer/token_list_create.c \
@@ -48,16 +43,19 @@ SRCS := main.c  \
 	expr/ast/ast_parser.c          \
 	\
 	\
-	hex/conv/xd_ascii_16_bytes.c   \
-	hex/conv/xd_data_16_bytes.c    \
-	hex/conv/xd_pointer_8_bytes.c  \
-	hex/conv/xd_pointer_p8_bytes.c \
-	hex/lookup/xd_B16Pair.c        \
-	hex/lookup/xd_B16PairSpaced.c  \
-	hex/lookup/xd_PrintByte.c      \
-	hex/hexxer_init.c              \
-	hex/hexxer_destroy.c           \
-	hex/hexxer_db_print.c          \
+	modes/conv/xd_ascii_16_bytes.c   \
+	modes/conv/xd_data_16_bytes.c    \
+	modes/conv/xd_pointer_8_bytes.c  \
+	modes/conv/xd_pointer_p8_bytes.c \
+	modes/lookup/xd_B16Pair.c        \
+	modes/lookup/xd_B16PairSpaced.c  \
+	modes/lookup/xd_PrintByte.c      \
+	modes/xd_dump_lines.c            \
+	\
+	\
+	hexxer/hexxer_init.c              \
+	hexxer/hexxer_destroy.c           \
+	hexxer/hexxer_db_print.c          \
 	\
 	\
 	xtypes/char/char_type.c             \
@@ -65,6 +63,6 @@ SRCS := main.c  \
 	xtypes/string/xc_legal_number.c     \
 	\
 	\
-	log/__log__.c 
+	log/__log__.c
 
 	

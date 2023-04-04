@@ -2,8 +2,9 @@
 #include "log.h"
 #include "xtypes.h"
 #include "xleaks.h"
+#include "modes.h"
 #include "options/user_options.h"
-#include "hex.h"
+#include "hexxer.h"
 #include "file.h"
 #include <stdbool.h>
 
@@ -44,7 +45,7 @@ bool __entry__(t_user_options *opts)
 			hexxer->screen.size
 		);
 	else
-		(void)xd_dump_fd(fd, hexxer);
+		(void)dump_fd(fd, hexxer);
 
 	clean(fd, file, hexxer);
  	return (true);

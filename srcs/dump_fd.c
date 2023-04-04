@@ -1,15 +1,16 @@
-#include "hex.h"
 #include "xdp.h"
 #include "log.h"
 #include "file.h"
 #include "xleaks.h"
+#include "hexxer.h"
+#include "modes.h"
 #include <stdlib.h>
 #include <stdbool.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
 
-bool	xd_dump_fd(int fd, t_hexxer *hexxer)
+bool	dump_fd(int fd, t_hexxer *hexxer)
 {
 	ssize_t ret;
 	bool inf;
