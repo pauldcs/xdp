@@ -14,7 +14,8 @@
 */
 static  bool options_within_file_size(t_user_options *opts, size_t file_size)
 {
-    if (opts->start_offset < file_size) {
+    if (opts->start_offset < file_size)
+	{
         if (opts->start_offset + opts->range > file_size)
         {
             __log__(error,  "range exceeds the maximum offset (%zx)", file_size);

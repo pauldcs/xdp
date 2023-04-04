@@ -26,13 +26,18 @@ bool __entry__(t_user_options *opts)
 	
 	if (file == NULL
 		|| !file_open_read(file->path, &fd))
-		goto boundless_obscurity;
+		goto forbidden_land;
 
 	hexxer = hexxer_init(fd, file, opts);
 	if (hexxer == NULL)
-		goto boundless_obscurity;
+		goto forbidden_land;
 
-#ifdef __LOGGING__
+#if 0
+	/* This prints the 3 main structs
+	 *  user options
+	 *  the file
+	 *  the appropriate hexxer
+	*/
 	user_options_db_print(opts);
 	file_db_print(file);
 	hexxer_db_print(hexxer);
@@ -46,9 +51,9 @@ bool __entry__(t_user_options *opts)
 	clean(fd, file, hexxer);
  	return (true);
 
- boundless_obscurity:
- 	/* There is still time to find the harmony within."
- 	 */
+ forbidden_land:
+ 	/* 𝔗𝔥𝔢𝔯𝔢 𝔦𝔰 𝔰𝔱𝔦𝔩𝔩 𝔱𝔦𝔪𝔢 𝔱𝔬 𝔣𝔦𝔫𝔡 𝔱𝔥𝔢 𝔥𝔞𝔯𝔪𝔬𝔫𝔶 𝔴𝔦𝔱𝔥𝔦𝔫
+	 */
 	clean(fd, file, hexxer);
  	return (false);
 }
