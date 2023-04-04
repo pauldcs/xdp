@@ -102,6 +102,14 @@ bool dump_live(int fd, t_hexxer *hexxer, t_modes mode)
 			 	       hexxer->screen.ptr,
 			 	       hexxer->screen.size
     	            ); break;
+			case XDP_STRINGS:
+    	        xd_dump_strings(
+			 	       hexxer->data.ptr,
+			 	       ret,
+			 	       hexxer->screen.ptr,
+			 	       hexxer->screen.size
+    	            ); break;
+				
     	    default:
     	        break;
     	}

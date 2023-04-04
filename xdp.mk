@@ -53,6 +53,7 @@ SRCS := main.c    \
 	modes/lookup/xd_PrintByte.c      \
 	modes/xd_dump_lines.c            \
 	modes/xd_dump_hex_stream.c       \
+	modes/xd_dump_strings.c       \
 	\
 	\
 	hexxer/hexxer_init.c              \

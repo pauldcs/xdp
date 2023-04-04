@@ -24,6 +24,15 @@ bool dump_normal(t_hexxer *hexxer, t_modes mode)
 			        hexxer->screen.size
                 )
             );
+        case XDP_STRINGS:
+            return (xd_dump_strings(
+			        hexxer->data.ptr,
+			        hexxer->max_size,
+			        hexxer->screen.ptr,
+			        hexxer->screen.size
+                )
+            );
+            
         default:
             break;
     }

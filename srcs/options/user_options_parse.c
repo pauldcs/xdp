@@ -21,7 +21,7 @@ t_user_options *user_options_parse(int ac, char *av[])
 		return (NULL);
 		
 	user_options_init(options);
-	xgetopts_init(&opts, ac, (cut8 **)av, "o:n:s:rh");
+	xgetopts_init(&opts, ac, (cut8 **)av, "o:n:srh");
 
 	while ((c = xgetopts_next(&opts)) != (char)-1)
 	{
@@ -61,6 +61,8 @@ t_user_options *user_options_parse(int ac, char *av[])
 						"Options:\n"
 						"    -n   EXPR  The range of bytes to read from the file (default: unlimited).\n"
 						"    -o   EXPR  Starting byte offset to read from (default: 0).\n"
+						"    -s         Dump strings at least 4 characters long.\n"
+						"    -r         Dump as a stream of hex characters.\n"
 						"    -h         Show this help message\n\n",
 					exec_name
 				);
