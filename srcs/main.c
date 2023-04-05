@@ -29,8 +29,7 @@ t_user_options *user_options_parse(int ac, char *av[])
 	t_xgetopts opts;
 	char ch;
 	
-	if (!options)
-		return (NULL);
+	if (!options) return (NULL);
 		
 	bzero(options, sizeof(t_user_options));
 	xgetopts_init(&opts, ac, (cut8 **)av, "o:n:srh");
@@ -39,22 +38,28 @@ t_user_options *user_options_parse(int ac, char *av[])
 	{
 		switch (ch) {
 		case 'o':
-			if (!expr_parse(opts.arg, &options->start_offset))
-				return (__xfree__(options), NULL);
+			if (expr_parse(opts.arg, &options->start_offset) == false)
+				return (
+					__xfree__(options),
+					NULL
+				);
 		break;	
 		case 'n':
-			if (!expr_parse(opts.arg, &options->range))
-				return (__xfree__(options), NULL);
+			if (expr_parse(opts.arg, &options->range) == false)
+				return (
+					__xfree__(options),
+					NULL
+				);
 		break;
 		case 'r': options->mode = XDP_STREAM; break;	
 		case 's': options->mode = XDP_STRINGS; break;	
 		case '*':
 			/*
-			 * We can assume this is a filename
+			 * We can assume it's a filename
 			 * if it does not match any of the 
 			 * options.
 			 */
-			if (__top == 16) break;
+			if (__top == FILE_STACK_SIZE) break;
 			if (opts.arg == NULL
 				|| !strcmp(opts.arg, "-")
 				|| !strcmp(opts.arg, "stdin"))
@@ -65,7 +70,9 @@ t_user_options *user_options_parse(int ac, char *av[])
 		case 'h':
 		case '?':
 			__xfree__(options);
-			usage(); __builtin_unreachable();
+			usage();
+			/* NOT REACHED */
+			__builtin_unreachable();
 		}
 	}
 	
@@ -81,24 +88,26 @@ t_user_options *user_options_parse(int ac, char *av[])
 
 int main(int ac, char *av[])
 {	
-	t_user_options *opts = user_options_parse(ac, av);
+	t_user_options *options = user_options_parse(ac, av);
 
-	if (opts == NULL)
+	if (options == NULL)
 		return (EXIT_FAILURE);
 	
-	size_t tmp_range = opts->range;
+	size_t tmp_range = options->range;
 	bool success;
 
 	for (;;)
 	{
-		opts->range = tmp_range;
-		success = __entry__(opts, __pop_filename());
-		if (!__top)
-			break ;
+		options->range = tmp_range;
+		success = __entry__(
+			options,
+			__pop_filename()
+		);
+		if (!__top) break;
 	}
 
 	int retval = success == false;
-	__xfree__(opts);
+	__xfree__(options);
 	return (retval);
 }
 
