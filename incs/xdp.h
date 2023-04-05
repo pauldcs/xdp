@@ -9,7 +9,7 @@
 # include <stdbool.h>
 # include <stdint.h>
 
-bool    __entry__(t_user_options *opts);
+bool    __entry__(t_user_options *opts, cstr_t filename);
 void 	usage(void);
 
 bool dump_live(int fd, t_hexxer *hexxer, t_modes mode);

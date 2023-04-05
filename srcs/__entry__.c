@@ -9,19 +9,12 @@
 #include <stdbool.h>
 #include <unistd.h>
 
-static void clean(int fd, t_file *file, t_hexxer *hexxer)
-{
-	if (fd) __xclose__(fd);
-	hexxer_destroy(hexxer);
-	__xfree__(file);
-	__xfree__(hexxer);
-}
+static void clean(int fd, t_file *file, t_hexxer *hexxer);
 
-bool __entry__(t_user_options *opts)
+bool __entry__(t_user_options *opts, cstr_t filename)
 {	
-	t_file   *file = file_init(opts->filename);
+	t_file *file = file_init(filename);
 	t_hexxer *hexxer = NULL;
-
 	int fd = 0;
 	
 	if (file == NULL
@@ -32,7 +25,7 @@ bool __entry__(t_user_options *opts)
 	if (hexxer == NULL)
 		goto forbidden_land;
 
-#if 0
+#if __LOGGING__
 	/* This prints the 3 main structs
 	 *  user options
 	 *  the file
@@ -47,7 +40,7 @@ bool __entry__(t_user_options *opts)
 	else
 		(void)dump_live(fd, hexxer, opts->mode);
 	
-	write(1, "\n", 1);
+	write(1,"\n",1);
 	clean(fd, file, hexxer);
  	return (true);
 
@@ -56,4 +49,12 @@ bool __entry__(t_user_options *opts)
 	 */
 	clean(fd, file, hexxer);
  	return (false);
+}
+
+static void clean(int fd, t_file *file, t_hexxer *hexxer)
+{
+	if (fd) __xclose__(fd);
+	hexxer_destroy(hexxer);
+	__xfree__(file);
+	__xfree__(hexxer);
 }

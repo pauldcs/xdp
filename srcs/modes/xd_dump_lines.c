@@ -1,5 +1,6 @@
 
 #include "hexxer.h"
+#include "utils.h"
 #include "xleaks.h"
 #include "xtypes.h"
 #include <stddef.h>
@@ -7,26 +8,6 @@
 #include <unistd.h>
 #include <string.h>
 #include <stdbool.h>
-
-/* Forces to write the buffer fully if write() failes, 
- * it's ok if this ends up looping endlessly.
- */
-static size_t	write_all(int fd, const void *buf, size_t s)
-{
-	ssize_t	c;
-	size_t	ret;
-
-	ret = 0;
-	while (s)
-	{
-		c = write(fd, buf + ret, s);
-		if (c == -1)
-			break ;
-		ret += c;
-		s -= c;
-	}
-	return (ret);
-}
 
 ssize_t	xd_dump_lines(const ut8 *addr, size_t n, size_t offset, ut8 *scr_ptr, size_t scr_size)
 {
@@ -43,7 +24,7 @@ ssize_t	xd_dump_lines(const ut8 *addr, size_t n, size_t offset, ut8 *scr_ptr, si
 	while (n) {	
 
 		if (dump_required) {
-			ret += write_all(
+			ret += xwrite(
 				STDOUT_FILENO,
 				scr_ptr,
 				scr_off);
@@ -88,7 +69,7 @@ ssize_t	xd_dump_lines(const ut8 *addr, size_t n, size_t offset, ut8 *scr_ptr, si
 	}	
 
 	if (scr_off)
-		ret += write_all(STDOUT_FILENO, scr_ptr, scr_off);
+		ret += xwrite(STDOUT_FILENO, scr_ptr, scr_off);
 	
 	return(ret);
 }

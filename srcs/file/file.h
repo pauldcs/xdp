@@ -38,7 +38,7 @@ typedef struct s_file {
 t_file   *file_init(ct8 *filename);
 void      file_db_print(t_file *file);
 
-bool file_loop_apply(bool (*action)(cut8 *, size_t, size_t), t_file *file);
+bool file_mmap_recommended(t_file *file, size_t range_size);
 
 bool file_open_read(const char *filename, int *fd);
 bool file_open_append(const char *filename, int *fd);

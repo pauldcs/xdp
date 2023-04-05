@@ -18,16 +18,14 @@ SRCS := main.c    \
 	\
 	\
 	options/user_options_db_print.c     \
-	options/user_options_within_range.c \
-	options/user_options_parse.c        \
-	options/user_options_init.c         \
 	options/xgetopts/xgetopts_init.c    \
 	options/xgetopts/xgetopts_next.c    \
 	\
 	\
-	file/file_init.c     \
-	file/file_db_print.c \
-	file/file_open.c     \
+	file/file_init.c             \
+	file/file_db_print.c         \
+	file/file_open.c             \
+	file/file_mmap_recommended.c \
 	\
 	expr/expr_parse.c              \
 	expr/lexer/token_list_create.c \
@@ -66,6 +64,10 @@ SRCS := main.c    \
 	xtypes/string/xc_legal_number.c     \
 	\
 	\
-	log/__log__.c
+	log/__log__.c \
+	\
+	\
+	utils/xwrite.c \
+
 
 	

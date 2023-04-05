@@ -34,26 +34,6 @@ static  bool options_within_file_size(t_user_options *opts, size_t file_size)
     return (false);
 }
 
-/* Set of rules to determine if a file should be mmapped
-*/
-static bool file_mmap_recommended(t_file *file, size_t range_size)
-{
-    size_t page_size = sysconf(_SC_PAGE_SIZE);
-    size_t block_size = file->st.st_blksize;
-
-    if (file->size < page_size)
-        return (false);
-
-    if (range_size < block_size) 
-        return (false);
-
-    if (range_size >= 2 * page_size
-        && range_size >= block_size)
-        return (true);
-
-    return (false);
-}
-
 static bool file_mmap_from_offset(int fd, t_hexxer *hexxer)
 {
 	size_t aligned_offset = hexxer->start_offset & ~(sysconf(_SC_PAGE_SIZE) - 1);
