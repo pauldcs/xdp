@@ -14,9 +14,6 @@
 
 bool dump_live(int fd, t_hexxer *hexxer, t_modes mode)
 {
-    (void)mode;
-
-	
     ssize_t ret;
 	bool inf;
 	size_t n = hexxer->max_size;
@@ -33,11 +30,11 @@ bool dump_live(int fd, t_hexxer *hexxer, t_modes mode)
 
 		if (fstat(fd, &st) < 0)
         	goto prison;
-
-		/* If the file is regular we can just
-		 * lseek to the desired offset, if not, we 
-		 * move the cursor by reading and discarding 
-		 * data until the offset is met
+		/*
+		 *     if the file is regular we can just
+		 *     lseek to the desired offset, if not, we 
+		 *     move the cursor by reading and discarding 
+		 *     data until the offset is met
 		*/
 		if (S_ISREG(st.st_mode))
 		{
@@ -45,15 +42,15 @@ bool dump_live(int fd, t_hexxer *hexxer, t_modes mode)
 			if (ret == -1) 
 				goto prison;
 	
-		} else {
-			char 	buf[1024];
+		} else
+		{
+			char 	buf[2048];
 			size_t  i = offset;
 			ssize_t ret;
 	
 			while (i)
 			{
-				size_t rd_size = i < 1024 ? i : 1024;
-				ret = read(fd, buf, rd_size);
+				ret = read(fd, buf, i < 2048 ? i : 2048);
 				if (ret == -1) 
 					goto prison;
 				i -= ret;
@@ -67,15 +64,15 @@ bool dump_live(int fd, t_hexxer *hexxer, t_modes mode)
 
 		if (!inf)
 		{
-			if (!n)
-				break ;
+			if (!n) break ;
+	
 			if (n < hexxer->data.cap)
 				rd_size = n;
 			else
 				rd_size = hexxer->data.cap;
-		} else {
+		} 
+		else 
 			rd_size = hexxer->data.cap;
-		}
 
 		ret = read(fd, (ptr_t)hexxer->data.ptr, rd_size);
 		switch (ret)
@@ -88,30 +85,29 @@ bool dump_live(int fd, t_hexxer *hexxer, t_modes mode)
     	{
     	    case XDP_REGULAR:
     	        xd_dump_lines(
-			 	       hexxer->data.ptr,
-			 	       ret,
-			 	       hexxer->start_offset,
-			 	       hexxer->screen.ptr,
-			 	       hexxer->screen.size
-    	            ); break;
+			 	   hexxer->data.ptr,
+			 	   ret,
+			 	   hexxer->start_offset,
+			 	   hexxer->screen.ptr,
+			 	   hexxer->screen.size
+    	        ); break;
     	    case XDP_STREAM:
     	        xd_dump_hex_stream(
-			 	       hexxer->data.ptr,
-			 	       ret,
-			 	       hexxer->start_offset,
-			 	       hexxer->screen.ptr,
-			 	       hexxer->screen.size
-    	            ); break;
+			       hexxer->data.ptr,
+			       ret,
+			       hexxer->start_offset,
+			       hexxer->screen.ptr,
+			       hexxer->screen.size
+                ); break;
 			case XDP_STRINGS:
-    	        xd_dump_strings(
-			 	       hexxer->data.ptr,
-			 	       ret,
-			 	       hexxer->screen.ptr,
-			 	       hexxer->screen.size
-    	            ); break;
+    	     	xd_dump_strings(
+		 	       hexxer->data.ptr,
+		 	       ret,
+		 	       hexxer->screen.ptr,
+		 	       hexxer->screen.size
+    	        ); break;
 				
-    	    default:
-    	        break;
+    	    default: break;
     	}
 		offset += ret;
 
