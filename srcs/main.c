@@ -7,7 +7,6 @@
 #include "options/user_options.h"
 #include <stdlib.h>
 
-
 # define FILE_STACK_SIZE 16
 
 static ptr_t  __stack[FILE_STACK_SIZE];
@@ -72,7 +71,6 @@ t_user_options *user_options_parse(int ac, char *av[])
 			__xfree__(options);
 			usage();
 			/* NOT REACHED */
-			__builtin_unreachable();
 		}
 	}
 	
@@ -115,7 +113,7 @@ void
 usage(void)
 {
 	(void)fprintf(stderr,
-		"Usage: xdp [-snh] [-on expr] [file ...]\n\n"
+		"Usage: xdp [-hns] [-on expr] [file ...]\n\n"
 		"Description:\n"
 		"    Display the contents of a file in hexadecimal format.\n\n"
 		"Options:\n"
