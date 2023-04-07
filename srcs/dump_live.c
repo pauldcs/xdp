@@ -87,7 +87,7 @@ bool dump_live(int fd, t_hexxer *hexxer, t_modes mode)
     	        xd_dump_lines(
 			 	   hexxer->data.ptr,
 			 	   ret,
-			 	   hexxer->start_offset,
+			 	   offset,
 			 	   hexxer->screen.ptr,
 			 	   hexxer->screen.size
     	        ); break;
@@ -95,7 +95,7 @@ bool dump_live(int fd, t_hexxer *hexxer, t_modes mode)
     	        xd_dump_hex_stream(
 			       hexxer->data.ptr,
 			       ret,
-			       hexxer->start_offset,
+			       offset,
 			       hexxer->screen.ptr,
 			       hexxer->screen.size
                 ); break;
