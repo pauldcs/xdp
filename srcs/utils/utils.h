@@ -1,6 +1,7 @@
 #ifndef __UTILS_H__
 # define __UTILS_H__
 
+#include <sys/types.h>
 #include <stddef.h>
 
 int         clamp(int n, int min, int max);

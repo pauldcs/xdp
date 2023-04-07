@@ -10,8 +10,6 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-#include <stdio.h>
-
 bool dump_live(int fd, t_hexxer *hexxer, t_modes mode)
 {
     ssize_t ret;

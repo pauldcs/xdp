@@ -27,7 +27,7 @@ bool xd_dump_strings(cut8 *addr, size_t n, ut8 *scr_ptr, size_t scr_size)
         const uint8_t* tmp = ptr;
         count = 0;
         
-        while (n&& XC_PRINT(*ptr)) {
+        while (n && XC_PRINT(*ptr)) {
             --n;
             ++ptr;
             ++count;

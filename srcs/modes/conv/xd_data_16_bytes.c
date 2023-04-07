@@ -5,44 +5,42 @@
 #include <stddef.h>
 #include <string.h>
 
+static const size_t padding_table[] = { 15, 14, 12, 13, 8, 9, 10, 11, 0, 1, 2, 3, 4, 5, 6, 7 };
+
 size_t xd_data_16_bytes(cut8 *dst, cut8 *src, size_t n)
-{
-	if (n >= 16) {
-		/*-- 0 - 8 --*/
-			*(ut16 *)(dst +  0) = _B16Pair[*(src + 0)];
-			*(ut16 *)(dst +  3) = _B16Pair[*(src + 1)];
-			*(ut16 *)(dst +  6) = _B16Pair[*(src + 2)];
-			*(ut16 *)(dst +  9) = _B16Pair[*(src + 3)];
-			*(ut16 *)(dst + 12) = _B16Pair[*(src + 4)];
-			*(ut16 *)(dst + 15) = _B16Pair[*(src + 5)];
-			*(ut16 *)(dst + 18) = _B16Pair[*(src + 6)];
-			*(ut16 *)(dst + 21) = _B16Pair[*(src + 7)];
-		/*-- 8 - 16 --*/
-			*(ut16 *)(dst + 24) = _B16Pair[*(src +  8)];
-			*(ut16 *)(dst + 27) = _B16Pair[*(src +  9)];
-			*(ut16 *)(dst + 30) = _B16Pair[*(src + 10)];
-			*(ut16 *)(dst + 33) = _B16Pair[*(src + 11)];
-			*(ut16 *)(dst + 36) = _B16Pair[*(src + 12)];
-			*(ut16 *)(dst + 39) = _B16Pair[*(src + 13)];
-			*(ut16 *)(dst + 42) = _B16Pair[*(src + 14)];
-			*(ut16 *)(dst + 45) = _B16Pair[*(src + 15)];
-		/*------------*/
+{	
+    switch (n) {
+	case 16:
+		for (size_t i = 0; i < n; i += 2, dst += 6) {
+			*(ut16 *)(dst)     = _B16Pair[src[i]];
+			*(ut16 *)(dst + 3) = _B16Pair[src[i+1]];
+		}		
 		return (47);
+		
+	// case 15:
+	// case 14:
+	// case 13:
+	// case 12:
+	// case 11:
+	// case 10:
+	// case 9: 
+	// case 8: 
+	// case 7: 
+	// case 6: 
+	// case 5: 
+	// case 4: 
+	// case 3: 
+	// case 2: 
+	// case 1: 
 
-	} else {
-
-		ut8 	*ptr = (ut8 *)src;
-		cut8 	*tmp = dst;
-		ut64 	pad = (16 - n) * 3;
-
-		if (pad)
-			pad--;
-	
-		while (n--) {
-			*(ut16 *)(dst) = _B16Pair[*ptr++];
-			dst += 3;
-		}
-		memset((void *)dst, ' ', pad * 3);
-		return (dst - tmp + pad);
+    default: 
+		break;
 	}
+	size_t padding = padding_table[n-1];
+	__builtin_memset((void *)(dst + (16 - padding) * 3), ' ', padding * 3);
+
+    for (size_t i = 0; i < n; i++, dst += 3)
+        *(ut16 *)(dst) = _B16Pair[src[i]];
+
+    return (47);
 }
