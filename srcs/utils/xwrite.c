@@ -4,7 +4,7 @@
 /* Forces to write the buffer fully if write() failes, 
  * it's ok if this ends up looping endlessly.
  */
-size_t xwrite(int fd, const char *buf, size_t nbytes)
+ssize_t xwrite(int fd, const char *buf, size_t nbytes)
 {
 	int ntry;
 	int i;
