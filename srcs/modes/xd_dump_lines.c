@@ -57,7 +57,7 @@ ssize_t	xd_dump_lines(const ut8 *addr, size_t n, size_t offset, ut8 *scr_ptr, si
 			n -= 16;
 		}
 
-		scr_cursor += xd_pointer_p8_bytes(scr_cursor, offset) + 2;
+		scr_cursor += xd_pointer_8_bytes(scr_cursor, offset) + 2;
 		scr_cursor += xd_data_16_bytes(scr_cursor, ptr, line_size) + 2;
 		scr_cursor += xd_ascii_16_bytes(scr_cursor, ptr, line_size);
 		*(scr_cursor++) = '\n';
