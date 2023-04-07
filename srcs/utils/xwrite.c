@@ -2,9 +2,6 @@
 #include <errno.h>
 #include <sys/types.h>
 
-/* Forces to write the buffer fully if write() failes, 
- * it's ok if this ends up looping endlessly.
- */
 ssize_t xwrite(int fd, const char *buf, size_t nbytes)
 {
 	int i;
