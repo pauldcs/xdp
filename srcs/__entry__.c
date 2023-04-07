@@ -25,7 +25,7 @@ bool __entry__(t_user_options *opts, cstr_t filename)
 	if (hexxer == NULL)
 		goto forbidden_land;
 
-#if __LOGGING__
+#if 0
 	/* This prints the 3 main structs
 	 *  user options
 	 *  the file
