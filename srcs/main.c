@@ -31,7 +31,7 @@ t_user_options *user_options_parse(int ac, char *av[])
 	if (!options) return (NULL);
 		
 	bzero(options, sizeof(t_user_options));
-	xgetopts_init(&opts, ac, (cut8 **)av, "o:n:srh");
+	xgetopts_init(&opts, ac, (cut8 **)av, "o:n:srhc");
 
 	while ((ch = xgetopts_next(&opts)) != (char)-1)
 	{
@@ -51,7 +51,8 @@ t_user_options *user_options_parse(int ac, char *av[])
 				);
 		break;
 		case 'r': options->mode = XDP_STREAM; break;	
-		case 's': options->mode = XDP_STRINGS; break;	
+		case 's': options->mode = XDP_STRINGS; break;
+		case 'c': options->color = true; break;
 		case '*':
 			/*
 			 * We can assume it's a filename
@@ -113,13 +114,14 @@ void
 usage(void)
 {
 	(void)fprintf(stderr,
-		"Usage: xdp [-hns] [-on expr] [file ...]\n\n"
+		"Usage: xdp [-hncs] [-on expr] [file ...]\n\n"
 		"Description:\n"
 		"    Display the contents of a file in hexadecimal format.\n\n"
 		"Options:\n"
 		"    -n  EXPR  The range of bytes to read from the file (default: unlimited).\n"
 		"    -o  EXPR  Starting byte offset to read from (default: 0).\n"
 		"    -s        Dump strings at least 4 characters long.\n"
+		"    -c        Enable colored output\n"
 		"    -r        Dump as a stream of hex characters.\n"
 		"    -h        Show this help message\n\n"
 	);

@@ -11,6 +11,7 @@
 
 	/*-- Convert --*/
 size_t	xd_ascii_16_bytes(ut8 *dst, const ut8 *src, size_t n);
+size_t	xd_data_16_bytes_color(ut8 *buffer, cut8 *addr, size_t n);
 size_t	xd_data_16_bytes(cut8 *dst, cut8 *src, size_t n);
 size_t	xd_pointer_8_bytes(ut8 *dst, const uintptr_t p);
 size_t	xd_pointer_p8_bytes(ut8 *dst, const uintptr_t p);
@@ -19,6 +20,7 @@ typedef struct s_hexxer {
 	size_t max_size;     /* if > 0: should be used as the size of the file */
 	size_t start_offset; /* where to start reading the file */
 	bool mapped;         /* the file is mmapped */
+	bool color;
 	struct s_screen {
 		ptr_t ptr;       /* pointer to the screen */
 		size_t size;     /* the size of the screen */

@@ -1,7 +1,7 @@
-#include "libxdump.h"
+#include "xtypes.h"
 #include <stdint.h>
 
-# define _RED    0x00000001
+# define RED     0x00000001
 # define GREEN   0x00000010
 # define YELLOW  0x00000100
 # define BLUE    0x00001000

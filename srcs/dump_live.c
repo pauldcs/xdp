@@ -87,7 +87,8 @@ bool dump_live(int fd, t_hexxer *hexxer, t_modes mode)
 			 	   ret,
 			 	   offset,
 			 	   hexxer->screen.ptr,
-			 	   hexxer->screen.size
+			 	   hexxer->screen.size,
+				   hexxer->color
     	        ); break;
     	    case XDP_STREAM:
     	        xd_dump_hex_stream(

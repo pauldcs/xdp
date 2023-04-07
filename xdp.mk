@@ -44,11 +44,13 @@ SRCS := main.c    \
 	\
 	modes/conv/xd_ascii_16_bytes.c   \
 	modes/conv/xd_data_16_bytes.c    \
+	modes/conv/xd_data_16_bytes_color.c \
 	modes/conv/xd_pointer_8_bytes.c  \
 	modes/conv/xd_pointer_p8_bytes.c \
 	modes/lookup/xd_B16Pair.c        \
 	modes/lookup/xd_B16PairSpaced.c  \
 	modes/lookup/xd_PrintByte.c      \
+	modes/lookup/xd_CharColor.c      \
 	modes/xd_dump_lines.c            \
 	modes/xd_dump_hex_stream.c       \
 	modes/xd_dump_strings.c       \

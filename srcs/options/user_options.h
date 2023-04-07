@@ -10,6 +10,7 @@
 typedef struct s_user_options
 {
 	t_modes mode;
+	bool color;
 	size_t  start_offset;
 	size_t  range;
 }	t_user_options;

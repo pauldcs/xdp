@@ -130,6 +130,9 @@ t_hexxer *hexxer_init(int fd, t_file *file, t_user_options *opts)
 	hexxer->start_offset = opts->start_offset;
 	hexxer->max_size = opts->range;
 
+	if (opts->color)
+		hexxer->color = true;
+
 	switch (file->type)
 	{
 		case FILE_TYPE_DIRECTORY:
