@@ -15,20 +15,22 @@ ssize_t	xd_dump_lines(const ut8 *addr, size_t n, size_t offset, ut8 *scr_ptr, si
 	ut8 *ptr = (ut8 *)addr;
 	size_t scr_off = 0;
 	size_t ret = 0;
+
+	ut8 *scr_cursor = scr_ptr;
 	
 	memset(scr_ptr, ' ', scr_size);
 
 	bool dump_required = false;
 	size_t line_size;
 
-	while (n) {	
+	while (n) {
 
 		if (dump_required) {
 			ret += xwrite(
 				STDOUT_FILENO,
 				scr_ptr,
-				scr_off);
-			scr_off = 0;
+				scr_cursor - scr_ptr);
+			scr_cursor = scr_ptr;
 			dump_required = false;
 		}
 
@@ -41,8 +43,8 @@ ssize_t	xd_dump_lines(const ut8 *addr, size_t n, size_t offset, ut8 *scr_ptr, si
 				if (*(uint64_t *)(prev) == *(uint64_t *)(ptr) && 
 					*(uint64_t *)(prev + 8) == *(uint64_t *)(ptr + 8)) {
 					if (scr_off) {
-						*(scr_ptr + scr_off++) = '+';
-						*(scr_ptr + scr_off++) = '\n';
+						*(scr_cursor++) = '+';
+						*(scr_cursor++) = '\n';
 						dump_required = true;
 					} 
 					offset += 16;
@@ -55,12 +57,12 @@ ssize_t	xd_dump_lines(const ut8 *addr, size_t n, size_t offset, ut8 *scr_ptr, si
 			n -= 16;
 		}
 
-		scr_off += xd_pointer_p8_bytes(scr_ptr + scr_off, offset) + 2;
-		scr_off += xd_data_16_bytes(scr_ptr + scr_off, ptr, line_size) + 2;
-		scr_off += xd_ascii_16_bytes(scr_ptr + scr_off, ptr, line_size);
-		*(scr_ptr + scr_off++) = '\n';
+		scr_cursor += xd_pointer_p8_bytes(scr_cursor, offset) + 2;
+		scr_cursor += xd_data_16_bytes(scr_cursor, ptr, line_size) + 2;
+		scr_cursor += xd_ascii_16_bytes(scr_cursor, ptr, line_size);
+		*(scr_cursor++) = '\n';
 
-		if (scr_off >= scr_size)
+		if ((size_t)(scr_cursor - scr_ptr) >= scr_size)
 			dump_required = true;
 
 		prev = ptr;
@@ -68,8 +70,8 @@ ssize_t	xd_dump_lines(const ut8 *addr, size_t n, size_t offset, ut8 *scr_ptr, si
 		ptr += 16;
 	}	
 
-	if (scr_off)
-		ret += xwrite(STDOUT_FILENO, scr_ptr, scr_off);
+	if ((size_t)(scr_cursor - scr_ptr))
+		ret += xwrite(STDOUT_FILENO, scr_ptr, scr_cursor - scr_ptr);
 	
 	return(ret);
 }
