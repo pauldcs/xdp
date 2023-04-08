@@ -9,6 +9,8 @@
 #include <stdbool.h>
 #include <unistd.h>
 
+#include <stdio.h>
+
 static void clean(int fd, t_file *file, t_hexxer *hexxer);
 
 bool __entry__(t_user_options *opts, cstr_t filename)

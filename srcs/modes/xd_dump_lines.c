@@ -9,11 +9,12 @@
 #include <string.h>
 #include <stdbool.h>
 
+#include <stdio.h>
+
 ssize_t	xd_dump_lines(const ut8 *addr, size_t n, size_t offset, ut8 *scr_ptr, size_t scr_size, bool color)
 {
 	ut8 *prev = NULL;
 	ut8 *ptr = (ut8 *)addr;
-	size_t scr_off = 0;
 	size_t ret = 0;
 
 	ut8 *scr_cursor = scr_ptr;
@@ -39,10 +40,11 @@ ssize_t	xd_dump_lines(const ut8 *addr, size_t n, size_t offset, ut8 *scr_ptr, si
 			n = 0;
 		
 		} else {
+			
 			if (prev) {
 				if (*(uint64_t *)(prev) == *(uint64_t *)(ptr) && 
 					*(uint64_t *)(prev + 8) == *(uint64_t *)(ptr + 8)) {
-					if (scr_off) {
+					if ((size_t)(scr_cursor - scr_ptr)) {
 						*(scr_cursor++) = '+';
 						*(scr_cursor++) = '\n';
 						dump_required = true;
