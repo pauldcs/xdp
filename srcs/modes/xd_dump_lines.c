@@ -59,7 +59,7 @@ ssize_t	xd_dump_lines(const ut8 *addr, size_t n, size_t offset, ut8 *scr_ptr, si
 			n -= 16;
 		}
 
-		scr_cursor += xd_pointer_8_bytes(scr_cursor, offset);
+		scr_cursor += xd_pointer_p8_bytes(scr_cursor, offset);
 		*(scr_cursor++) = ' ';
 		*(scr_cursor++) = ' ';
 		if (color)
