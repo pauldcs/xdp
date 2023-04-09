@@ -29,7 +29,7 @@ bool dump_live(int fd, t_hexxer *hexxer, t_modes mode)
 		struct stat st;
 
 		if (fstat(fd, &st) < 0) {
-			__log__(error, ERROR_MSG);
+			__log__(error, "%s", ERROR_MSG);
         	goto prison;
 		}
 		/*
@@ -70,7 +70,7 @@ bool dump_live(int fd, t_hexxer *hexxer, t_modes mode)
 
 		if (!inf)
 		{
-			if (!n) break ;
+			if (!n) break;
 	
 			if (n < hexxer->data.cap)
 				rd_size = n;
@@ -86,7 +86,8 @@ bool dump_live(int fd, t_hexxer *hexxer, t_modes mode)
 			case -1: 
 				__log__(error, "%s", ERROR_MSG);
 				goto prison;
-			case  0: goto beach;
+			case  0:
+				goto beach;
 		}
 		
     	switch (mode)
@@ -116,7 +117,8 @@ bool dump_live(int fd, t_hexxer *hexxer, t_modes mode)
 		 	       hexxer->screen.size
     	        ); break;
 				
-    	    default: break;
+    	    default:
+				break;
     	}
 		offset += ret;
 

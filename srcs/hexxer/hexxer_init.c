@@ -10,6 +10,17 @@
 #include <unistd.h>
 #include <sys/mman.h>
 
+static const char *file_type_lookup[] = {
+	"regular file",
+	"directory",
+	"symlink",
+	"socket",
+	"pipe",
+	"block device",
+	"character device",
+	"???"
+};
+
 static  bool options_within_file_size(t_user_options *opts, size_t file_size)
 {   /*
      *Checks that the options provided by the user are not problematic
@@ -139,7 +150,10 @@ t_hexxer *hexxer_init(int fd, t_file *file, t_user_options *opts)
 		case FILE_TYPE_SOCKET:
 		case FILE_TYPE_UNKNOWN:
 		case FILE_TYPE_SYMBOLIC_LINK:
-			__log__(error, "No handler available");
+			__log__(error,
+				"%s: Is a %s",
+				file->path,
+				file_type_lookup[file->type]);
 			goto prison;
 
 		case FILE_TYPE_REGULAR:

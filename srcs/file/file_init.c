@@ -15,8 +15,8 @@ t_file *file_init(ct8 *path)
 	bzero(file, sizeof(t_file));
 
 	/* 
-	 * if no filename was provided it 
-	 * means stdin
+	 *     if no filename was provided it 
+	 *     means stdin
 	 */
 	if (!path)
 		path = "/dev/stdin";
@@ -33,13 +33,15 @@ t_file *file_init(ct8 *path)
     else if (S_ISDIR(st.st_mode))  
 		file->type = FILE_TYPE_DIRECTORY;        
 
-    //else if (S_ISLNK(st.st_mode))
-	//	file->type = FILE_TYPE_SYMBOLIC_LINK;    
+#if 0
 	/*
 	 *     maybe it would be good to ask if the 
 	 *     link should be followed or not, and
 	 *     dump the actual symlink if not
 	 */
+    else if (S_ISLNK(st.st_mode))
+		file->type = FILE_TYPE_SYMBOLIC_LINK;
+#endif
 
     else if (S_ISSOCK(st.st_mode)) 
 		file->type = FILE_TYPE_SOCKET;      
@@ -57,7 +59,7 @@ t_file *file_init(ct8 *path)
 		__log__(error,
 			"%s: Foreign tongue:\n "
 			"this file speaks a language we cannot understand,\n "
-			"and thus remains silent to us...", path);
+			"and thus remains silent to us", path);
 		goto failure;
 	}
 	

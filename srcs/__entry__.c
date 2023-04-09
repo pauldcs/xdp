@@ -38,6 +38,7 @@ bool __entry__(t_user_options *opts, cstr_t filename)
 	file_db_print(file);
 	hexxer_db_print(hexxer);
 #endif
+
 	if (hexxer->mapped)
 		success = dump_normal(hexxer, opts->mode);
 	else
@@ -47,10 +48,12 @@ bool __entry__(t_user_options *opts, cstr_t filename)
 		write(1,"\n",1);
 
 	clean(fd, file, hexxer);
- 	return (true);
+ 	return (success == false);
 
  forbidden_land:
- 	/* 𝔗𝔥𝔢𝔯𝔢 𝔦𝔰 𝔰𝔱𝔦𝔩𝔩 𝔱𝔦𝔪𝔢 𝔱𝔬 𝔣𝔦𝔫𝔡 𝔱𝔥𝔢 𝔥𝔞𝔯𝔪𝔬𝔫𝔶 𝔴𝔦𝔱𝔥𝔦𝔫
+ 	/* 
+	 *     there is still time to find
+	 *     the harmony within
 	 */
 	clean(fd, file, hexxer);
  	return (false);
