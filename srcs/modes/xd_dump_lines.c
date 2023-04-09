@@ -18,8 +18,6 @@ ssize_t	xd_dump_lines(const ut8 *addr, size_t n, size_t offset, ut8 *scr_ptr, si
 	size_t ret = 0;
 
 	ut8 *scr_cursor = scr_ptr;
-	
-	memset(scr_ptr, ' ', scr_size);
 
 	bool dump_required = false;
 	size_t line_size;
@@ -59,7 +57,7 @@ ssize_t	xd_dump_lines(const ut8 *addr, size_t n, size_t offset, ut8 *scr_ptr, si
 			n -= 16;
 		}
 
-		scr_cursor += xd_pointer_p8_bytes(scr_cursor, offset);
+		scr_cursor += xd_pointer_8_bytes(scr_cursor, offset);
 		*(scr_cursor++) = ' ';
 		*(scr_cursor++) = ' ';
 		if (color)
