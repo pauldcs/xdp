@@ -36,7 +36,7 @@ bool __entry__(t_user_options *opts, cstr_t filename)
 	user_options_db_print(opts);
 	file_db_print(file);
 	hexxer_db_print(hexxer);
-#endif	
+#endif
 	if (hexxer->mapped)
 		(void)dump_normal(hexxer, opts->mode);
 	else

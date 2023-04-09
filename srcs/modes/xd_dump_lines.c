@@ -44,7 +44,7 @@ ssize_t	xd_dump_lines(const ut8 *addr, size_t n, size_t offset, ut8 *scr_ptr, si
 			if (prev) {
 				if (*(uint64_t *)(prev) == *(uint64_t *)(ptr) && 
 					*(uint64_t *)(prev + 8) == *(uint64_t *)(ptr + 8)) {
-					if ((size_t)(scr_cursor - scr_ptr)) {
+					if (scr_cursor != scr_ptr) {
 						*(scr_cursor++) = '+';
 						*(scr_cursor++) = '\n';
 						dump_required = true;
