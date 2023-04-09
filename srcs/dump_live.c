@@ -10,6 +10,8 @@
 #include <fcntl.h>
 #include <unistd.h>
 
+#include <stdio.h>
+
 bool dump_live(int fd, t_hexxer *hexxer, t_modes mode)
 {
     ssize_t ret;
@@ -26,8 +28,10 @@ bool dump_live(int fd, t_hexxer *hexxer, t_modes mode)
 	{
 		struct stat st;
 
-		if (fstat(fd, &st) < 0)
+		if (fstat(fd, &st) < 0) {
+			__log__(error, ERROR_MSG);
         	goto prison;
+		}
 		/*
 		 *     if the file is regular we can just
 		 *     lseek to the desired offset, if not, we 
@@ -37,8 +41,10 @@ bool dump_live(int fd, t_hexxer *hexxer, t_modes mode)
 		if (S_ISREG(st.st_mode))
 		{
 			ret = lseek(fd, offset, SEEK_CUR);
-			if (ret == -1) 
+			if (ret == -1) {
+				__log__(error, "%s", ERROR_MSG);
 				goto prison;
+			}
 	
 		} else
 		{
@@ -49,8 +55,10 @@ bool dump_live(int fd, t_hexxer *hexxer, t_modes mode)
 			while (i)
 			{
 				ret = read(fd, buf, i < 2048 ? i : 2048);
-				if (ret == -1) 
+				if (ret == -1) {
+					__log__(error, "%s", ERROR_MSG);
 					goto prison;
+				}
 				i -= ret;
 			}
 		}
@@ -75,7 +83,9 @@ bool dump_live(int fd, t_hexxer *hexxer, t_modes mode)
 		ret = read(fd, (ptr_t)hexxer->data.ptr, rd_size);
 		switch (ret)
 		{
-			case -1: goto prison;
+			case -1: 
+				__log__(error, "%s", ERROR_MSG);
+				goto prison;
 			case  0: goto beach;
 		}
 		
@@ -118,6 +128,5 @@ beach:
 	return (true);
 
 prison:
-	__log__(error, "dump_fd(): failed miserably");
 	return (false);
 }
