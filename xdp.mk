@@ -7,7 +7,8 @@ BUILD_DIR    := build
 LOGGING      := -D __LOGGING__
 LEAK_CHECK   := -D __LEAK_CHECK__
 XLEAKS_DIR   := srcs/xleaks
-CFLAGS 		 := -Wall -Wextra -Werror -O3 -flto -g3
+#CFLAGS 		 := -Wall -Wextra -Werror -g3 -O3 -flto
+CFLAGS 		 := -Wall -Wextra -Werror -g3
 CFLAGS_DBG   := -g3 $(LOGGING) $(LEAK_CHECK) 
 CFLAGS_DBG_2 := -g3 $(LOGGING) $(LEAK_CHECK) -fstack-protector-strong -fsanitize=address
 
