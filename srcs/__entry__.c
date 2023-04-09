@@ -15,6 +15,7 @@ static void clean(int fd, t_file *file, t_hexxer *hexxer);
 
 bool __entry__(t_user_options *opts, cstr_t filename)
 {	
+	bool success;
 	t_file *file = file_init(filename);
 	t_hexxer *hexxer = NULL;
 	int fd = 0;
@@ -38,11 +39,13 @@ bool __entry__(t_user_options *opts, cstr_t filename)
 	hexxer_db_print(hexxer);
 #endif
 	if (hexxer->mapped)
-		(void)dump_normal(hexxer, opts->mode);
+		success = dump_normal(hexxer, opts->mode);
 	else
-		(void)dump_live(fd, hexxer, opts->mode);
+		success = dump_live(fd, hexxer, opts->mode);
 	
-	write(1,"\n",1);
+	if (success)
+		write(1,"\n",1);
+
 	clean(fd, file, hexxer);
  	return (true);
 
