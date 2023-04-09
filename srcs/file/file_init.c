@@ -14,6 +14,10 @@ t_file *file_init(ct8 *path)
 
 	bzero(file, sizeof(t_file));
 
+	/* 
+	 * if no filename was provided it 
+	 * means stdin
+	 */
 	if (!path)
 		path = "/dev/stdin";
 	
@@ -24,27 +28,36 @@ t_file *file_init(ct8 *path)
 	}
 
 	if (S_ISREG(st.st_mode))  
-		file->type = FILE_TYPE_REGULAR;          
+		file->type = FILE_TYPE_REGULAR;  
+        
     else if (S_ISDIR(st.st_mode))  
 		file->type = FILE_TYPE_DIRECTORY;        
 
-	// we dont care
     //else if (S_ISLNK(st.st_mode))
 	//	file->type = FILE_TYPE_SYMBOLIC_LINK;    
+	/*
+	 *     maybe it would be good to ask if the 
+	 *     link should be followed or not, and
+	 *     dump the actual symlink if not
+	 */
 
     else if (S_ISSOCK(st.st_mode)) 
-		file->type = FILE_TYPE_SOCKET;           
+		file->type = FILE_TYPE_SOCKET;      
+     
 	else if (S_ISFIFO(st.st_mode)) 
-		file->type = FILE_TYPE_PIPE;             
+		file->type = FILE_TYPE_PIPE;     
+        
     else if (S_ISBLK(st.st_mode))  
-		file->type = FILE_TYPE_BLOCK_DEVICE;     
+		file->type = FILE_TYPE_BLOCK_DEVICE;  
+   
     else if (S_ISCHR(st.st_mode))  
 		file->type = FILE_TYPE_CHARACTER_DEVICE; 
+
     else {
 		__log__(error,
-			"%s: Foreign tongue:\n"
-			" this file speaks a language we cannot understand,\n"
-			" and thus remains silent to us...", path);
+			"%s: Foreign tongue:\n "
+			"this file speaks a language we cannot understand,\n "
+			"and thus remains silent to us...", path);
 		goto failure;
 	}
 	
