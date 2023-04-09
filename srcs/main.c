@@ -7,20 +7,22 @@
 #include "options/user_options.h"
 #include <stdlib.h>
 
-# define FILE_STACK_SIZE 16
 
+# define FILE_STACK_SIZE 16 /* can be increased */
+/*
+ *    mini stack to hold each file
+ *    to dump separatly
+ */
 static ptr_t  __stack[FILE_STACK_SIZE];
 static size_t __top;
 
-static void __push_filename(str_t filename)
-  {
+static void __push_filename(str_t filename) {
 	if (__top < FILE_STACK_SIZE - 1) __stack[++__top] = filename;
-  }
-static ptr_t __pop_filename(void)
-  {
+}
+static ptr_t __pop_filename(void) {
 	if (__top > 0) return ((ptr_t)__stack[__top--]);
 	return (NULL);
-  }
+}
 
 t_user_options *user_options_parse(int ac, char *av[])
 {
@@ -31,6 +33,7 @@ t_user_options *user_options_parse(int ac, char *av[])
 	if (!options) return (NULL);
 		
 	bzero(options, sizeof(t_user_options));
+
 	xgetopts_init(&opts, ac, (cut8 **)av, "o:n:srhc");
 
 	while ((ch = xgetopts_next(&opts)) != (char)-1)
@@ -55,9 +58,8 @@ t_user_options *user_options_parse(int ac, char *av[])
 		case 'c': options->color = true; break;
 		case '*':
 			/*
-			 * We can assume it's a filename
-			 * if it does not match any of the 
-			 * options.
+			 *     if it does not match any of the 
+			 *     options it's a filename
 			 */
 			if (__top == FILE_STACK_SIZE) break;
 			if (opts.arg == NULL
@@ -114,16 +116,17 @@ void
 usage(void)
 {
 	(void)fprintf(stderr,
-		"Usage: xdp [-hncs] [-on expr] [file ...]\n\n"
-		"Description:\n"
-		"    Display the contents of a file in hexadecimal format.\n\n"
-		"Options:\n"
-		"    -n  EXPR  The range of bytes to read from the file (default: unlimited).\n"
-		"    -o  EXPR  Starting byte offset to read from (default: 0).\n"
-		"    -s        Dump strings at least 4 characters long.\n"
-		"    -c        Enable colored output\n"
-		"    -r        Dump as a stream of hex characters.\n"
-		"    -h        Show this help message\n\n"
+		"usage: xdp [-hncs] [-o offset] [-n length] ... [file] ...\n\n"
+		"description:\n"
+		"    touch the very fabric of creation itself, follow the\n"
+		"    darkest depths and wield a power that few can comprehend\n\n"
+		"options:\n"
+		"    -n  EXPR  the range of bytes to read from the file (default: until EOF)\n"
+		"    -o  EXPR  starting byte offset to read from (default: 0)\n"
+		"    -s        dump strings at least 4 characters long\n"
+		"    -c        enable colored output\n"
+		"    -r        dump as a stream of hex characters\n"
+		"    -h        show this help message\n\n"
 	);
 	exit(1);
 }
