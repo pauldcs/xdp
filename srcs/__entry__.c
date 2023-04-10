@@ -50,7 +50,7 @@ bool __entry__(t_user_options *opts, cstr_t filename)
 	clean(fd, file, hexxer);
  	return (success == false);
 
- forbidden_land:
+forbidden_land:
  	/* 
 	 *     there is still time to find
 	 *     the harmony within

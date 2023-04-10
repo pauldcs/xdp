@@ -42,7 +42,7 @@ size_t xd_data_16_bytes_color(ut8 *buffer, cut8 *addr, size_t n)
 		} else {
 			if (!*ptr) {
 				*(ut64 *)(buffer) = *(ut64 *)"\033[90m";
-				buffer += 8;
+				buffer += 6;
 				while (n && !*ptr) {
 					*(ut32*)(buffer) = _B16Pair[*ptr++];
 					buffer += 2;
