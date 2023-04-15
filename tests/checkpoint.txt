@@ -1,6 +1,6 @@
 ## Live mode
 
-test: '/dev/urandom -n 100000000' (time: 00:05.012.685)
+test: '/dev/urandom -n 100000000' (time: 00:05.012)
 
 	Wheight           Self wheight Symbol name
 	----------------- ------------ --------------------------
@@ -19,7 +19,7 @@ test: '/dev/urandom -n 100000000' (time: 00:05.012.685)
 
 ## Normal mode
 
-	test: 'Ableton Live' (time: 00:08.841.015)
+	test: 'Ableton Live' (time: 00:08.841)
 	
 	Wheight             Self wheight Symbol name
 	------------------  ------------ --------------------------
