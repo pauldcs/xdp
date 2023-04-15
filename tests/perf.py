@@ -1,4 +1,4 @@
-__author__  = 'pducos <paul.ducos@atsuke.fr>'
+__author__  = 'pducos'
 __version__ = '0.0.1'
 __date__    = '08/04/2023'
 __description__ = 'execute a shell command and generate a performance report'
