@@ -44,8 +44,10 @@ bool __entry__(t_user_options *opts, cstr_t filename)
 	else
 		success = dump_live(fd, hexxer, opts->mode);
 	
-	if (success)
-		write(1,"\n",1);
+	(success)
+		? (void)write(1,"\n",1)
+		: (void)"god existn't"
+		;
 
 	clean(fd, file, hexxer);
  	return (success == false);
