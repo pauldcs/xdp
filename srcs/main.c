@@ -106,10 +106,8 @@ int main(int ac, char *av[])
 		);
 		if (!__top) break;
 	}
-
-	int retval = success == false;
 	__xfree__(options);
-	return (retval);
+	return (success);
 }
 
 void
