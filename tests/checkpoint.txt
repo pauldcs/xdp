@@ -1,6 +1,6 @@
 ## Live mode
 
-test: '/dev/urandom -n 100000000' (time: 00:05.012.685)
+test: '/dev/urandom -n 100000000' (time: 00:05.012)
 
 	Wheight           Self wheight Symbol name
 	----------------- ------------ --------------------------
@@ -19,17 +19,15 @@ test: '/dev/urandom -n 100000000' (time: 00:05.012.685)
 
 ## Normal mode
 
-	test: 'Ableton Live' (time: 00:08.841.015)
+	test: 'Ableton Live' (time: 00:08.841)
 	
 	Wheight             Self wheight Symbol name
 	------------------  ------------ --------------------------
 	536.00 ms   99.8%            0 s   __entry__
-	534.00 ms   99.4%            0 s   dump_normal
-	534.00 ms   99.4%       78.00 ms   xd_dump_lines
+	534.00 ms   99.4%            0 s     dump_normal
+	534.00 ms   99.4%       78.00 ms       xd_dump_lines
 	157.00 ms   29.2%      157.00 ms         xd_data_16_bytes
 	130.00 ms   24.2%      130.00 ms         xd_ascii_16_bytes
 	103.00 ms   19.1%      103.00 ms         xd_pointer_8_bytes
-	65.00 ms    12.1%        1.00 ms           xwrite
-	1.00 ms      0.1%        1.00 ms	         write
-	1.00 ms      0.1%            0 s     hexxer_init
-	1.00 ms      0.1%            0 s     clean
+	65.00 ms    12.1%        1.00 ms         xwrite
+	1.00 ms      0.1%        1.00 ms	   write
