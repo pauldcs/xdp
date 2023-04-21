@@ -76,14 +76,18 @@ t_user_options *user_options_parse(int ac, char *av[])
 			/* NOT REACHED */
 		}
 	}
-	
 	if (opts.fail)
 	{
 		__log__(fatal, "Invalid arguments");
 		__xfree__(options);
 		return (NULL);
 	}
-
+	/* 
+	 *     params that come after argument 
+	 *     parsing are filenames
+	 */
+	while (*opts.av++ && *opts.av) 
+		__push_filename((char *)*opts.av);
 	return (options);
 }
 

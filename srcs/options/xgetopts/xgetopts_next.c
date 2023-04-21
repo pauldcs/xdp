@@ -31,10 +31,9 @@ st32 xgetopts_next(t_xgetopts *opts)
 
     if (*ptr == '-' && *(ptr + 1) && !*(ptr + 2))
     {
-        if (*ptr + 1 == '-')
-            /* stop at '--'
-             */
+        if (*(ptr + 1) == '-')
             return (-1);
+
         char *ch = strchr(opts->ostr, *(ptr + 1));
         if (!ch)
         {
