@@ -10,8 +10,6 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-#include <stdio.h>
-
 bool dump_live(int fd, t_hexxer *hexxer, t_modes mode)
 {
     ssize_t ret;
@@ -70,8 +68,8 @@ bool dump_live(int fd, t_hexxer *hexxer, t_modes mode)
 
 		if (!inf)
 		{
-			if (!n) break;
-	
+			if (!n)
+				break;
 			if (n < hexxer->data.cap)
 				rd_size = n;
 			else
@@ -116,7 +114,6 @@ bool dump_live(int fd, t_hexxer *hexxer, t_modes mode)
 		 	       hexxer->screen.ptr,
 		 	       hexxer->screen.size
     	        ); break;
-				
     	    default:
 				break;
     	}

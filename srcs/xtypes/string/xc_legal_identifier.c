@@ -13,9 +13,7 @@ bool xc_legal_identifier(const char *name)
 
   if (!name
   	|| !(c = *name)
-	  || !(
-          XC_ALPHA(c) || (c == '_')
-        )) {
+	|| !(XC_ALPHA(c) || (c == '_'))) {
     return (false);
   } 
   for (s = name + 1; (c = *s) != 0; s++)

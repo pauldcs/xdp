@@ -64,6 +64,7 @@ forbidden_land:
 static void clean(int fd, t_file *file, t_hexxer *hexxer)
 {
 	if (fd) __xclose__(fd);
+	(void)file;
 	hexxer_destroy(hexxer);
 	__xfree__(file);
 	__xfree__(hexxer);

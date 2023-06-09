@@ -1,5 +1,6 @@
 #include "xleaks.h"
 #include <string.h>
+#include <stdio.h>
 
 t_xleak_trace xleak_trace;
 

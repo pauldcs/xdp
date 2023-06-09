@@ -8,7 +8,7 @@ LOGGING      := -D __LOGGING__
 LEAK_CHECK   := -D __LEAK_CHECK__
 XLEAKS_DIR   := srcs/xleaks
 #CFLAGS 		 := -Wall -Wextra -Werror -g3 -O3 -flto
-CFLAGS 		 := -Wall -Wextra -Werror -g3
+CFLAGS 		 := -Wall -Wextra -Werror -g3	
 CFLAGS_DBG   := -g3 $(LOGGING) $(LEAK_CHECK) 
 CFLAGS_DBG_2 := -g3 $(LOGGING) $(LEAK_CHECK) -fstack-protector-strong -fsanitize=address
 
@@ -54,7 +54,8 @@ SRCS := main.c    \
 	modes/lookup/xd_CharColor.c      \
 	modes/xd_dump_lines.c            \
 	modes/xd_dump_hex_stream.c       \
-	modes/xd_dump_strings.c       \
+	modes/xd_dump_strings.c          \
+	modes/xd_summarizer.c            \
 	\
 	\
 	hexxer/hexxer_init.c              \
