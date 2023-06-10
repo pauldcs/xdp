@@ -16,7 +16,7 @@ $(NAME): $(SRCS_OBJS)
 g: CFLAGS += $(CFLAGS_DBG)
 g: $(SRCS_OBJS)
 	$(MAKE) -C $(XLEAKS_DIR)
-	$(CC) $(CFLAGS) $^ -o $(NAME) -Wl,-rpath,'$$ORIGIN' -L . -lxleaks
+	$(CC) $(CFLAGS) $^ -o $(NAME) -Wl, -L . -lxleaks
 
 clean:
 	rm -rf $(OBJS_DIR)

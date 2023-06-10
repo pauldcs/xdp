@@ -12,6 +12,29 @@
 //     return (d);
 // }	
 
+// ssize_t	reader(uint8_t **buf, t_reader *r, char *sep)
+// {
+// 	size_t	size;
+// 	int		ret;
+
+// 	if (!init_buf(r, buf, &size))
+// 		return (R_ERROR);
+// 	while (!search_char(r, sep, *buf, size))
+// 	{
+// 		if (size >= r->cap
+// 			&& !r_realloc(buf, &r->cap, size, 2 * r->cap))
+// 			return (R_ERROR);
+// 		ret = read(r->fd, *buf + size, r->cap - size);
+// 		if (ret == -1
+// 			|| (!ret && !size))
+// 			return (free(*buf), R_ERROR);
+// 		else if (!ret)
+// 			return (size);
+// 		size += ret;
+// 	}
+// 	return (size - r->save.size - 1);
+// }
+
 bool xd_summarizer(
 	cut8 *addr,
 	size_t size,
@@ -19,31 +42,6 @@ bool xd_summarizer(
 	ut8 *scr_ptr,
 	size_t scr_size)
 {
-	ut8	*ptr = (ut8 *)addr;
-    bool dump_required = false;
-    size_t i = 0;
 
-    (void)offset;
-	while (size--)
-	{
-        if (dump_required)
-        {
-			xwrite(1, scr_ptr, scr_size);
-			dump_required = false;
-			i = 0;
-		}
-
-		if (XC_PRINT(*ptr)) {
-			*(scr_ptr + (i++)) = *ptr++;
-		
-		} else {
-        	*(scr_ptr + (i++)) = "0123456789abcdef"[(*ptr >> 4) & 0xf];
-			*(scr_ptr + (i++)) = "0123456789abcdef"[*ptr & 0xf];
-			ptr++;
-		}
-		if (i >= scr_size)
-			dump_required = true;
-	}
-	xwrite(1, scr_ptr, i);
 	return (true);
 }
