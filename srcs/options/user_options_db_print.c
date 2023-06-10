@@ -12,7 +12,6 @@ void user_options_db_print(t_user_options *opts)
 		case XDP_REGULAR:   fprintf(stdout, "t_user_options:    .mode=REGULAR\n"); break;
 		case XDP_STREAM:    fprintf(stdout, "t_user_options:    .mode=STREAM\n"); break; 
 		case XDP_STRINGS:   fprintf(stdout, "t_user_options:    .mode=STRING\n"); break; 
-		case XDP_SUMMARIZE: fprintf(stdout, "t_user_options:    .mode=SUMMARY\n"); break; 
 	}
 	fprintf(stdout, "t_user_options: }\n");
 }

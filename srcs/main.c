@@ -55,7 +55,6 @@ t_user_options *user_options_parse(int ac, char *av[])
 		break;
 		case 'r': options->mode = XDP_STREAM; break;	
 		case 's': options->mode = XDP_STRINGS; break;
-		case 'x': options->mode = XDP_SUMMARIZE; break;
 		case 'c': options->color = true; break;
 		case '*':
 			/*

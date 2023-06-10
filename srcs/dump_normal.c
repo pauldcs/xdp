@@ -33,15 +33,6 @@ bool dump_normal(t_hexxer *hexxer, t_modes mode)
 			        hexxer->screen.size
                 )
             );
-		case XDP_SUMMARIZE:
-    	    return (xd_summarizer(
-			        hexxer->data.ptr,
-			        hexxer->max_size,
-			        hexxer->start_offset,
-			        hexxer->screen.ptr,
-			        hexxer->screen.size
-                )
-            );
             
         default:
             break;
