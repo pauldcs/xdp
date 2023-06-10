@@ -114,6 +114,14 @@ bool dump_live(int fd, t_hexxer *hexxer, t_modes mode)
 		 	       hexxer->screen.ptr,
 		 	       hexxer->screen.size
     	        ); break;
+			case XDP_SUMMARIZE:
+    	        xd_summarizer(
+			    	hexxer->data.ptr,
+			    	ret,
+			    	offset,
+			    	hexxer->screen.ptr,
+			    	hexxer->screen.size
+                ); break;
     	    default:
 				break;
     	}

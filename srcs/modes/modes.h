@@ -9,7 +9,8 @@
 typedef enum e_modes {
     XDP_REGULAR,
     XDP_STREAM,
-    XDP_STRINGS
+    XDP_STRINGS,
+	XDP_SUMMARIZE,
 }   t_modes;
 
 ssize_t	xd_dump_lines(const ut8 *addr, size_t n, size_t offset, ut8 *scr_ptr, size_t scr_size, bool color);

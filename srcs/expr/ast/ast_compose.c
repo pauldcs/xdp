@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ast_create.c                                       :+:      :+:    :+:   */
+/*   ast_compose.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pducos <pducos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 17:25:41 by pducos            #+#    #+#             */
-/*   Updated: 2023/03/28 14:11:23 by pducos           ###   ########.fr       */
+/*   Updated: 2023/06/10 12:44:06 by pducos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,36 +17,32 @@
 #include <stdio.h>
 #include <string.h>
 
-# define VSTACK_SIZE 2048
-static const void	*__stack_a[VSTACK_SIZE];
-static const void	*__stack_b[VSTACK_SIZE];
+# define MICROSTACK_SIZE 2048
+static const void	*__stack_a[MICROSTACK_SIZE];
+static const void	*__stack_b[MICROSTACK_SIZE];
 static size_t	top_a;
 static size_t	top_b;
 
-static void
-__push_a(t_ast *node)
-{ if (top_a < VSTACK_SIZE - 1)
+static void __push_a(t_ast *node) {
+	if (top_a < MICROSTACK_SIZE - 1)
 		__stack_a[++top_a] = node;
 }
-static void
-__push_b(t_ast *node)
-{ if (top_b < VSTACK_SIZE - 1)
+static void __push_b(t_ast *node) {
+	if (top_b < MICROSTACK_SIZE - 1)
 		__stack_b[++top_b] = node;
 }
-static void *
-__pop_a(void)
-{ if (top_a > 0)
+static void *__pop_a(void) {
+	if (top_a > 0)
 		return ((void *)__stack_a[top_a--]);
 	return ((void *)0);
 }
-static void *
-__pop_b(void)
-{ if (top_b > 0) 
+static void *__pop_b(void) {
+	if (top_b > 0) 
 		return ((void *)__stack_b[top_b--]);
 	return ((void *)0);
 }
 
-static int token_precedence(t_token *token)
+static int get_token_precedence(t_token *token)
 {
 	switch (token->kind) {
 		case TOKEN_LPAREN: return (0);
@@ -57,7 +53,7 @@ static int token_precedence(t_token *token)
 	}
 }
 
-static int node_precedence(t_ast *ast)
+static int get_node_precedence(t_ast *ast)
 {
 	switch (ast->kind) {
 		case EXP_LPAREN: return (0);
@@ -78,16 +74,15 @@ static void ast_merge_top(void)
 	__push_b(node);
 }
 
-t_ast *ast_create(t_token *list)
+t_ast *ast_compose(t_token *list)
 {
 	t_token *t;
 
 	t = list;
-	top_a = 0;
-	top_b = 0;
+	top_a = top_b = 0;
 
-	bzero(__stack_a, VSTACK_SIZE * sizeof(void *));
-	bzero(__stack_b, VSTACK_SIZE * sizeof(void *));
+	bzero(__stack_a, MICROSTACK_SIZE * sizeof(void *));
+	bzero(__stack_b, MICROSTACK_SIZE * sizeof(void *));
 
 	while (t)
 	{
@@ -110,7 +105,7 @@ t_ast *ast_create(t_token *list)
 		else
 		{
 			while (top_a
-				&& node_precedence((t_ast *)__stack_a[top_a]) >= token_precedence(t)) {
+				&& get_node_precedence((t_ast *)__stack_a[top_a]) >= get_token_precedence(t)) {
 				ast_merge_top();
 			}
 			__push_a(ast_new_operator(t->kind));

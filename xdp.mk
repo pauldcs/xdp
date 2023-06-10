@@ -5,7 +5,8 @@ OBJS_DIR	 := .objs
 INCS_DIR	 := incs
 BUILD_DIR    := build
 XLEAKS_DIR   := srcs/xleaks
-CFLAGS 		 := -Wall -Wextra -Werror -O3 -flto
+#CFLAGS 		 := -Wall -Wextra -Werror -O3 -flto
+CFLAGS 		 := -Wall -Wextra -Werror 
 CFLAGS_DBG   := -g3 -D __LOGGING__ -D __LEAK_CHECK__ -fstack-protector-strong -fsanitize=address
 
 SRCS := main.c    \
@@ -29,7 +30,7 @@ SRCS := main.c    \
 	expr/lexer/lst_new_token.c     \
 	expr/lexer/lst_add_token.c     \
 	expr/ast/ast_new_operator.c    \
-	expr/ast/ast_create.c          \
+	expr/ast/ast_compose.c         \
 	expr/ast/ast_new_value.c       \
 	expr/ast/ast_solve.c           \
 	expr/ast/ast_destroy.c         \

@@ -10,10 +10,8 @@
 // 	for (;n--;s1++ && s2++)
 //     	d += __builtin_popcount(*s1 ^ *s2);
 //     return (d);
-// }
+// }	
 
-
-// TODO
 bool xd_summarizer(
 	cut8 *addr,
 	size_t size,
@@ -34,9 +32,15 @@ bool xd_summarizer(
 			dump_required = false;
 			i = 0;
 		}
-        *(scr_ptr + (i++)) = "0123456789abcdef"[(*ptr >> 4) & 0xf];
-		*(scr_ptr + (i++)) = "0123456789abcdef"[*ptr & 0xf];
-		ptr++;
+
+		if (XC_PRINT(*ptr)) {
+			*(scr_ptr + (i++)) = *ptr++;
+		
+		} else {
+        	*(scr_ptr + (i++)) = "0123456789abcdef"[(*ptr >> 4) & 0xf];
+			*(scr_ptr + (i++)) = "0123456789abcdef"[*ptr & 0xf];
+			ptr++;
+		}
 		if (i >= scr_size)
 			dump_required = true;
 	}

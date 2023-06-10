@@ -58,11 +58,16 @@ def run_command(cmd, num_runs=20, timeout=None):
 
 def start_performance_test():
 	
-	report = run_command("cat /dev/urandom | xdp -n 100000")
+	normal = run_command("xdp -n 1000000 /dev/urandom")
+	color = run_command("xdp -n 1000000 /dev/urandom -c")
     
-	print(" - Result:")
-	for key in report:
-		print(f'\t{key:<15} {report[key]}')
+	print("\n - Normal:")
+	for key in normal:
+		print(f'\t{key:<15} {normal[key]}')
+	print("\n - Color:")
+	for key in normal:
+		print(f'\t{key:<15} {color[key]}')
+	print()
 
 def main():
 	start_performance_test()

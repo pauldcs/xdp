@@ -77,9 +77,12 @@ static bool init_screen(t_file *file, t_hexxer *hexxer)
 	 *     the hexxed data into. This is what is actually 
 	 *     written to the console. 
      */
-	size_t best_size = file->st.st_blksize / 16 * (16 * 3 + 28) * 8;
+	size_t best_size = file->st.st_blksize;
 
-	hexxer->screen.ptr = __xmalloc__(best_size);
+	if (best_size < 1 << 15)
+		best_size = 1 << 15;
+
+	hexxer->screen.ptr = __xmalloc__(best_size * 2);
 	if (!hexxer->screen.ptr)
 		return (false);
 	

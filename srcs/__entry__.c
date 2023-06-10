@@ -28,7 +28,7 @@ bool __entry__(t_user_options *opts, cstr_t filename)
 	if (hexxer == NULL)
 		goto forbidden_land;
 
-#if 0
+#ifdef __LOGGING__
 	/* This prints the 3 main structs
 	 *  user options
 	 *  the file
@@ -46,7 +46,7 @@ bool __entry__(t_user_options *opts, cstr_t filename)
 	
 	(success)
 		? (void)write(1,"\n",1)
-		: (void)"god existn't"
+		: true
 		;
 
 	clean(fd, file, hexxer);
@@ -65,6 +65,8 @@ static void clean(int fd, t_file *file, t_hexxer *hexxer)
 {
 	if (fd) __xclose__(fd);
 	(void)file;
+	(void)hexxer;
+	(void)fd;
 	hexxer_destroy(hexxer);
 	__xfree__(file);
 	__xfree__(hexxer);

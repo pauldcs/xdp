@@ -38,7 +38,6 @@ typedef enum e_exp_kind
 	EXP_MUL,
 	EXP_ADD,
 	EXP_SUB,
-	EXP_DIV,
 	EXP_MOD,
 }	t_exp_kind;
 
@@ -58,7 +57,7 @@ struct s_ast
 bool 	expr_parse(const char *expr, void *dest);
 
 t_ast	*parse_list(t_token *list);
-t_ast	*ast_create(t_token *tokenlist);
+t_ast	*ast_compose(t_token *tokenlist);
 t_ast	*ast_new_value(int value);
 t_ast	*ast_new_operator(t_token_kind kind);
 void	ast_debug(t_ast *ast);

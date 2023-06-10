@@ -6,7 +6,7 @@
 /*   By: pducos <pducos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 17:02:40 by pducos            #+#    #+#             */
-/*   Updated: 2023/03/26 20:08:28 by pducos           ###   ########.fr       */
+/*   Updated: 2023/06/10 12:39:21 by pducos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ t_ast	*parse_list(t_token *list)
 
 	if (!syntatic_check(list))
 		return (fprintf(stderr, "Syntax Error\n"), NULL);
-	ast = ast_create(list);
+	ast = ast_compose(list);
 	if (!ast)
 		return (fprintf(stderr, "Failed to build AST\n"), NULL);
 	return (ast);

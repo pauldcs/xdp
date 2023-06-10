@@ -13,8 +13,8 @@ all: $(NAME)
 $(NAME): $(SRCS_OBJS)
 	$(CC) $(CFLAGS) $^ -o $(NAME)
 
-debug: CFLAGS += $(CFLAGS_DBG)
-debug: $(SRCS_OBJS)
+g: CFLAGS += $(CFLAGS_DBG)
+g: $(SRCS_OBJS)
 	$(MAKE) -C $(XLEAKS_DIR)
 	$(CC) $(CFLAGS) $^ -o $(NAME) -Wl,-rpath,'$$ORIGIN' -L . -lxleaks
 
@@ -29,4 +29,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY	: all clean debug fclean re 
+.PHONY	: all clean g fclean re 

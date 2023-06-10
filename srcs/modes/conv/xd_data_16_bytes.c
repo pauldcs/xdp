@@ -30,22 +30,6 @@ size_t xd_data_16_bytes(cut8 *dst, cut8 *src, size_t n)
 		}		
 		return (47);
 
-	// case 15:
-	// case 14: 
-	// case 13:
-	// case 12:
-	// case 11:
-	// case 10:
-	// case 9: 
-	// case 8: 
-	// case 7: 
-	// case 6: 
-	// case 5: 
-	// case 4: 
-	// case 3: 
-	// case 2: 
-	// case 1: 
-
     default: 
 		for (size_t i = 0; i < n; i++, dst += 3) {
         	*(ut32 *)(dst) = _B16PairSpaced[src[i]];

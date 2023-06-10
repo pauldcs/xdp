@@ -99,7 +99,7 @@ bool is_directory(int fd)
     return (S_ISDIR(st.st_mode));
 }
 
-bool fd_is_pipe (int fd)
+bool fd_is_pipe(int fd)
 {
 	if (fd < 0)
         return (false);
