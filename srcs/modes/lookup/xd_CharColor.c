@@ -21,7 +21,7 @@ const uint32_t _CharColor[256] = {
 	WHITE, WHITE, WHITE, WHITE,
 	WHITE, WHITE, WHITE, WHITE,
 	WHITE, WHITE, WHITE,
-	/* printable */       CYAN,
+	/* printable */      WHITE,
 		CYAN, CYAN, CYAN, CYAN,
 		CYAN, CYAN, CYAN, CYAN,
 		CYAN, CYAN, CYAN, CYAN,

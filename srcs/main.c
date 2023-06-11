@@ -7,13 +7,12 @@
 #include "options/user_options.h"
 #include <stdlib.h>
 
-
 # define FILE_STACK_SIZE 16 /* can be increased */
 /*
  *    mini stack to hold each file
  *    to dump separatly
  */
-static ptr_t  __stack[FILE_STACK_SIZE];
+static void*  __stack[FILE_STACK_SIZE];
 static size_t __top;
 
 static void __push_filename(str_t filename) {
@@ -22,6 +21,20 @@ static void __push_filename(str_t filename) {
 static ptr_t __pop_filename(void) {
 	if (__top > 0) return ((ptr_t)__stack[__top--]);
 	return (NULL);
+}
+
+void reverseStack() {
+    size_t i = 1;
+    size_t j = __top;
+    void* tmp;
+
+    while (i < j) {
+        tmp = __stack[i];
+        __stack[i] = __stack[j];
+        __stack[j] = tmp;
+        i++;
+        j--;
+    }
 }
 
 t_user_options *user_options_parse(int ac, char *av[])
@@ -101,12 +114,14 @@ int main(int ac, char *av[])
 	size_t tmp_range = options->range;
 	bool success;
 
+	reverseStack();
 	for (;;)
 	{
 		options->range = tmp_range;
+		char *file = __pop_filename();
 		success = __entry__(
 			options,
-			__pop_filename()
+			file
 		);
 		if (!__top) break;
 	}

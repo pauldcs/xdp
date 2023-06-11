@@ -40,4 +40,3 @@ than to destroy and corrupt. For in the end, it is not the knowledge
 itself that holds the true power, but how it is wielded by those
 who dare to seek it.
 
-# Examples
